@@ -1,0 +1,14 @@
+FROM python:3.12-slim-trixie
+RUN apt-get update && apt-get install -y --no-install-recommends libllvm19 libatomic1 \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements-radio.txt /tmp/requirements-radio.txt
+# Optional public CA bundle for environments with a TLS inspection proxy.
+# TLS verification stays enabled; no trust material is stored in the repository.
+RUN --mount=type=secret,id=proxy_ca,required=false \
+    if [ -f /run/secrets/proxy_ca ]; then \
+      cat /etc/ssl/certs/ca-certificates.crt /run/secrets/proxy_ca > /tmp/build-ca.pem; \
+      export PIP_CERT=/tmp/build-ca.pem; \
+    fi; \
+    pip install --no-cache-dir -r /tmp/requirements-radio.txt && rm -f /tmp/build-ca.pem
+WORKDIR /project
+CMD ["python", "app/radio.py", "serve", "--host", "0.0.0.0"]

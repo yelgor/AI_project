@@ -1,0 +1,13 @@
+serial_number: a200-0000
+version: 0
+system:
+  hosts:
+    - hostname: cpr-a200-0000
+      ip: 127.0.0.1
+  ros2:
+    namespace: a200_0000
+platform:
+  attachments: []
+  extras:
+    ros_parameters: {}
+sensors: {}

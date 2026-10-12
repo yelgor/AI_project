@@ -1,0 +1,22 @@
+services:
+  radio:
+    image: ai-project-radio:dev
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.radio
+    volumes:
+      - .:/project
+    ports:
+      - "127.0.0.1:${RADIO_PORT:-8010}:8000"
+  husky:
+    image: ai-project-husky:dev
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.husky
+    volumes:
+      - .:/project
+    environment:
+      - QT_QPA_PLATFORM=offscreen
+    depends_on:
+      - radio
+    command: ["bash", "/project/scripts/start_husky.sh"]

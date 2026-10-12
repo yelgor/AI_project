@@ -1,0 +1,6 @@
+FROM ros:jazzy-ros-base
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ros-jazzy-clearpath-simulator ros-jazzy-ros-gz \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /project
+CMD ["bash", "/project/scripts/start_husky.sh"]
