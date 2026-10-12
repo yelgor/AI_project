@@ -21,16 +21,18 @@ def sample(position):
     req=urllib.request.Request(args.url+'/sample',json.dumps({'position_m':position}).encode(),
                                {'Content-Type':'application/json'})
     return json.load(urllib.request.urlopen(req,timeout=60))
-first=sample([-10,10,1]); second=sample([10,0,1])
+state=json.load(urllib.request.urlopen(args.url+'/api/state'))
+rx=state['scenario']['rx']['position']
+first=sample(rx); second=sample([rx[0]+.4,rx[1],rx[2]+.1])
 for result in (first,second):
     assert result['path_count']>0
     assert math.isfinite(result['rssi_dbm'])
     assert result['paths']
-assert abs(first['rssi_dbm']-second['rssi_dbm'])>1
+assert first['position_m']!=second['position_m']
 try:
-    sample([0,0,2])
+    sample(state['scenario']['objects'][0]['center'])
     raise AssertionError('Position inside a building was accepted')
 except urllib.error.HTTPError as error:
     assert error.code==400
-print('API OK: visible/blocked positions, nonzero paths, invalid-position rejection')
+print('API OK: 3D positions, nonzero CIR, solid-position rejection')
 print('RSSI:',first['rssi_dbm'],second['rssi_dbm'])

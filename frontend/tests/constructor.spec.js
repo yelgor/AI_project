@@ -1,0 +1,33 @@
+import {test,expect} from '@playwright/test';
+
+test('3D editor, official Husky meshes, vertical receiver edit and grid export',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');
+  await expect(page.locator('#name')).not.toHaveValue('');
+  await expect.poll(()=>page.evaluate(()=>window.radioLab?.getRobotMeshCount()||0)).toBe(6);
+  await expect(page.locator('canvas')).toBeVisible();
+  await page.locator('[data-preset="room"]').click();
+  await expect(page.locator('#dirty')).toBeVisible();
+  await page.locator('#tree [data-select="rx"]').click();
+  const z=page.locator('#inspector input[data-property="position"][data-index="2"]');
+  await z.fill('1.8');await z.dispatchEvent('change');
+  await page.locator('#apply').click();
+  await expect(page.locator('#dirty')).toBeHidden({timeout:60000});
+  await page.locator('#measure').click();
+  await expect(page.locator('#path-count')).not.toHaveText('—');
+  await expect.poll(()=>page.evaluate(()=>window.radioLab.getState()?.measurement?.position_m?.[2])).toBeCloseTo(1.8,5);
+  for(const[id,value]of Object.entries({gx0:'-1',gx1:'1',gy0:'0',gy1:'0',gz0:'1',gz1:'2',gsx:'1',gsy:'1',gsz:'1'}))await page.locator('#'+id).fill(value);
+  const response=page.waitForResponse(r=>r.url().endsWith('/api/grid/start')&&r.request().method()==='POST');
+  await page.locator('#grid').click();
+  const job=await (await response).json();
+  await expect.poll(()=>page.evaluate(()=>window.radioLab.getState()?.job?.status),{timeout:60000}).toBe('completed');
+  await expect.poll(()=>page.evaluate(()=>window.radioLab.getState()?.job?.dataset_id)).toBe(job.dataset_id);
+  const link=page.locator(`#datasets a[href="/api/datasets/${job.dataset_id}.zip"]`);
+  await expect(link).toBeVisible();
+  const download=page.waitForEvent('download');await link.click();
+  expect((await download).suggestedFilename()).toMatch(/\.zip$/);
+  await page.locator('#xray').click();
+  await page.evaluate(()=>document.querySelectorAll('.sidebar').forEach(x=>x.scrollTop=0));
+  await page.screenshot({path:'test-results/constructor.png',fullPage:true});
+  expect(errors).toEqual([]);
+});

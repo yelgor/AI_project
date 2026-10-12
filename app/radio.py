@@ -7,6 +7,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import xml.etree.ElementTree as ET
+try:
+    from .scenario import normalize, validate_position
+except ImportError:
+    from scenario import normalize, validate_position
 
 os.environ.setdefault('MPLCONFIGDIR', str(Path(__file__).resolve().parents[1]/'.cache/matplotlib'))
 import mitsuba as mi
@@ -23,6 +27,7 @@ def vector(value, label):
 
 def load_config(path):
     data = json.loads(Path(path).read_text())
+    if data.get('version') == 2: return normalize(data)
     data['transmitter'] = vector(data['transmitter'], 'transmitter')
     for b in data['buildings']:
         b['center'] = vector(b['center'], 'center')
@@ -32,11 +37,13 @@ def load_config(path):
     return data
 
 
-def write_box(path, center, size):
+def write_box(path, center, size, yaw_rad=0):
     # Geometry conversion only. Triangles are outward-facing.
     vertices = [(center[0]+x*size[0]/2, center[1]+y*size[1]/2, center[2]+z*size[2]/2)
                 for x,y,z in [(-1,-1,-1),(1,-1,-1),(1,1,-1),(-1,1,-1),
                               (-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1)]]
+    c,s=math.cos(yaw_rad),math.sin(yaw_rad)
+    vertices=[(center[0]+c*(x-center[0])-s*(y-center[1]), center[1]+s*(x-center[0])+c*(y-center[1]), z) for x,y,z in vertices]
     faces = [(0,2,1),(0,3,2),(4,5,6),(4,6,7),(0,1,5),(0,5,4),
              (1,2,6),(1,6,5),(2,3,7),(2,7,6),(3,0,4),(3,4,7)]
     lines = ['ply','format ascii 1.0','element vertex 8','property float x',
@@ -49,7 +56,10 @@ def write_box(path, center, size):
 
 class Radio:
     def __init__(self, config):
+        self.scenario = normalize(config)
+        config = {'buildings':self.scenario['objects'], 'transmitter':self.scenario['tx']['position'], **self.scenario['radio']}
         self.config = config
+        mi.set_variant('llvm_ad_mono_polarized')
         self.scene = load_scene()
         self.scene.frequency = config.get('frequency_hz',2.4e9)
         self.scene.tx_array = PlanarArray(num_rows=1,num_cols=1,vertical_spacing=.5,
@@ -58,23 +68,23 @@ class Radio:
         with TemporaryDirectory() as temporary:
             for i,b in enumerate(config['buildings']):
                 path = Path(temporary)/f'{i}.ply'
-                write_box(path,b['center'],b['size'])
+                write_box(path,b['center'],b['size'],b.get('yaw_rad',0))
                 material = ITURadioMaterial(name=f'material_{i}',itu_type=b.get('material','concrete'),
                                             thickness=b.get('thickness_m',.2))
                 self.scene.add(SceneObject(name=f'building_{i}',fname=str(path),radio_material=material))
-        self.scene.add(Transmitter(name='base',position=config['transmitter']))
+        self.scene.add(Transmitter(name='base',position=config['transmitter'],orientation=self.scenario['tx']['orientation_rad']))
         self.receiver = Receiver(name='robot',position=[-10,10,1])
         self.scene.add(self.receiver)
         self.solver = PathSolver()
 
-    def sample(self, position):
+    def sample(self, position, orientation_rad=None):
+        mi.set_variant('llvm_ad_mono_polarized')
         position = vector(position,'receiver')
         if math.dist(position,self.config['transmitter']) < .1:
             raise ValueError('Receiver must be at least 0.1m from transmitter')
-        for b in self.config['buildings']:
-            if all(abs(position[i]-b['center'][i]) < b['size'][i]/2 for i in range(3)):
-                raise ValueError('Receiver is inside a building')
+        validate_position(self.scenario,position)
         self.receiver.position = position
+        self.receiver.orientation = orientation_rad or self.scenario['rx']['orientation_rad']
         settings = self.config.get('solver',{})
         paths = self.solver(self.scene,max_depth=settings.get('max_depth',3),
                             samples_per_src=settings.get('samples_per_src',10000),
@@ -98,6 +108,8 @@ class Radio:
 
 
 def export_gazebo(config, destination):
+    scenario=normalize(config)
+    config={'buildings':scenario['objects']}
     root=ET.Element('sdf',version='1.9')
     world=ET.SubElement(root,'world',name='radio_world')
     for filename,name in [('gz-sim-physics-system','gz::sim::systems::Physics'),
@@ -107,7 +119,7 @@ def export_gazebo(config, destination):
     for i,b in enumerate(config['buildings']):
         model=ET.SubElement(world,'model',name=f'building_{i}')
         ET.SubElement(model,'static').text='true'
-        ET.SubElement(model,'pose').text=' '.join(map(str,b['center']))+' 0 0 0'
+        ET.SubElement(model,'pose').text=' '.join(map(str,b['center']))+f' 0 0 {b.get("yaw_rad",0)}'
         link=ET.SubElement(model,'link',name='body')
         for kind in ('collision','visual'):
             geometry=ET.SubElement(ET.SubElement(link,kind,name=kind),'geometry')
@@ -156,6 +168,7 @@ def main():
     args=parser.parse_args(); config=load_config(args.config)
     if args.command=='export-gazebo': export_gazebo(config,args.output); return
     radio=Radio(config)
+    config=radio.config
     if args.command=='sample': print(json.dumps(radio.sample(args.position),indent=2,allow_nan=False))
     elif args.command=='trajectory':
         points=json.loads(Path(args.input).read_text())
@@ -185,7 +198,7 @@ def main():
         plotted=ax.scatter(pts[:,0],pts[:,1],c=levels,cmap='viridis',s=100,marker='s')
         for b in config['buildings']:
             if b['center'][2]+b['size'][2]/2<=0: continue
-            ax.add_patch(Rectangle((b['center'][0]-b['size'][0]/2,b['center'][1]-b['size'][1]/2),*b['size'][:2],facecolor='gray',alpha=.7))
+            ax.add_patch(Rectangle((b['center'][0]-b['size'][0]/2,b['center'][1]-b['size'][1]/2),*b['size'][:2],angle=math.degrees(b.get('yaw_rad',0)),rotation_point='center',facecolor='gray',alpha=.7))
         ax.scatter(*config['transmitter'][:2],marker='*',s=150,c='red',label='Transmitter')
         fig.colorbar(plotted,ax=ax,label='RSSI (dBm)')
         ax.set(xlabel='x (m)',ylabel='y (m)',title='Sionna RT, receiver height 1m',aspect='equal')

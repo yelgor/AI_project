@@ -1,82 +1,56 @@
-# Стек та перевірки
+# Перевірений стан середовища
 
-Радіопоширення розраховує готовий Sionna RT, робот і фізичний світ — готовий
-Clearpath Simulator у Gazebo. Код цього репозиторію з'єднує їх:
+## Реалізований стек
 
-```mermaid
-flowchart LR
-  JSON[config/world.json] --> RT[Sionna RT / Mitsuba]
-  JSON --> SDF[Gazebo SDF]
-  SDF --> GZ[Gazebo + Clearpath Husky]
-  GZ --> ODOM[ROS odometry]
-  ODOM --> BRIDGE[app/ros_radio.py]
-  BRIDGE -->|HTTP position| RT
-  RT -->|CIR / RSSI / SNR| BRIDGE
-  BRIDGE --> TOPIC[/radio/measurement]
-```
+- Sionna RT 2.2.0 / Mitsuba / Dr.Jit, CPU LLVM backend.
+- Browser 3D-конструктор Three.js: приміщення, Tx/Rx, official Husky visual assets.
+- Ubuntu 24.04 / ROS 2 Jazzy / Gazebo Harmonic / Clearpath Simulator 2.9.4.
+- Shared scene v2, SDF/mesh export, world pose PosePublisher, 3D antenna mount.
+- Ручне керування, recording/grid, metadata/CSV/JSONL/events/ZIP.
 
-## Виконані перевірки у хмарній машині
+## Перевірено в поточній хмарній машині
 
-- CLI `sample`: скінченні RSSI/SNR, ненульові шляхи.
-- CLI `trajectory`: обчислено 6 позицій, JSONL записаний.
-- CLI `map`: PNG із 48 обчисленими позиціями, копія у `docs/radio-map.png`.
-- 3 тести: формула Фріса й абсолютна затримка у вільному просторі;
-  багатопроменеве когерентне складання/валідація позицій;
-  збіг геометрії Sionna та Gazebo.
-- HTTP API на хості та всередині Docker: запити для видимої й закритої
-  будівлею позицій, відмінний RSSI, відхилення позиції всередині будівлі.
-- Headless Gazebo Harmonic / Clearpath 2.9.4: Husky A200 створений,
-  контролери активні, odometry публікується.
-- `scripts/check_husky.py`: рух 0.923 м, отримано 5 ROS-радіовимірювань.
-  Повторна перевірка після перезапуску радіоконтейнера: рух 1.103 м,
-  6 вимірювань. Тест керує лише симульованим роботом у демонстраційній сцені.
+- 9 Python tests: Friis/absolute delay, multipath, hollow room/door,
+  rotated geometry, full rigid antenna transform, validation/migration,
+  dataset snapshot/CSV/CIR/ZIP та grid на двох висотах.
+- Browser end-to-end: viewport WebGL, 6 офіційних visual meshes, редагування Rx.Z,
+  Apply/measure, multi-height grid, завантаження ZIP саме цього job,
+  без JavaScript page errors. Chromium із software WebGL.
+- Radio API і constructor frontend працюють у radio Docker-container.
+- Full integration: Room → official Husky → named Gazebo world pose → antenna
+  зі зміщенням і yaw → запис. Рух 0.649 м, 6 dataset rows; перевірені
+  фактичні координати, sim time, velocity, CIR, CSV/JSONL/ZIP.
+  Повторно після переходу контейнерів на UID/GID checkout: рух 0.725 м,
+  5 rows, той самий full check пройшов; world export більше не потребує root.
+- Radio Dockerfile зібраний/перевірений з libLLVM19 і libatomic1 та trusted CA.
+- Clearpath/Gazebo установлені з офіційних signed apt packages у ROS-контейнері.
 
-Радіообраз зібраний з `docker/Dockerfile.radio`. Поточний Husky-образ
-створений зі встановленого ROS-контейнера після виконання тих самих apt
-команд, що в `docker/Dockerfile.husky` (додатково встановлено python3-numpy).
-Окрема свіжа збірка Husky Dockerfile і повний `run_demo.sh` на чистій машині
-ще не перевірялися. Складові інсталяції та старту перевірені окремо.
-Публікація хмарного середовища та відновлення у новій задачі теж не перевірені.
+Приклади перевірених результатів — examples/datasets/demo-grid.zip та
+examples/datasets/demo-husky.zip. Screenshot конструктора — docs/constructor.png.
+Старий CLI/smoke збережені для сумісності, але новий робочий інтерфейс — app/builder.py.
 
-## Ресурси й діагностика
+## Межі перевірки
 
-Перша інсталяція Clearpath завантажує кілька ГБ залежностей і триває
-кілька хвилин. Cloud Docker використовує `vfs`, тому кожен контейнер
-копіює файлову систему образу. Husky і ROS-адаптер запускаються разом,
-радіосервіс — в окремому контейнері. На хості з overlay2 дискові витрати менші.
-На хмарному хості з 32 ГБ під час підготовки був вичерпаний диск через
-проміжні образи й дублювання контейнерів; створені нами зайві артефакти
-прибрані. Скрипти не виконують автоматичний prune чужих Docker-ресурсів.
+Husky image поточної машини створений зі встановленого ROS-контейнера,
+після виконання тих самих apt-команд, що у Dockerfile.husky (також був
+python3-numpy). Окрема свіжа збірка Husky Dockerfile на іншій машині ще
+не виконана. Підготовка Python/frontend та startup складових перевірені;
+повний fresh-machine run_demo і cloud publication/restore не доведені.
+Docker tags локальні, не опубліковані у registry.
 
-Попередній `403` для packages.ros.org усунутий застосованими мережевими
-налаштуваннями. Docker-build під TLS-проксі потребує довіреного CA bundle;
-радіо-Dockerfile підтримує BuildKit secret `proxy_ca`, не вимикаючи TLS.
-Внутрішні запити ROS-адаптера до `http://radio:8000` йдуть без зовнішнього
-HTTP-проксі. Зовнішня мережа й автентифікація від цього не змінюються.
+Хост — Debian 13, ROS працює в Ubuntu-контейнері. Docker storage driver vfs
+дублює файлові системи контейнерів, що призвело до повного диска під час
+попередньої підготовки. Зайві власні артефакти прибрані; Husky і supervisor
+ділять один контейнер. Scripts не виконують автоматичний prune чужих ресурсів.
 
-API за замовчуванням доступний на локальному порту 8010. Якщо він зайнятий:
-`RADIO_PORT=8020 docker compose up -d --no-build` і
-`python scripts/check_api.py --url http://127.0.0.1:8020`.
-Після публікації хмарного середовища живі процеси потрібно перезапускати.
-Ізольована задача вже має checkout; додатковий Git worktree без запиту не потрібний.
+Попереднє обмеження packages.ros.org (403) усунуто доступом у середовищі.
+TLS-проксі потребував trusted CA для pip у Docker; verification не вимикалася.
+На машині є /usr/bin/chromium; окремий Playwright browser download не потрібен.
 
-## Межі реалізації
+Повнохвильова/емпірична точність всіх ефектів не гарантована. Не реалізовані
+modem PHY, RF-корпус робота, GPR/Nav2, multiuser/auth або streamed Gazebo desktop.
+Browser constructor реалізований і підтримує local access; cloud preview автоматично
+не надається. User guide пояснює доступ і формат збереження даних.
 
-Демонстраційний світ використовує прямокутні об'єкти. Радіоматеріали задаються
-ITU-моделями Sionna; slab thickness не дорівнює геометричній ширині будівлі.
-Результат залежить від частоти, антен, матеріалів і бюджету трасування.
-Сам факт успішного тесту не доводить емпіричної точності дифракції або відбиттів.
-Потрібні перевірка збіжності й порівняння з вимірюваннями.
-
-Старт Husky — [-10,10]; адаптер використовує це зміщення local odom, а не
-повний TF/map pipeline. Корпус робота не доданий до радіогеометрії.
-Система ще не включає packet-level modem/PHY, Nav2, GPR, відновлення зв'язку
-чи браузерний графічний доступ. Локальний GUI можна запускати за README.
-
-## Офіційні джерела
-
-- [Sionna RT](https://github.com/NVlabs/sionna-rt)
-- [Документація Sionna](https://nvlabs.github.io/sionna/)
-- [Gazebo з ROS](https://gazebosim.org/docs/latest/ros_installation/)
-- [Clearpath Simulator](https://github.com/clearpathrobotics/clearpath_simulator/tree/jazzy)
-- [Інсталяція Clearpath](https://docs.clearpathrobotics.com/docs/ros/tutorials/simulator/install)
+Ресурси та процеси після публікації треба повторно перевіряти. Checkout уже
+ізольований; додатковий worktree без запиту не потрібний.

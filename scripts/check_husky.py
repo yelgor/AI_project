@@ -2,6 +2,7 @@
 import json
 import math
 import time
+import urllib.request
 import rclpy
 from rclpy.node import Node
 from rclpy.parameter import Parameter
@@ -10,6 +11,15 @@ from geometry_msgs.msg import TwistStamped
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 
+http=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+def call(route,data=None):
+    request=urllib.request.Request('http://radio:8000'+route,json.dumps(data).encode() if data is not None else None,{'Content-Type':'application/json'})
+    return json.load(http.open(request,timeout=120))
+state=call('/api/state')
+if state['scenario']['rx']['mode']!='husky':
+    scene=state['scenario'];scene['rx']['mode']='husky';call('/api/scene',scene)
+    state=call('/api/state')
+if state['robot_status'] not in ('running','starting'): call('/api/robot/start',{})
 rclpy.init()
 node=Node('check_husky',parameter_overrides=[Parameter('use_sim_time',value=True)])
 positions=[]

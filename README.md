@@ -1,113 +1,105 @@
-# AI_project — радіоканал і Husky у готових симуляторах
+# Radio Lab — 3D-конструктор радіоекспериментів із Husky
 
-Робоче Python-застосування використовує **NVIDIA Sionna RT 2.2.0** для
-радіофізики. **Gazebo Harmonic / ROS 2 Jazzy / Clearpath Simulator** забезпечують
-світ і Husky A200. Тут немає власного розв'язувача електромагнітних хвиль.
+Побудуйте приміщення, розмістіть Tx/Rx у 3D, запустіть класичний
+**Husky A200 Clearpath** та зберіть датасет. Радіофізику обчислює
+**NVIDIA Sionna RT 2.2.0**, рух/зіткнення — **Gazebo Harmonic / ROS 2 Jazzy**.
+Frontend — Three.js; власного розв'язувача радіохвиль немає.
 
-## Перевірити радіоканал без ROS і Docker
+## Запуск
 
-Python 3.12 і системна LLVM-бібліотека потрібні для CPU-бекенду Dr.Jit.
-На Ubuntu 24.04: `sudo apt install python3-venv libllvm18 libatomic1`;
-на Debian 13: `sudo apt install python3-venv libllvm19 libatomic1`.
-
-```bash
-bash scripts/setup_radio.sh
-.venv/bin/python app/radio.py sample -10 10 1
-.venv/bin/python app/radio.py trajectory config/trajectory.json /tmp/radio-results.jsonl
-.venv/bin/python app/radio.py map /tmp/radio-map.png --step 5
-.venv/bin/python -m unittest discover -s tests -v
-```
-
-`sample` повертає RSSI, SNR, кількість шляхів, комплексні коефіцієнти CIR
-та абсолютні затримки. `trajectory` обчислює ці величини для кожної точки
-й записує JSONL. `map` зберігає PNG-карту з обчисленими значеннями RSSI
-та контурами будівель; роздільність задається `--step` у метрах. Відсутність знайдених шляхів позначається `rssi_dbm: null`.
-
-Для HTTP запустіть у першому терміналі:
-
-```bash
-.venv/bin/python app/radio.py serve --port 8010
-```
-
-У другому:
-
-```bash
-python scripts/check_api.py
-curl -s http://127.0.0.1:8010/sample \
-  -H 'Content-Type: application/json' -d '{"position_m":[10,0,1]}'
-```
-
-![Обчислена Sionna карта покриття](docs/radio-map.png)
-
-## Запустити Gazebo, Husky й ROS-радіоканал
-
-Потрібні Linux x86_64, Docker Engine з Compose, Python/LLVM як вище та доступ
-до PyPI, Docker Hub і ROS/Ubuntu репозиторіїв. Перша збірка завантажує кілька ГБ.
+Linux x86_64, Python 3.12/venv + LLVM/libatomic, Node.js 20.19+ або 22.12+,
+Docker Engine + Compose v2. Потрібен вільний диск для кількох ГБ ROS-залежностей.
+Повна інсталяція і мережеві prerequisites — [USER_GUIDE](docs/USER_GUIDE.md).
 
 ```bash
 bash scripts/run_demo.sh
+```
+
+Браузерна адреса на локальній машині: `http://127.0.0.1:8010`.
+Перший запуск будує образи; на підготовленій машині:
+
+```bash
+docker compose up -d --no-build
+```
+
+Під час старту готуються офіційні visual assets Husky. Після відкриття UI:
+**Кімната → Tx/Rx → Застосувати сцену → Виміряти**.
+Для руху: **Rx: Антена на Husky → Apply → Запустити Husky → WASD**.
+Для даних: **Почати/завершити запис** або **Зібрати сітку → ZIP**.
+
+![3D-конструктор](docs/constructor.png)
+
+## Що працює
+
+- 3D viewport, gizmo/числові координати, повернуті стіни, реальний дверний проріз,
+  матеріали, Save/Load JSON і три шаблони.
+- Статичний 3D Rx або антена на Husky із full rigid transform.
+- Один shared scenario для Three.js, Mitsuba/Sionna та Gazebo SDF.
+- Офіційні Husky visual meshes у браузері й physical model/controllers у Gazebo.
+- Run/Stop, ручне керування, world pose, RSSI/SNR/CIR, async grid/recording.
+- Датасет: CSV, JSONL, snapshot сцени, manifest/версії/units, events і ZIP.
+
+Радіомодель: coherent narrowband multipath із reflection/refraction/diffraction.
+SNR — synthetic thermal noise model. Не моделюються modem PHY/packet loss,
+протокольні затримки, RF-вплив корпусу Husky, GPR/Nav2 чи інші передавачі.
+Матеріали/бюджет трасування потребують калібрування й convergence checks;
+працездатність не означає full-wave або real-world accuracy.
+
+## Документація для наступного учасника
+
+- [Керування конструктором](docs/USER_GUIDE.md)
+- [Збір, формат і аналіз датасету](docs/DATASET_GUIDE.md)
+- [Архітектура, API, координати та дебаг](docs/TECHNICAL.md)
+- [Передача проєкту](docs/HANDOFF.md)
+- [Наступна задача: зібрати датасет](docs/DATA_COLLECTION_TASK.md)
+- [Перевірений стан і обмеження середовища](docs/simulation-stack.md)
+
+Сценарії/дані у `.runtime/` не входять у Git. Передавайте свої JSON/ZIP окремо.
+Приклади результатів перевірки — `examples/datasets/`.
+
+## Перевірки
+
+На запущеному конструкторі, послідовно, без власного активного датасету:
+
+```bash
+.venv/bin/python -m unittest discover -s tests -v
 python scripts/check_api.py
-docker compose exec husky bash -lc \
-  'source /opt/ros/jazzy/setup.bash; python3 scripts/check_husky.py'
+python scripts/check_constructor_integration.py
+npm --prefix frontend run test:e2e
 ```
 
-Другий check на 5 секунд рухає симульований Husky, перевіряє зміну odometry
-та надходження ненульових радіовимірювань. Виконуйте його у демонстраційному
-світі. Запуск headless; команди для огляду й дебагу:
+Інтеграційний тест застосовує demo room, запускає/рухає симульований Husky,
+записує вимірювання та перевіряє world pose/mount/CSV/JSONL/ZIP.
+Browser test редагує Rx.Z, збирає сітку на двох висотах і завантажує ZIP.
+Для нього потрібен Chromium; default `/usr/bin/chromium`, можна задати
+`PLAYWRIGHT_CHROMIUM_PATH`. Tests змінюють demo active scene.
+
+## Радіочастина без Docker
+
+Для static Rx/grid не потрібен робот:
 
 ```bash
-docker compose logs -f husky
-docker compose exec husky bash
-# У контейнері:
-source /opt/ros/jazzy/setup.bash
-ros2 topic list
-ros2 topic echo /radio/measurement std_msgs/msg/String
+bash scripts/setup_constructor.sh
+.venv/bin/python app/builder.py --port 8010
 ```
 
-Зупинка: `docker compose down`. Нова геометрія:
-змінити `config/world.json`, виконати `bash scripts/prepare_world.sh`,
-потім `docker compose restart radio husky`.
-Якщо використовується наявний virtualenv, передайте `RADIO_VENV=/path/to/venv`.
-
-За наявності корпоративного TLS-проксі передайте довірений CA bundle:
-`RADIO_CA_BUNDLE=/path/to/ca-bundle.pem bash scripts/run_demo.sh`.
-Перевірка TLS залишається увімкненою. Хмарний Docker cache за потреби:
-`BUILDX_CONFIG=/workspace/.cache/buildx`.
-
-## Будівлі та модель
-
-`config/world.json` задає одну геометрію для обох движків: кожна будівля
-має `center: [x,y,z]`, `size: [width,depth,height]`, ITU-матеріал і
-`thickness_m` радіоматеріалу. Координати й розміри — метри; частота — Гц;
-потужність — dBm. Земля теж описана прямокутним об'єктом. Генератор
-`export-gazebo` переносить ці коробки у SDF, а `Radio` — у Mitsuba mesh.
-Це конвертація геометрії, а не власна фізична модель.
-
-Увімкнені відбиття, заломлення й дифракція Sionna. Комплексні коефіцієнти
-когерентно складаються для вузькосмугового RSSI, тому враховується інтерференція
-шляхів одного передавача. SNR використовує тепловий шум, bandwidth і noise figure.
-Кількість семплів/глибину трасування можна змінити у `solver`. Більші значення
-збільшують обчислення; точність потребує перевірки збіжності й калібрування.
-
-ROS-адаптер `app/ros_radio.py` читає odometry, викликає HTTP сервіс та публікує
-JSON у `/radio/measurement`. Для демонстрації local odom перетворюється
-постійним зміщенням старту `[-10,10]`; для довільного світу/реального Husky
-потрібне узгодження з TF/map. Робот не включений у радіогеометрію.
-
-Немає PHY конкретного модема, packet loss/latency моделі, сторонніх
-передавачів, Nav2, GPR чи автоматичного відновлення зв'язку. Ray tracing
-не гарантує точності повнохвильового розв'язку для всіх ефектів.
-Графічний Gazebo потребує локального дисплея; браузерний робочий стіл
-не реалізований. Докладніше: [стек та стан перевірок](docs/simulation-stack.md).
-
-Для графічного запуску на локальній Ubuntu з установленим Clearpath/Gazebo
-та робочим дисплеєм (це не браузерний доступ до хмарної машини):
+Без husky service браузер повідомить про відсутні official visual assets
+і покаже габаритну рамку. Radio/grid лишаються доступними.
+Legacy CLI також збережений:
 
 ```bash
-source /opt/ros/jazzy/setup.bash
-bash scripts/prepare_world.sh
-mkdir -p /tmp/clearpath
-cp config/robot.yaml /tmp/clearpath/robot.yaml
-ros2 launch "$PWD/launch/husky.launch.py" \
-  world_file:="$PWD/.runtime/world.sdf" setup_path:=/tmp/clearpath gz_args:="-r"
+bash scripts/setup_radio.sh
+.venv/bin/python app/radio.py --config config/room.json sample 2 2 1.2
 ```
+
+## Логи і зупинка
+
+```bash
+docker compose logs -f radio husky
+tail -n 100 .runtime/husky.log
+docker compose down
+```
+
+Stop у UI завершує Gazebo й активний запис; container runtime лишається
+готовим до нового Run. Закриття браузера не завершує весь стек.
+Хмарна публікація не зберігає живі процеси: перевірте images і перезапустіть.

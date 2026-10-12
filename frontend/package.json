@@ -1,0 +1,22 @@
+{
+  "name": "radio-lab-constructor",
+  "version": "1.0.0",
+  "description": "3D room and radio experiment constructor",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test:e2e": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "vite": "7.1.7"
+  },
+  "private": true
+}
