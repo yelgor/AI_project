@@ -10,6 +10,8 @@
 3. [DATASET_GUIDE.md](DATASET_GUIDE.md): збір, формат, metadata й аналіз.
 4. [TECHNICAL.md](TECHNICAL.md): архітектура, API, координати, обмеження й дебаг.
 5. [DATA_COLLECTION_TASK.md](DATA_COLLECTION_TASK.md): конкретна наступна задача учасника.
+6. [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md): подальша інтеграція Nav2, live/replay
+   карт, режимів відновлення та порівняння B0/B1/IDW/GPR; це план, не наявні можливості.
 
 ## Передати разом із репозиторієм
 

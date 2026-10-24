@@ -52,6 +52,7 @@ SNR — synthetic thermal noise model. Не моделюються modem PHY/pac
 - [Архітектура, API, координати та дебаг](docs/TECHNICAL.md)
 - [Передача проєкту](docs/HANDOFF.md)
 - [Наступна задача: зібрати датасет](docs/DATA_COLLECTION_TASK.md)
+- [План автономних експериментів, карт і демонстрації](docs/EXPERIMENT_PLAN.md)
 - [Перевірений стан і обмеження середовища](docs/simulation-stack.md)
 
 Сценарії/дані у `.runtime/` не входять у Git. Передавайте свої JSON/ZIP окремо.
