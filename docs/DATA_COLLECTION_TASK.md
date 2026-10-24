@@ -37,7 +37,9 @@ observations. Не змішувати різні Tx/сцени в одне по�
 
 ## Наступні coding-задачі після збору
 
-GPR/IDW, ROS typed measurement message, Nav2 recovery, calibrated modem PHY,
+GPR/IDW, Nav2 RSSI recovery і live/replay вже реалізовані; використання та
+runner — у [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md).
+Подальші coding-задачі: ROS typed measurement message, calibrated modem PHY,
 mesh/CAD import, grouping doorway segments, wheel animation в web viewport,
 RF-вплив корпусу робота, багатокористувацький захищений deployment та CI fresh-build.
 Це розширення, а не вимоги до вже наявного пилотного конструктора.

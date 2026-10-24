@@ -208,3 +208,7 @@ ros2 topic echo /radio/measurement std_msgs/msg/String
 `scripts/prepare_husky_assets.py`. WebGL потребує сучасного браузера.
 Повний набір troubleshooting — у [TECHNICAL.md](TECHNICAL.md).
 Для роботи з даними — [DATASET_GUIDE.md](DATASET_GUIDE.md).
+
+Автономні цілі Nav2, відновлення RSSI, B0/B1/IDW/GPR, часові карти та
+демонстрація тепер доступні на окремій сторінці **Експерименти / Replay**.
+Порядок оновлення Docker і керування — [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md).

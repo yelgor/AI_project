@@ -1,7 +1,8 @@
 # Передача проєкту
 
-Проєкт зараз має робочий 3D-конструктор, готові Sionna/Gazebo/Clearpath backend
-та збір/експорт датасету. Власний радіодвижок або модель фізики Husky не писалися.
+Проєкт має 3D-конструктор, Sionna/Gazebo/Clearpath, Nav2, збір датасету,
+RSSI recovery B0/B1/IDW/GPR, live/replay і runner. Власний радіодвижок,
+фізика Husky або планувальник шляху не писалися.
 
 ## Порядок читання
 
@@ -10,8 +11,10 @@
 3. [DATASET_GUIDE.md](DATASET_GUIDE.md): збір, формат, metadata й аналіз.
 4. [TECHNICAL.md](TECHNICAL.md): архітектура, API, координати, обмеження й дебаг.
 5. [DATA_COLLECTION_TASK.md](DATA_COLLECTION_TASK.md): конкретна наступна задача учасника.
-6. [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md): подальша інтеграція Nav2, live/replay
-   карт, режимів відновлення та порівняння B0/B1/IDW/GPR; це план, не наявні можливості.
+6. [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md): автономна демонстрація,
+   налаштування/навчання методів, парні експерименти, оцінка reference.
+7. [EXPERIMENT_FORMAT.md](EXPERIMENT_FORMAT.md): новий формат журналу та API.
+8. [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md): початковий план і критерії дослідження.
 
 ## Передати разом із репозиторієм
 
@@ -32,6 +35,8 @@ check послідовно. Інтеграційні checks змінюють д�
 
 Один Tx/Rx/Husky, box walls із yaw, підтриманий URDF extras PosePublisher,
 world pose + full antenna quaternion. Немає CAD/mesh import, анімації web
-коліс, груп doorway, RF-корпусу робота, packet PHY, GPR/Nav2 чи авторизації.
+коліс, груп doorway, RF-корпусу робота, packet PHY чи авторизації.
+Навігація використовує ground-truth localization і статичну occupancy;
+динамічні перешкоди, SLAM/AMCL та реальний modem link не перевірені.
 Ray tracing не доводить full-wave/real-world accuracy; потрібні convergence
 checks і калібрування. Не підміняти пропуски/помилки нульовим RSSI.

@@ -3,7 +3,8 @@ from pathlib import Path
 import tempfile
 import unittest
 import xml.etree.ElementTree as ET
-from app.radio import Radio, load_config, export_gazebo
+from app.radio import load_config, export_gazebo
+from app.engine import RadioWorker as Radio
 
 
 class RadioTests(unittest.TestCase):

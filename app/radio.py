@@ -1,5 +1,7 @@
 """Integration with NVIDIA Sionna RT; propagation is computed by upstream."""
 import argparse
+import gc
+from concurrent.futures import ThreadPoolExecutor
 import json
 import math
 import os
@@ -16,7 +18,12 @@ os.environ.setdefault('MPLCONFIGDIR', str(Path(__file__).resolve().parents[1]/'.
 import mitsuba as mi
 mi.set_variant('llvm_ad_mono_polarized')
 import numpy as np
+import drjit as dr
 from sionna.rt import load_scene, PlanarArray, Transmitter, Receiver, PathSolver, SceneObject, ITURadioMaterial
+
+# Dr.Jit keeps native callable/JIT state beyond an individual scene. Keep its
+# owner thread alive across Session replacements instead of recycling threads.
+SOLVER_EXECUTOR = ThreadPoolExecutor(max_workers=1,thread_name_prefix='sionna')
 
 
 def vector(value, label):
@@ -60,6 +67,9 @@ class Radio:
         config = {'buildings':self.scenario['objects'], 'transmitter':self.scenario['tx']['position'], **self.scenario['radio']}
         self.config = config
         mi.set_variant('llvm_ad_mono_polarized')
+        # Keep upstream callable deduplication enabled. Disabling it can crash
+        # Dr.Jit 1.5 on a floor-only scene; scene isolation handles JIT lifetime.
+        dr.set_flag(dr.JitFlag.MergeFunctions, True)
         self.scene = load_scene()
         self.scene.frequency = config.get('frequency_hz',2.4e9)
         self.scene.tx_array = PlanarArray(num_rows=1,num_cols=1,vertical_spacing=.5,
@@ -77,8 +87,19 @@ class Radio:
         self.scene.add(self.receiver)
         self.solver = PathSolver()
 
+    def close(self):
+        """Release native scene objects on the same thread that created them."""
+        mi.set_variant('llvm_ad_mono_polarized')
+        dr.sync_thread()
+        self.solver=None; self.receiver=None; self.scene=None
+        gc.collect()
+        # Native callables can outlive a destroyed scene in Dr.Jit's kernel
+        # cache. Do not reuse those compiled dispatch tables for a new scene.
+        dr.flush_kernel_cache()
+
     def sample(self, position, orientation_rad=None):
         mi.set_variant('llvm_ad_mono_polarized')
+        dr.set_flag(dr.JitFlag.MergeFunctions, True)
         position = vector(position,'receiver')
         if math.dist(position,self.config['transmitter']) < .1:
             raise ValueError('Receiver must be at least 0.1m from transmitter')

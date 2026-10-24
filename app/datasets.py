@@ -21,6 +21,12 @@ COLUMNS = ['dataset_id','sample_index','timestamp_utc','source','scene_revision'
 def now(): return datetime.now(timezone.utc).isoformat()
 
 
+def field_hash(scene):
+    """RF field identity: robot spawn is not part of the Sionna geometry."""
+    payload={k:scene[k] for k in ('objects','tx','radio')}
+    return hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+
+
 def atomic_json(path, value):
     temp=path.with_suffix(path.suffix+'.tmp')
     temp.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
@@ -36,8 +42,10 @@ class Dataset:
         versions={name:importlib.metadata.version(name) for name in ['sionna-rt','mitsuba','drjit','numpy']}
         self.manifest={'format_version':1,'dataset_id':self.id,'kind':kind,'status':'collecting',
                        'scene_revision':revision,'scene_sha256':hashlib.sha256(canonical).hexdigest(),
+                       'radio_field_sha256':field_hash(scene),
                        'started_at':now(),'finished_at':None,'sample_count':0,'skipped_count':0,'error_count':0,
                        'parameters':parameters or {},'software':versions,'python':platform.python_version(),
+                       'solver_runtime':{'drjit_merge_functions':True,'isolation':'process-per-scene'},
                        'platform':platform.platform(),'coordinate_frame':'world','length_unit':'m',
                        'angle_unit':'rad','power_unit':'dBm','time_unit':'s','velocity_frame':'base_link',
                        'limitations':['No packet-level PHY or latency model','Robot body is not part of radio geometry']}
@@ -89,13 +97,26 @@ def list_datasets(root):
     return [json.loads(p.read_text()) for p in sorted(root.glob('*/manifest.json'),reverse=True)]
 
 
-def archive(root, identity):
+def completed_directory(root, identity):
     if not identity or any(c not in '0123456789TZabcdefghijklmnopqrstuvwxyz-' for c in identity):
         raise ValueError('Invalid dataset id')
     directory=root/identity
     if not (directory/'manifest.json').is_file(): raise FileNotFoundError('Dataset not found')
     if json.loads((directory/'manifest.json').read_text())['status']=='collecting':
         raise ValueError('Stop recording or wait for grid completion before export')
+    return directory
+
+
+def read_dataset(root, identity):
+    directory=completed_directory(root,identity)
+    result={name:json.loads((directory/(name+'.json')).read_text()) for name in ('manifest','scenario')}
+    result['manifest'].setdefault('radio_field_sha256',field_hash(result['scenario']))
+    result['measurements']=[json.loads(line) for line in (directory/'measurements.jsonl').read_text().splitlines()]
+    return result
+
+
+def archive(root, identity):
+    directory=completed_directory(root,identity)
     buffer=io.BytesIO()
     with zipfile.ZipFile(buffer,'w',zipfile.ZIP_DEFLATED) as z:
         for name in ('manifest.json','scenario.json','measurements.jsonl','measurements.csv','events.jsonl'):

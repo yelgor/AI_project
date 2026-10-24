@@ -27,21 +27,36 @@ docker compose up -d --no-build
 Для руху: **Rx: Антена на Husky → Apply → Запустити Husky → WASD**.
 Для даних: **Почати/завершити запис** або **Зібрати сітку → ZIP**.
 
+Для автономної демонстрації: **Експерименти / Replay → Підготувати демо
+відновлення → дочекатися Nav2: ready → Почати експеримент**.
+Адреса: `http://127.0.0.1:8010/experiments.html`.
+Після оновлення зі старої версії спершу виконати `bash scripts/run_demo.sh`:
+потрібні нові Docker images з Nav2 та scikit-learn.
+
 ![3D-конструктор](docs/constructor.png)
 
 ## Що працює
 
 - 3D viewport, gizmo/числові координати, повернуті стіни, реальний дверний проріз,
-  матеріали, Save/Load JSON і три шаблони.
+  матеріали, Save/Load JSON і п'ять шаблонів, включно зі складом/двором.
 - Статичний 3D Rx або антена на Husky із full rigid transform.
 - Один shared scenario для Three.js, Mitsuba/Sionna та Gazebo SDF.
 - Офіційні Husky visual meshes у браузері й physical model/controllers у Gazebo.
 - Run/Stop, ручне керування, world pose, RSSI/SNR/CIR, async grid/recording.
 - Датасет: CSV, JSONL, snapshot сцени, manifest/версії/units, events і ZIP.
+- Upstream Nav2: occupancy зі спільної сцени, автономні цілі, статичний об'їзд,
+  ground-truth localization, арбітраж teleop/Nav2 та cancel/hold.
+- Режими деградації/відновлення RSSI, B0/B1/IDW/GPR-zero/GPR-pathloss, μ−βσ.
+- Live/replay: карти, невизначеність, часовий RSSI, траєкторія/ціль/маршрут,
+  збережені рішення й окремий ZIP експерименту.
+- Runner 10 пілотних умов, парний запуск зі спільної історії до втрати,
+  reports CSV/JSON, spatial holdout MAE/RMSE/NLPD/coverage.
 
 Радіомодель: coherent narrowband multipath із reflection/refraction/diffraction.
 SNR — synthetic thermal noise model. Не моделюються modem PHY/packet loss,
-протокольні затримки, RF-вплив корпусу Husky, GPR/Nav2 чи інші передавачі.
+протокольні затримки, RF-вплив корпусу Husky чи інші передавачі.
+Recovery використовує RSSI proxy, статичні перешкоди й Gazebo ground truth;
+це не перевірка пакетного зв'язку, SLAM або динамічного об'їзду.
 Матеріали/бюджет трасування потребують калібрування й convergence checks;
 працездатність не означає full-wave або real-world accuracy.
 
@@ -53,6 +68,9 @@ SNR — synthetic thermal noise model. Не моделюються modem PHY/pac
 - [Передача проєкту](docs/HANDOFF.md)
 - [Наступна задача: зібрати датасет](docs/DATA_COLLECTION_TASK.md)
 - [План автономних експериментів, карт і демонстрації](docs/EXPERIMENT_PLAN.md)
+- [Запуск автономних експериментів і демонстрації](docs/EXPERIMENT_GUIDE.md)
+- [Формат експерименту, часові події та новий API](docs/EXPERIMENT_FORMAT.md)
+- [Готові результати, ZIP і графік для демонстрації](examples/experiments/README.md)
 - [Перевірений стан і обмеження середовища](docs/simulation-stack.md)
 
 Сценарії/дані у `.runtime/` не входять у Git. Передавайте свої JSON/ZIP окремо.
@@ -66,12 +84,16 @@ SNR — synthetic thermal noise model. Не моделюються modem PHY/pac
 .venv/bin/python -m unittest discover -s tests -v
 python scripts/check_api.py
 python scripts/check_constructor_integration.py
+python3 scripts/check_navigation_experiments.py
 npm --prefix frontend run test:e2e
 ```
 
 Інтеграційний тест застосовує demo room, запускає/рухає симульований Husky,
 записує вимірювання та перевіряє world pose/mount/CSV/JSONL/ZIP.
 Browser test редагує Rx.Z, збирає сітку на двох висотах і завантажує ZIP.
+Navigation check реально об'їжджає перешкоду, відхиляє solid goal, виконує
+B1 recovery та перевіряє causal timeline/ZIP. Другий browser test перевіряє
+цей завершений експеримент у replay; спочатку виконати navigation check.
 Для нього потрібен Chromium; default `/usr/bin/chromium`, можна задати
 `PLAYWRIGHT_CHROMIUM_PATH`. Tests змінюють demo active scene.
 

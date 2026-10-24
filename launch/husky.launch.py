@@ -29,6 +29,7 @@ def generate_launch_description():
         Node(package='ros_gz_bridge',executable='parameter_bridge',
              arguments=['/husky/world_pose@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V'],
              remappings=[('/husky/world_pose','/simulation/poses')]),
+        IncludeLaunchDescription(PythonLaunchDescriptionSource(str(root/'launch/navigation.launch.py'))),
         IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(clearpath,'launch','robot_spawn.launch.py')),
             launch_arguments={'world':'radio_world','setup_path':LaunchConfiguration('setup_path'),
                               'x':str(robot['position'][0]),'y':str(robot['position'][1]),'z':str(robot['position'][2]),'yaw':str(robot['yaw_rad']),'use_sim_time':'true','rviz':'false'}.items())

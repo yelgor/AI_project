@@ -1,0 +1,493 @@
+{
+  "format_version": 1,
+  "groups": {
+    "B0/beta=0.0": {
+      "total_runs": 1,
+      "statuses": {
+        "RECOVERED_WAIT": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 1,
+      "successful_recovery_times_s": [
+        14.349999999999998
+      ],
+      "success_fraction": 1.0,
+      "wilson_95": [
+        0.20654931437724644,
+        0.9999999999999999
+      ]
+    },
+    "B1/beta=0.0": {
+      "total_runs": 1,
+      "statuses": {
+        "RECOVERED_WAIT": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 1,
+      "successful_recovery_times_s": [
+        12.9
+      ],
+      "success_fraction": 1.0,
+      "wilson_95": [
+        0.20654931437724644,
+        0.9999999999999999
+      ]
+    },
+    "IDW/beta=0.0": {
+      "total_runs": 1,
+      "statuses": {
+        "FAILED": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 0,
+      "successful_recovery_times_s": [],
+      "success_fraction": 0.0,
+      "wilson_95": [
+        0.0,
+        0.7934506856227534
+      ]
+    },
+    "GPR-zero/beta=0.0": {
+      "total_runs": 1,
+      "statuses": {
+        "RECOVERED_WAIT": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 1,
+      "successful_recovery_times_s": [
+        24.1
+      ],
+      "success_fraction": 1.0,
+      "wilson_95": [
+        0.20654931437724644,
+        0.9999999999999999
+      ]
+    },
+    "GPR-zero/beta=1.0": {
+      "total_runs": 1,
+      "statuses": {
+        "FAILED": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 0,
+      "successful_recovery_times_s": [],
+      "success_fraction": 0.0,
+      "wilson_95": [
+        0.0,
+        0.7934506856227534
+      ]
+    },
+    "GPR-pathloss/beta=0.0": {
+      "total_runs": 1,
+      "statuses": {
+        "RECOVERED_WAIT": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 1,
+      "successful_recovery_times_s": [
+        13.899999999999999
+      ],
+      "success_fraction": 1.0,
+      "wilson_95": [
+        0.20654931437724644,
+        0.9999999999999999
+      ]
+    },
+    "GPR-pathloss/beta=1.0": {
+      "total_runs": 1,
+      "statuses": {
+        "RECOVERED_WAIT": 1
+      },
+      "recovery_attempts": 1,
+      "successes": 1,
+      "successful_recovery_times_s": [
+        16.4
+      ],
+      "success_fraction": 1.0,
+      "wilson_95": [
+        0.20654931437724644,
+        0.9999999999999999
+      ]
+    }
+  },
+  "trials": [
+    {
+      "experiment_id": "20261024T192147Z-aedb249b",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "B0",
+      "beta": 0.0,
+      "status": "RECOVERED_WAIT",
+      "reason": "RSSI proxy stable above q_safe",
+      "success": true,
+      "duration_sim_s": 14.349999999999998,
+      "recovery_time_s": 14.349999999999998,
+      "path_length_m": 1.0077903321533903,
+      "recovery_path_length_m": 1.0077903321533903,
+      "observation_count": 25,
+      "replans": 1,
+      "operator_interventions": 0,
+      "wall_duration_s": 14.695956167999611
+    },
+    {
+      "experiment_id": "20261024T192210Z-7d6ae534",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "B1",
+      "beta": 0.0,
+      "status": "RECOVERED_WAIT",
+      "reason": "RSSI proxy stable above q_safe",
+      "success": true,
+      "duration_sim_s": 12.9,
+      "recovery_time_s": 12.9,
+      "path_length_m": 0.99616624916245,
+      "recovery_path_length_m": 0.99616624916245,
+      "observation_count": 23,
+      "replans": 1,
+      "operator_interventions": 0,
+      "wall_duration_s": 13.00058379499933
+    },
+    {
+      "experiment_id": "20261024T192233Z-1fc434ed",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "IDW",
+      "beta": 0.0,
+      "status": "FAILED",
+      "reason": "No reachable safe target under the selected method",
+      "success": false,
+      "duration_sim_s": 0.10000000000000009,
+      "recovery_time_s": 0.10000000000000009,
+      "path_length_m": 0.0,
+      "recovery_path_length_m": 0.0,
+      "observation_count": 11,
+      "replans": 0,
+      "operator_interventions": 0,
+      "wall_duration_s": 0.08924633700007689
+    },
+    {
+      "experiment_id": "20261024T192241Z-e402a705",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "GPR-zero",
+      "beta": 0.0,
+      "status": "RECOVERED_WAIT",
+      "reason": "RSSI proxy stable above q_safe",
+      "success": true,
+      "duration_sim_s": 24.1,
+      "recovery_time_s": 24.1,
+      "path_length_m": 2.1749466801387385,
+      "recovery_path_length_m": 2.1749466801387385,
+      "observation_count": 36,
+      "replans": 2,
+      "operator_interventions": 0,
+      "wall_duration_s": 25.250104074000774
+    },
+    {
+      "experiment_id": "20261024T192315Z-6b8f27a6",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "GPR-zero",
+      "beta": 1.0,
+      "status": "FAILED",
+      "reason": "No reachable safe target under the selected method",
+      "success": false,
+      "duration_sim_s": 0.10000000000000009,
+      "recovery_time_s": 0.10000000000000009,
+      "path_length_m": 0.0,
+      "recovery_path_length_m": 0.0,
+      "observation_count": 10,
+      "replans": 0,
+      "operator_interventions": 0,
+      "wall_duration_s": 0.0825148240000999
+    },
+    {
+      "experiment_id": "20261024T192324Z-39d52d57",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "GPR-pathloss",
+      "beta": 0.0,
+      "status": "RECOVERED_WAIT",
+      "reason": "RSSI proxy stable above q_safe",
+      "success": true,
+      "duration_sim_s": 13.899999999999999,
+      "recovery_time_s": 13.899999999999999,
+      "path_length_m": 1.246471253073077,
+      "recovery_path_length_m": 1.246471253073077,
+      "observation_count": 25,
+      "replans": 1,
+      "operator_interventions": 0,
+      "wall_duration_s": 15.068505670000377
+    },
+    {
+      "experiment_id": "20261024T192349Z-10176fc1",
+      "label": "paired-20261024T184854Z-b1a6ddc6",
+      "pair_id": "paired-20261024T184854Z-b1a6ddc6-0",
+      "method": "GPR-pathloss",
+      "beta": 1.0,
+      "status": "RECOVERED_WAIT",
+      "reason": "RSSI proxy stable above q_safe",
+      "success": true,
+      "duration_sim_s": 16.4,
+      "recovery_time_s": 16.4,
+      "path_length_m": 3.6776404605958404,
+      "recovery_path_length_m": 3.6776404605958404,
+      "observation_count": 28,
+      "replans": 1,
+      "operator_interventions": 0,
+      "wall_duration_s": 17.227961807999236
+    }
+  ],
+  "paired_success_only_differences": {
+    "B0/beta=0.0 vs B1/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": 1.4499999999999975,
+        "bootstrap_95": [
+          1.4499999999999975,
+          1.4499999999999975
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": 0.01162408299094031,
+        "bootstrap_95": [
+          0.01162408299094031,
+          0.01162408299094031
+        ],
+        "n": 1
+      }
+    },
+    "B0/beta=0.0 vs GPR-pathloss/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": 0.4499999999999993,
+        "bootstrap_95": [
+          0.4499999999999993,
+          0.4499999999999993
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -0.23868092091968673,
+        "bootstrap_95": [
+          -0.23868092091968673,
+          -0.23868092091968673
+        ],
+        "n": 1
+      }
+    },
+    "B0/beta=0.0 vs GPR-pathloss/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -2.0500000000000007,
+        "bootstrap_95": [
+          -2.0500000000000007,
+          -2.0500000000000007
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -2.66985012844245,
+        "bootstrap_95": [
+          -2.66985012844245,
+          -2.66985012844245
+        ],
+        "n": 1
+      }
+    },
+    "B0/beta=0.0 vs GPR-zero/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -9.750000000000004,
+        "bootstrap_95": [
+          -9.750000000000004,
+          -9.750000000000004
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -1.1671563479853482,
+        "bootstrap_95": [
+          -1.1671563479853482,
+          -1.1671563479853482
+        ],
+        "n": 1
+      }
+    },
+    "B0/beta=0.0 vs GPR-zero/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "B0/beta=0.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "B1/beta=0.0 vs GPR-pathloss/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -0.9999999999999982,
+        "bootstrap_95": [
+          -0.9999999999999982,
+          -0.9999999999999982
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -0.25030500391062704,
+        "bootstrap_95": [
+          -0.25030500391062704,
+          -0.25030500391062704
+        ],
+        "n": 1
+      }
+    },
+    "B1/beta=0.0 vs GPR-pathloss/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -3.4999999999999982,
+        "bootstrap_95": [
+          -3.4999999999999982,
+          -3.4999999999999982
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -2.6814742114333905,
+        "bootstrap_95": [
+          -2.6814742114333905,
+          -2.6814742114333905
+        ],
+        "n": 1
+      }
+    },
+    "B1/beta=0.0 vs GPR-zero/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -11.200000000000001,
+        "bootstrap_95": [
+          -11.200000000000001,
+          -11.200000000000001
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -1.1787804309762886,
+        "bootstrap_95": [
+          -1.1787804309762886,
+          -1.1787804309762886
+        ],
+        "n": 1
+      }
+    },
+    "B1/beta=0.0 vs GPR-zero/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "B1/beta=0.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-pathloss/beta=0.0 vs GPR-pathloss/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -2.5,
+        "bootstrap_95": [
+          -2.5,
+          -2.5
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -2.431169207522763,
+        "bootstrap_95": [
+          -2.431169207522763,
+          -2.431169207522763
+        ],
+        "n": 1
+      }
+    },
+    "GPR-pathloss/beta=0.0 vs GPR-zero/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -10.200000000000003,
+        "bootstrap_95": [
+          -10.200000000000003,
+          -10.200000000000003
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": -0.9284754270656614,
+        "bootstrap_95": [
+          -0.9284754270656614,
+          -0.9284754270656614
+        ],
+        "n": 1
+      }
+    },
+    "GPR-pathloss/beta=0.0 vs GPR-zero/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-pathloss/beta=0.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-pathloss/beta=1.0 vs GPR-zero/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 1,
+      "recovery_time_s": {
+        "mean_difference_left_minus_right": -7.700000000000003,
+        "bootstrap_95": [
+          -7.700000000000003,
+          -7.700000000000003
+        ],
+        "n": 1
+      },
+      "recovery_path_length_m": {
+        "mean_difference_left_minus_right": 1.502693780457102,
+        "bootstrap_95": [
+          1.502693780457102,
+          1.502693780457102
+        ],
+        "n": 1
+      }
+    },
+    "GPR-pathloss/beta=1.0 vs GPR-zero/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-pathloss/beta=1.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-zero/beta=0.0 vs GPR-zero/beta=1.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-zero/beta=0.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    },
+    "GPR-zero/beta=1.0 vs IDW/beta=0.0": {
+      "pair_count": 1,
+      "both_successful": 0
+    }
+  },
+  "notes": [
+    "RSSI recovery proxy, not packet reception",
+    "Ground-truth localization; static obstacles",
+    "Closed-loop wall-clock sampling may differ before degradation; use offline replay for identical observations",
+    "Pilot sample sizes do not establish statistical superiority"
+  ]
+}

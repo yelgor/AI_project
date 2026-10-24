@@ -48,9 +48,44 @@ TLS-проксі потребував trusted CA для pip у Docker; verificat
 На машині є /usr/bin/chromium; окремий Playwright browser download не потрібен.
 
 Повнохвильова/емпірична точність всіх ефектів не гарантована. Не реалізовані
-modem PHY, RF-корпус робота, GPR/Nav2, multiuser/auth або streamed Gazebo desktop.
+modem PHY, RF-корпус робота, multiuser/auth або streamed Gazebo desktop.
 Browser constructor реалізований і підтримує local access; cloud preview автоматично
 не надається. User guide пояснює доступ і формат збереження даних.
 
 Ресурси та процеси після публікації треба повторно перевіряти. Checkout уже
 ізольований; додатковий worktree без запиту не потрібний.
+
+
+## Автономні експерименти, 24 жовтня 2026
+
+Додані Nav2 1.3.13 (NavFn/A*, Regulated Pure Pursuit), occupancy зі shared
+scene, ground-truth TF, lifecycle readiness, арбітр teleop/Nav2 і cancel/hold.
+Доступні B0/B1/IDW/GPR, causal live/replay, paired runner, reference evaluation.
+
+Реальні Gazebo проїзди: об’їзд перешкоди з планом 5.98 м, досягнення цілі,
+відхилення solid goal, скасування руху зі зупинкою, B1 RSSI recovery та ZIP.
+Перевірено 7 paired configurations зі спільними 10 observations до втрати:
+5 відновлень, 2 відмови без safe target. Окремо 5 світів × 2 Tx layouts:
+B1 відновив RSSI у 9/10 випадків. Це пілоти, не статистична перевага.
+Приклади, report/CSV/ZIP і графік — у examples/experiments/.
+
+На 43 spatially held-out reference-точках за коротким префіксом (4 навчальні
+точки після thinning) GPR мав високу помилку. Наявність GPR не означає
+готової каліброваної моделі. Dataset split/convergence/валідація лишаються
+обов’язковими для дослідницьких висновків.
+
+Nav2 dependencies перевірені як офіційні apt packages у наявному
+ROS-контейнері. Новий Dockerfile додає ті самі packages; окремий чистий
+rebuild нової версії в цій хмарі не виконувався через обмежений диск/vfs.
+На ноутбуці користувача попередня версія успішно будувалася з Dockerfile;
+для цього оновлення потрібна нова збірка images.
+
+Керування й обмеження: [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md).
+
+Фінальна перевірка: 19 Python tests, включно з примусовим завершенням
+native worker та створенням нової сцени; 5 повторів lifecycle checks пройшли.
+Радіосцени ізольовані в процесах, збережені штатні LLVM оптимізації.
+Після зменшення goal tolerance до 0.03 м / 0.05 rad B1 recovery у live check
+відновився приблизно за 15 sim s з однієї спроби під’їзду. Фінальний
+paired-пілот у examples використовує однаковий префікс із 10 observations
+для першого рішення всіх 7 конфігурацій і зберігає implementation/config hashes.

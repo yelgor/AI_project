@@ -125,9 +125,10 @@ def antenna_pose(scene, pose):
 
 
 def preset(name='room'):
+    if name not in ('empty','room','corridor','warehouse','courtyard'): raise ValueError('Unknown preset')
     floor={'id':'floor','label':'Floor','center':[0,0,-.1],'size':[30,30,.2], 'material':'concrete','thickness_m':.2,'yaw_rad':0}
     objects=[floor]
-    if name!='empty':
+    if name in ('room','corridor'):
         # 8x8 room, door in the south wall: width 1.6m, height 2.2m.
         for identity,center,size in [
             ('north',[0,4,1.5],[8,.2,3]),('west',[-4,0,1.5],[.2,8,3]),
@@ -135,9 +136,18 @@ def preset(name='room'):
             ('door-right',[2.4,-4,1.5],[3.2,.2,3]),('lintel',[0,-4,2.6],[1.6,.2,.8])]:
             objects.append(dict(floor,id=identity,label=identity,center=center,size=size))
     if name=='corridor':
-        objects += [dict(floor,id='partition-a',label='Partition',center=[0,1.5,1.5],size=[.2,5,3]),
+        objects += [dict(floor,id='partition-a',label='Partition',center=[0,1.9,1.5],size=[.2,4.2,3]),
                     dict(floor,id='partition-b',label='Partition lower',center=[0,-3,1.5],size=[.2,2,3])]
-    robot_position=[-2,-2,.3] if name=='corridor' else [0,-2,.3]
+    if name=='warehouse':
+        for i,x in enumerate((-3,0,3)):
+            objects.append(dict(floor,id=f'shelf-{i}',label=f'Shelf {i+1}',center=[x,1,1.25],
+                                size=[1.2,5,2.5],material='metal'))
+    if name=='courtyard':
+        for i,(x,y,w,h) in enumerate(((-3,2,3,4),(3,1,3,6),(0,7,8,2))):
+            objects.append(dict(floor,id=f'building-{i}',label=f'Building {i+1}',
+                                center=[x,y,2],size=[w,h,4]))
+    robot_position=[-2,-2,.3] if name=='corridor' else [-1.5,-3,.3] if name=='warehouse' else [0,-2,.3]
+    transmitter=[0,-4,1.5] if name=='courtyard' else [-1.5,4.5,1.5] if name=='warehouse' else [-2,2,1.5]
     return normalize({'version':2,'name':name,'objects':objects,
-                      'tx':{'position':[-2,2,1.5]},'rx':{'mode':'static','position':[2,2,1.2]},
+                      'tx':{'position':transmitter},'rx':{'mode':'static','position':[0,0,1.2] if name=='courtyard' else [2,2,1.2]},
                       'robot':{'position':robot_position,'yaw_rad':math.pi/2},'radio':{}})

@@ -115,8 +115,11 @@ Apply валідує, зупиняє старий Husky при потребі, �
 активує revision та скидає старі pose/measurement/job. Невалідна сцена
 не замінює активну. Apply заборонений під час recording/grid.
 
-Single-worker executor серіалізує Sionna model creation/sample: scene mutation
-і Dr.Jit не запускаються паралельно. HTTP server має кілька потоків;
+Single-worker executor серіалізує створення/запити до RadioWorker. Кожна
+Sionna-сцена виконується у власному процесі (`app/engine.py`), створюється,
+використовується й звільняється на його головному потоці. Native/JIT
+стан не переноситься між сценами; IPC містить лише plain-data результати.
+Native crash повертає помилку, не завершує HTTP backend. HTTP server має кілька потоків;
 довгий grid працює фоново, UI polling залишається доступним. Окремі
 operation/state locks захищають Apply/Start/Record і ревізії.
 
@@ -179,7 +182,10 @@ Absolute path delays retained via normalize_delays=False.
 RSSI = Tx power + 10 log10(gain). SNR uses -174 dBm/Hz thermal density,
 bandwidth and noise figure. This is not a concrete modem demodulation model.
 There is no other-transmitter interference, packet loss/latency, receiver
-measurement noise or automatic GPR/Nav2 recovery.
+measurement noise. Automatic RSSI-proxy recovery through GPR/Nav2 is described
+in [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md); its API/event format is in
+[EXPERIMENT_FORMAT.md](EXPERIMENT_FORMAT.md). It uses Gazebo ground-truth
+localization and a static costmap, not packet reception or SLAM.
 
 ITU material thickness models a slab at the intersected surface. A closed
 box has multiple faces; it is not a volumetric Maxwell solver for solid

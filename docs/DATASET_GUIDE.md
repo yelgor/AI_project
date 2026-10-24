@@ -136,3 +136,9 @@ SNR у цій моделі обчислений із RSSI та noise floor, то
 success, затримки протоколу, сторонніх передавачів або виміряного receiver
 noise. Їх не слід приписувати цьому датасету. Калібрування за реальним
 модемом і оцінювання sim2real залишаються окремим етапом.
+
+Для autonomous recovery додано окремий, сумісний із цими даними журнал
+експерименту. Recording/grid ZIP лишається у поточному форматі; експеримент
+додає causal timeline моделей/цілей/режимів у власному ZIP.
+Див. [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md) та
+[EXPERIMENT_FORMAT.md](EXPERIMENT_FORMAT.md).

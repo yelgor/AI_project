@@ -8,7 +8,8 @@ import time
 import unittest
 import zipfile
 from app.scenario import normalize, preset, inside, antenna_pose, quat_from_ypr
-from app.radio import Radio, write_box, export_gazebo
+from app.radio import write_box, export_gazebo
+from app.engine import RadioWorker as Radio
 from app.builder import Session
 from app.datasets import archive
 import xml.etree.ElementTree as ET

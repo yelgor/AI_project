@@ -1,6 +1,5 @@
 """Scene constructor backend, upstream radio solver and experiment sessions."""
 import argparse
-from concurrent.futures import ThreadPoolExecutor
 import json
 import math
 import os
@@ -10,18 +9,24 @@ import time
 import urllib.request
 import urllib.error
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 import uuid
 import mimetypes
 
 try:
     from .scenario import normalize, preset, antenna_pose, vector, finite
-    from .radio import Radio, export_gazebo
-    from .datasets import Dataset, list_datasets, archive, atomic_json
+    from .radio import export_gazebo, SOLVER_EXECUTOR
+    from .engine import RadioWorker as Radio
+    from .datasets import Dataset, list_datasets, archive, atomic_json, read_dataset
+    from .navigation import export_map
+    from .experiments import Experiments
 except ImportError:
     from scenario import normalize, preset, antenna_pose, vector, finite
-    from radio import Radio, export_gazebo
-    from datasets import Dataset, list_datasets, archive, atomic_json
+    from radio import export_gazebo, SOLVER_EXECUTOR
+    from engine import RadioWorker as Radio
+    from datasets import Dataset, list_datasets, archive, atomic_json, read_dataset
+    from navigation import export_map
+    from experiments import Experiments
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -31,10 +36,11 @@ class Session:
         self.root=Path(root); self.root.mkdir(parents=True,exist_ok=True)
         self.data=self.root/'datasets'; self.data.mkdir(exist_ok=True)
         self.lock=threading.RLock(); self.operation=threading.Lock()
-        self.executor=ThreadPoolExecutor(max_workers=1,thread_name_prefix='sionna')
+        self.executor=SOLVER_EXECUTOR
         self.scene=None; self.model=None; self.revision=None; self.pose=None
         self.measurement=None; self.error=None; self.robot_status='stopped'
         self.record=None; self.job=None; self.cancel=threading.Event()
+        self.experiments=None; self.navigation={'ready':False,'status':'idle','authority':'teleop'}
         for file in self.data.glob('*/manifest.json'):
             manifest=json.loads(file.read_text())
             if manifest.get('status')=='collecting':
@@ -46,6 +52,7 @@ class Session:
         saved=self.root/'active_scene.json'
         scenario=json.loads(saved.read_text())['scenario'] if saved.exists() else json.loads((ROOT/'config/scenario.json').read_text())
         self.apply(scenario)
+        self.experiments=Experiments(self)
         self.scheduler=threading.Thread(target=self.tick,daemon=True); self.scheduler.start()
 
     def runtime(self, route, data=None):
@@ -60,6 +67,7 @@ class Session:
 
     def apply(self, data):
         with self.operation:
+            if self.experiments and self.experiments.active(): raise ValueError('Finish the experiment before changing its scene')
             scene=normalize(data)
             with self.lock:
                 if self.record or (self.job and self.job['status']=='running'):
@@ -68,27 +76,43 @@ class Session:
             if running: self.stop()
             model=self.executor.submit(Radio,scene).result(timeout=120)
             revision=uuid.uuid4().hex[:12]
-            export_gazebo(scene,self.root/'world.sdf.tmp')
+            try:
+                export_gazebo(scene,self.root/'world.sdf.tmp')
+                export_map(scene,self.root/'navigation')
+            except BaseException:
+                self.executor.submit(model.close).result(timeout=120)
+                raise
             (self.root/'world.sdf.tmp').replace(self.root/'world.sdf')
             atomic_json(self.root/'active_scene.json',{'revision':revision,'scenario':scene})
+            if self.experiments: self.experiments.clear_session()
             with self.lock:
+                previous=self.model
                 self.scene=scene; self.model=model; self.revision=revision
                 self.pose=None; self.measurement=None; self.error=None; self.job=None
                 self.robot_status='stopped'; self.pose_received=0
+                self.navigation={'ready':False,'status':'idle','authority':'teleop'}
+                if previous:self.executor.submit(previous.close)
             return {'revision':revision,'scenario':scene}
 
     def start(self):
         with self.operation:
+            if self.experiments.active(): raise ValueError('Finish the experiment before restarting Husky')
             if self.record: raise ValueError('Finish recording before restarting Husky')
             if self.job and self.job['status']=='running': raise ValueError('Wait for grid completion')
+            self.experiments.clear_session()
             result=self.runtime('/start',{'revision':self.revision})
-            with self.lock: self.robot_status='starting'; self.pose=None; self.pose_received=0
+            with self.lock:
+                self.robot_status='starting'; self.pose=None; self.pose_received=0
+                self.navigation={'ready':False,'status':'idle','authority':'teleop'}
             return result
 
     def stop(self):
-        self.runtime('/stop',{})
+        try:
+            if self.experiments and self.experiments.active(): self.experiments.finish('CANCELLED','Simulation stopped')
+        finally:self.runtime('/stop',{})
         with self.lock:
             self.robot_status='stopped'; self.pose=None; self.pose_received=0
+            self.navigation={'ready':False,'status':'idle','authority':'teleop'}
             if self.record:
                 self.record.finish(); self.record=None
         return {'status':'stopped'}
@@ -114,10 +138,14 @@ class Session:
             self.pose={'position':position,'quaternion_xyzw':q,'sim_time_s':sim_time,
                        'linear_velocity':data.get('linear_velocity'),'angular_velocity':data.get('angular_velocity')}
             self.pose_received=time.monotonic(); self.robot_status='running'
-            return {'measurement':self.measurement}
+            self.navigation=data.get('navigation',{'ready':False})
+            pose=self.pose.copy(); navigation=self.navigation.copy(); result={'measurement':self.measurement}
+        if self.experiments: self.experiments.pose(pose,navigation)
+        return result
 
     def sample(self, override=None, source=None):
         with self.lock:
+            if self.closed:raise ValueError('Session is closed')
             scene=self.scene; revision=self.revision; model=self.model; recording=self.record
             pose=json.loads(json.dumps(self.pose)) if self.pose else None
             stale=time.monotonic()-self.pose_received>3
@@ -128,7 +156,12 @@ class Session:
             position,orientation=antenna_pose(scene,pose); source=source or 'husky'
         else:
             position=scene['rx']['position']; orientation=scene['rx']['orientation_rad']; source=source or 'static'
-        result=self.executor.submit(model.sample,position,orientation).result(timeout=120)
+        with self.lock:
+            # Scene replacement queues destruction on this executor. Reject a
+            # snapshot replaced before its sample was submitted.
+            if model is not self.model or self.closed:raise ValueError('Scene changed before sampling')
+            future=self.executor.submit(model.sample,position,orientation)
+        result=future.result(timeout=120)
         result.update({'scene_revision':revision,'source':source,'orientation_rad':orientation,
                        'tx_position_m':scene['tx']['position'],'robot_pose':pose if source=='husky' else None,
                        'sim_time_s':pose['sim_time_s'] if pose and source=='husky' else None})
@@ -136,6 +169,7 @@ class Session:
             if revision==self.revision:
                 self.measurement=result; self.error=None
                 if recording is not None and self.record is recording: recording.append(result)
+        if self.experiments: self.experiments.observe(result)
         return result
 
     def tick(self):
@@ -159,6 +193,7 @@ class Session:
 
     def begin_record(self):
         with self.operation,self.lock:
+            if self.experiments.active(): raise ValueError('Experiment has its own log; finish it before recording another dataset')
             if self.record or (self.job and self.job['status']=='running'): raise ValueError('Another dataset is active')
             if self.scene['rx']['mode']=='husky' and (not self.pose or time.monotonic()-self.pose_received>3):
                 raise ValueError('Run Husky and wait for its world pose first')
@@ -179,6 +214,7 @@ class Session:
         total=math.prod(counts)
         if total>2500: raise ValueError('Grid limited to 2500 planned points')
         with self.operation,self.lock:
+            if self.experiments.active(): raise ValueError('Finish the experiment before collecting a reference grid')
             if self.record or (self.job and self.job['status']=='running'): raise ValueError('Another dataset is active')
             if self.robot_status in ('running','starting'): raise ValueError('Stop Husky before collecting a static grid')
             dataset=Dataset(self.data,self.scene,self.revision,'grid',{'min':lower,'max':upper,'step':step,'planned_count':total})
@@ -211,13 +247,35 @@ class Session:
             return {'scenario':self.scene,'revision':self.revision,'robot_status':status,
                     'robot_pose':self.pose,'measurement':self.measurement,'error':self.error,
                     'recording':self.record.manifest.copy() if self.record else None,
-                    'job':self.job.copy() if self.job else None}
+                    'job':self.job.copy() if self.job else None,
+                    'navigation':self.navigation.copy(),
+                    'experiment':self.experiments.state() if self.experiments else None}
+
+    def navigate(self,data):
+        with self.operation:
+            if self.experiments.active(): raise ValueError('Experiment owns autonomous control')
+            path=self.runtime('/nav/plan',data)
+            return {**path,**self.runtime('/nav/goal',data)}
+
+    def begin_experiment(self,data):
+        with self.operation: return self.experiments.start(data)
+
+    def cancel_navigation(self):
+        try:
+            if self.experiments.active(): self.experiments.finish('CANCELLED','Operator took control')
+        finally:result=self.runtime('/nav/cancel',{})
+        return result
 
     def close(self):
-        self.closed=True; self.cancel.set()
+        with self.lock:self.closed=True;self.cancel.set()
+        self.scheduler.join(timeout=2)
+        self.experiments.close()
         with self.lock:
             if self.record: self.record.finish('interrupted'); self.record=None
-        self.executor.shutdown(wait=True)
+            model=self.model; self.model=None
+            if model:future=self.executor.submit(model.close)
+        if model:future.result(timeout=120)
+        # The process-wide native owner remains alive for subsequent sessions.
 
 
 def serve(session,host,port):
@@ -233,11 +291,21 @@ def serve(session,host,port):
                 if path=='/health': return self.send(200,{'status':'ok','backend':'Sionna RT CPU','builder':True})
                 if path=='/api/state': return self.send(200,session.state())
                 if path=='/api/datasets': return self.send(200,list_datasets(session.data))
+                if path=='/api/experiments': return self.send(200,session.experiments.manifests())
+                if path=='/api/navigation/map': return self.send(200,json.loads((session.root/'navigation/map.json').read_text()))
+                if path.startswith('/api/experiments/'):
+                    identity=path.split('/')[-1]
+                    if identity.endswith('.zip'): return self.send(200,session.experiments.archive(identity[:-4]),'application/zip')
+                    after=int(parse_qs(urlparse(self.path).query).get('after',['-1'])[0])
+                    return self.send(200,session.experiments.replay(identity,after))
                 if path.startswith('/api/datasets/') and path.endswith('.zip'):
                     return self.send(200,archive(session.data,path.split('/')[-1][:-4]),'application/zip')
+                if path.startswith('/api/datasets/'):
+                    identity=path.split('/')[-1]
+                    return self.send(200,read_dataset(session.data,identity))
                 if path.startswith('/api/preset/'):
                     name=path.split('/')[-1]
-                    if name not in ('empty','room','corridor'): raise FileNotFoundError('Preset not found')
+                    if name not in ('empty','room','corridor','warehouse','courtyard'): raise FileNotFoundError('Preset not found')
                     return self.send(200,preset(name))
                 if path.startswith('/assets/husky/'):
                     root=session.root/'assets/husky'; relative=path.removeprefix('/assets/husky/')
@@ -259,6 +327,11 @@ def serve(session,host,port):
                          '/api/robot/control':lambda:session.control(data),'/api/robot/telemetry':lambda:session.telemetry(data),
                          '/api/record/start':session.begin_record,'/api/record/stop':session.end_record,
                          '/api/grid/start':lambda:session.grid(data),
+                         '/api/navigation/goal':lambda:session.navigate(data),
+                         '/api/navigation/plan':lambda:session.runtime('/nav/plan',data),
+                         '/api/navigation/cancel':session.cancel_navigation,
+                         '/api/experiments/start':lambda:session.begin_experiment(data),
+                         '/api/experiments/stop':session.experiments.stop,
                          '/api/grid/cancel':lambda:(session.cancel.set() or {'status':'cancelling'})}
                 if path not in actions: return self.send(404,{'error':'Unknown route'})
                 self.send(200,actions[path]())
