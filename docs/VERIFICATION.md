@@ -1,6 +1,7 @@
 # Перевірений стан, 25 жовтня 2026
 
-- Python: 44 tests, 43 pass та один ROS-only skip на host.
+- Основний Python-набір: 44 tests, 43 pass та один ROS-only skip на host;
+  додаткові 6 startup-перевірок окремо пройшли на Python 3.12 і 3.13.
 - ROS-only serialization regression окремо пройшла в sourced Husky container.
 - HTTP API: дві 3D точки, ненульовий CIR та відмова для solid-position.
 - Constructor integration: world pose, повний 3D mount, 0.749m фізичного руху,
@@ -64,6 +65,15 @@
   Нові проїзди не змінюють старі benchmark-підсумки.
 
 ## Відтворити checks
+
+Startup regression відтворює справжній TCP reset під час читання `/health`,
+HTTP 503, обірваний/невалідний JSON, затриманий Husky supervisor, спільний
+deadline та відсутність повторного POST після невідомого результату старту.
+Він використовує лише стандартну бібліотеку, без Docker/Gazebo/NumPy:
+
+```bash
+python3 -m unittest discover -s tests -p test_start_demo.py -v
+```
 
 Сервіси мають працювати; власний активний запис спочатку завершіть.
 Тести змінюють демонстраційну сцену. Виконуйте послідовно:
