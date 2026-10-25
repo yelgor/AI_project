@@ -3,6 +3,7 @@ import argparse
 import json
 import math
 import os
+import signal
 from pathlib import Path
 import threading
 import time
@@ -17,22 +18,27 @@ try:
     from .scenario import normalize, preset, antenna_pose, vector, finite
     from .radio import export_gazebo, SOLVER_EXECUTOR
     from .engine import RadioWorker as Radio
-    from .datasets import Dataset, list_datasets, archive, atomic_json, read_dataset
-    from .navigation import export_map
+    from .datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
+    from .navigation import export_map,free
     from .experiments import Experiments
+    from .missions import mission,catalog,line_of_sight
+    from .campaigns import Campaigns
 except ImportError:
     from scenario import normalize, preset, antenna_pose, vector, finite
     from radio import export_gazebo, SOLVER_EXECUTOR
     from engine import RadioWorker as Radio
-    from datasets import Dataset, list_datasets, archive, atomic_json, read_dataset
-    from navigation import export_map
+    from datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
+    from navigation import export_map,free
     from experiments import Experiments
+    from missions import mission,catalog,line_of_sight
+    from campaigns import Campaigns
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
 class Session:
-    def __init__(self, root=ROOT/'.runtime', husky_url=None):
+    def __init__(self, root=None, husky_url=None):
+        root=root or os.environ.get('RADIO_LAB_RUNTIME',ROOT/'.runtime')
         self.root=Path(root); self.root.mkdir(parents=True,exist_ok=True)
         self.data=self.root/'datasets'; self.data.mkdir(exist_ok=True)
         self.lock=threading.RLock(); self.operation=threading.Lock()
@@ -41,18 +47,24 @@ class Session:
         self.measurement=None; self.error=None; self.robot_status='stopped'
         self.record=None; self.job=None; self.cancel=threading.Event()
         self.experiments=None; self.navigation={'ready':False,'status':'idle','authority':'teleop'}
+        self.robot_epoch=None;self.sample_generation=0;self.minimum_pose_time=-1
+        self.mission={'status':'idle','phase':'idle'};self.mission_lock=threading.Lock();self.mission_cancel=threading.Event()
+        self.preparation={}
+        self.shadow_checks={}
         for file in self.data.glob('*/manifest.json'):
             manifest=json.loads(file.read_text())
             if manifest.get('status')=='collecting':
                 manifest['status']='interrupted'
                 atomic_json(file,manifest)
         self.pending=False; self.closed=False; self.last_sample=0; self.pose_received=0
+        self.last_sim_sample=-math.inf
         self.husky_url=husky_url or os.environ.get('HUSKY_URL','http://husky:8766')
         self.http=urllib.request.build_opener(urllib.request.ProxyHandler({}))
         saved=self.root/'active_scene.json'
         scenario=json.loads(saved.read_text())['scenario'] if saved.exists() else json.loads((ROOT/'config/scenario.json').read_text())
         self.apply(scenario)
         self.experiments=Experiments(self)
+        self.campaigns=Campaigns(self) if not os.environ.get('RADIO_POOL_WORKER') else None
         self.scheduler=threading.Thread(target=self.tick,daemon=True); self.scheduler.start()
 
     def runtime(self, route, data=None):
@@ -90,6 +102,8 @@ class Session:
                 self.scene=scene; self.model=model; self.revision=revision
                 self.pose=None; self.measurement=None; self.error=None; self.job=None
                 self.robot_status='stopped'; self.pose_received=0
+                self.sample_generation+=1;self.robot_epoch=None;self.minimum_pose_time=-1
+                self.last_sim_sample=-math.inf
                 self.navigation={'ready':False,'status':'idle','authority':'teleop'}
                 if previous:self.executor.submit(previous.close)
             return {'revision':revision,'scenario':scene}
@@ -104,7 +118,101 @@ class Session:
             with self.lock:
                 self.robot_status='starting'; self.pose=None; self.pose_received=0
                 self.navigation={'ready':False,'status':'idle','authority':'teleop'}
+                self.robot_epoch=result.get('robot_epoch');self.minimum_pose_time=-1;self.sample_generation+=1
+                self.last_sim_sample=-math.inf
             return result
+
+    def prepare(self,data):
+        """Reuse running physics and RF geometry; reset actual Gazebo pose for a new trial."""
+        started=time.monotonic();scene=normalize(data['scene']);warm=bool(data.get('reuse',True))
+        with self.lock:
+            if self.record or (self.job and self.job['status']=='running') or self.experiments.active():
+                raise ValueError('Finish the active experiment/dataset before preparing another')
+            same_world=scene['objects']==self.scene['objects']
+            running=self.robot_status in ('running','starting') and self.navigation.get('ready')
+        if not warm or not same_world or not running:
+            self.apply(scene);result=self.start();kind='cold';radio_reused=False
+        else:
+            with self.operation:
+                radio_reused=field_hash(scene)==field_hash(self.scene) and self.model.process.is_alive()
+                model=self.model if radio_reused else self.executor.submit(Radio,scene).result(timeout=120)
+                revision=uuid.uuid4().hex[:12]
+                self.experiments.clear_session()
+                with self.lock:
+                    previous=self.model;self.scene=scene;self.model=model;self.revision=revision
+                    self.sample_generation+=1;self.measurement=None;self.pose=None;self.error=None
+                    self.last_sim_sample=-math.inf
+                    self.robot_status='resetting';self.pose_received=0
+                atomic_json(self.root/'active_scene.json',{'revision':revision,'scenario':scene})
+                result=self.runtime('/reset',{'revision':revision})
+                with self.lock:
+                    self.robot_epoch=result['robot_epoch'];self.minimum_pose_time=result['pose']['sim_time_s']
+                    self.pose=result['pose'];self.pose_received=time.monotonic();self.robot_status='running'
+                    if not radio_reused:self.executor.submit(previous.close)
+                kind='warm'
+        self.preparation={'kind':kind,'radio_reused':radio_reused,'wall_s':time.monotonic()-started}
+        return {**result,'preparation':self.preparation}
+
+    def launch_mission(self,data):
+        spec=mission(data.get('mission','shadow'),int(data.get('layout',0)))
+        if not self.mission_lock.acquire(blocking=False):raise ValueError('A mission is already being prepared')
+        if self.experiments.active():
+            self.mission_lock.release();raise ValueError('Stop the current mission first')
+        config={**spec['config'],**data.get('config',{})}
+        if data.get('manual'):config['route']=[]
+        self.mission_cancel.clear();self.mission={'status':'starting','phase':'preparing','mission':spec['id']}
+        def work():
+            try:
+                self.prepare({'scene':spec['scene'],'reuse':True})
+                self.mission['phase']='waiting_for_nav2_and_radio'
+                deadline=time.monotonic()+90
+                while time.monotonic()<deadline:
+                    if self.mission_cancel.is_set():raise ValueError('Mission cancelled')
+                    state=self.state()
+                    if state['robot_status']=='running' and state['navigation'].get('ready') and state['measurement']:break
+                    time.sleep(.2)
+                else:raise ValueError('Nav2/radio readiness timeout; inspect simulator log')
+                with self.operation:
+                    if self.mission_cancel.is_set():raise ValueError('Mission cancelled')
+                    manifest=self.experiments.start(config)
+                self.mission.update(status='running',phase='experiment',experiment_id=manifest['experiment_id'])
+            except Exception as error:
+                self.mission.update(status='stopped' if self.mission_cancel.is_set() else 'failed',
+                    phase='stopped' if self.mission_cancel.is_set() else 'failed',error=None if self.mission_cancel.is_set() else str(error))
+                try:self.runtime('/nav/hold',{})
+                except Exception:pass
+            finally:self.mission_lock.release()
+        threading.Thread(target=work,daemon=True).start()
+        return dict(self.mission)
+
+    def check_shadow(self,config):
+        """Scenario validation only: never append these oracle probes to observations."""
+        with self.lock:scene=self.scene;model=self.model
+        goal=config['shadow_goal'];radius=config['shadow_radius_m']
+        key=json.dumps([field_hash(scene),goal,radius,config['q_safe_dbm']])
+        if key in self.shadow_checks:return self.shadow_checks[key]
+        if not free(scene,*goal,.6):raise ValueError('Shadow anchor has insufficient Husky clearance')
+        # A200's settled base height is ~0.13228m on this flat-world model.
+        height=.13228+scene['rx']['mount_position'][2]
+        points=[[goal[0]+dx,goal[1]+dy,height] for dx,dy in [(0,0),(radius,0),(-radius,0),(0,radius),(0,-radius)]]
+        values=[]
+        for point in points:
+            if line_of_sight(scene,point):raise ValueError('Shadow anchor must be occluded across its tolerance region')
+            result=self.executor.submit(model.sample,point,[0,0,0],False).result(timeout=120)
+            values.append(result['rssi_dbm'])
+        worst=max(v if v is not None else -160 for v in values)
+        margin=config['q_safe_dbm']-worst
+        if margin<3:raise ValueError(f'Shadow anchor is not sufficiently weak: worst RSSI {worst:.1f} dBm; require 3 dB margin')
+        report={'goal':goal,'radius_m':radius,'positions_m':points,'rssi_dbm':values,
+                'worst_rssi_dbm':worst,'margin_db':margin,'controller_training':False,
+                'criterion':'geometrically occluded; every probe at least 3 dB below q_safe'}
+        self.shadow_checks[key]=report;return report
+
+    def stop_mission(self):
+        self.mission_cancel.set()
+        with self.operation:result=self.experiments.stop()
+        self.mission.update(status='stopped',phase='stopped')
+        return result
 
     def stop(self):
         try:
@@ -133,9 +241,12 @@ class Session:
         if abs(sum(v*v for v in q)-1)>.01: raise ValueError('Quaternion must be normalized')
         sim_time=finite(data['sim_time_s'],'sim_time_s',0)
         with self.lock:
+            if self.robot_epoch is not None and data.get('robot_epoch')!=self.robot_epoch:raise ValueError('Stale robot epoch')
+            if sim_time<self.minimum_pose_time:raise ValueError('Pose predates reset')
             if data.get('scene_revision')!=self.revision: raise ValueError('Stale telemetry revision')
             if self.robot_status not in ('running','starting'): raise ValueError('Simulation is stopped')
             self.pose={'position':position,'quaternion_xyzw':q,'sim_time_s':sim_time,
+                       'joint_positions':data.get('joint_positions',{}),
                        'linear_velocity':data.get('linear_velocity'),'angular_velocity':data.get('angular_velocity')}
             self.pose_received=time.monotonic(); self.robot_status='running'
             self.navigation=data.get('navigation',{'ready':False})
@@ -144,9 +255,13 @@ class Session:
         return result
 
     def sample(self, override=None, source=None):
+        sample_started=time.monotonic()
         with self.lock:
             if self.closed:raise ValueError('Session is closed')
             scene=self.scene; revision=self.revision; model=self.model; recording=self.record
+            generation=self.sample_generation
+            epoch=self.robot_epoch
+            include_paths=not self.experiments or not self.experiments.active() or self.experiments.run['config']['save_cir']
             pose=json.loads(json.dumps(self.pose)) if self.pose else None
             stale=time.monotonic()-self.pose_received>3
         if override is not None:
@@ -160,16 +275,19 @@ class Session:
             # Scene replacement queues destruction on this executor. Reject a
             # snapshot replaced before its sample was submitted.
             if model is not self.model or self.closed:raise ValueError('Scene changed before sampling')
-            future=self.executor.submit(model.sample,position,orientation)
+            future=self.executor.submit(model.sample,position,orientation,include_paths)
         result=future.result(timeout=120)
         result.update({'scene_revision':revision,'source':source,'orientation_rad':orientation,
+                       'solver_wall_s':time.monotonic()-sample_started,
                        'tx_position_m':scene['tx']['position'],'robot_pose':pose if source=='husky' else None,
-                       'sim_time_s':pose['sim_time_s'] if pose and source=='husky' else None})
+                       'sim_time_s':pose['sim_time_s'] if pose and source=='husky' else None,
+                       'robot_epoch':epoch,'line_of_sight':line_of_sight(scene,position)})
         with self.lock:
-            if revision==self.revision:
+            accepted=revision==self.revision and generation==self.sample_generation
+            if accepted:
                 self.measurement=result; self.error=None
                 if recording is not None and self.record is recording: recording.append(result)
-        if self.experiments: self.experiments.observe(result)
+        if self.experiments and accepted: self.experiments.observe(result)
         return result
 
     def tick(self):
@@ -177,8 +295,13 @@ class Session:
             with self.lock:
                 should=(self.record is not None or (self.scene['rx']['mode']=='husky' and self.robot_status=='running'))
                 period=self.scene['radio']['period_s']
-                should=should and not self.pending and time.monotonic()-self.last_sample>=period
-                if should: self.pending=True; self.last_sample=time.monotonic()
+                moving=self.scene['rx']['mode']=='husky'
+                clock=self.pose['sim_time_s'] if moving and self.pose else None
+                elapsed=clock-self.last_sim_sample if clock is not None else -1 if moving else time.monotonic()-self.last_sample
+                should=should and not self.pending and elapsed>=period
+                if should:
+                    self.pending=True; self.last_sample=time.monotonic()
+                    if clock is not None:self.last_sim_sample=clock
             if should:
                 def collect():
                     try: self.sample()
@@ -249,6 +372,7 @@ class Session:
                     'recording':self.record.manifest.copy() if self.record else None,
                     'job':self.job.copy() if self.job else None,
                     'navigation':self.navigation.copy(),
+                    'preparation':self.preparation,'mission':dict(self.mission),
                     'experiment':self.experiments.state() if self.experiments else None}
 
     def navigate(self,data):
@@ -269,6 +393,7 @@ class Session:
     def close(self):
         with self.lock:self.closed=True;self.cancel.set()
         self.scheduler.join(timeout=2)
+        if self.campaigns:self.campaigns.close()
         self.experiments.close()
         with self.lock:
             if self.record: self.record.finish('interrupted'); self.record=None
@@ -292,6 +417,16 @@ def serve(session,host,port):
                 if path=='/api/state': return self.send(200,session.state())
                 if path=='/api/datasets': return self.send(200,list_datasets(session.data))
                 if path=='/api/experiments': return self.send(200,session.experiments.manifests())
+                if path=='/api/missions':return self.send(200,catalog())
+                if path=='/api/campaign/state':return self.send(200,session.campaigns.state())
+                if path.startswith('/api/campaign/worker/') and path.endswith('/state'):
+                    index=int(path.split('/')[-2])
+                    if not 0<=index<4:raise ValueError('Invalid worker index')
+                    return self.send(200,json.load(session.http.open(f'http://127.0.0.1:{8101+index}/api/state',timeout=5)))
+                if path=='/api/campaigns':return self.send(200,session.campaigns.listing())
+                if path.startswith('/api/campaigns/') and path.endswith('.zip'):
+                    return self.send(200,session.campaigns.archive(path.split('/')[-1][:-4]),'application/zip')
+                if path.startswith('/api/missions/'):return self.send(200,mission(path.split('/')[-1]))
                 if path=='/api/navigation/map': return self.send(200,json.loads((session.root/'navigation/map.json').read_text()))
                 if path.startswith('/api/experiments/'):
                     identity=path.split('/')[-1]
@@ -316,6 +451,7 @@ def serve(session,host,port):
                 return self.send(200,file.read_bytes(),mimetypes.guess_type(file)[0] or 'application/octet-stream')
             except (ValueError,KeyError) as e: self.send(400,{'error':str(e)})
             except FileNotFoundError as e: self.send(404,{'error':str(e)})
+            except (OSError,urllib.error.URLError) as e:self.send(503,{'error':'Worker is not available: '+str(e)})
         def do_POST(self):
             try:
                 n=int(self.headers.get('Content-Length',0))
@@ -331,6 +467,11 @@ def serve(session,host,port):
                          '/api/navigation/plan':lambda:session.runtime('/nav/plan',data),
                          '/api/navigation/cancel':session.cancel_navigation,
                          '/api/experiments/start':lambda:session.begin_experiment(data),
+                         '/api/session/prepare':lambda:session.prepare(data),
+                         '/api/mission/start':lambda:session.launch_mission(data),
+                         '/api/mission/stop':session.stop_mission,
+                         '/api/campaign/start':lambda:session.campaigns.start(data),
+                         '/api/campaign/stop':lambda:session.campaigns.stop(),
                          '/api/experiments/stop':session.experiments.stop,
                          '/api/grid/cancel':lambda:(session.cancel.set() or {'status':'cancelling'})}
                 if path not in actions: return self.send(404,{'error':'Unknown route'})
@@ -346,8 +487,10 @@ def serve(session,host,port):
 
 
 def main():
+    def terminate(*_):raise KeyboardInterrupt()
+    signal.signal(signal.SIGTERM,terminate)
     parser=argparse.ArgumentParser(); parser.add_argument('--host',default='127.0.0.1')
-    parser.add_argument('--port',type=int,default=8010); parser.add_argument('--runtime',default=str(ROOT/'.runtime'))
+    parser.add_argument('--port',type=int,default=8010); parser.add_argument('--runtime',default=os.environ.get('RADIO_LAB_RUNTIME',str(ROOT/'.runtime')))
     args=parser.parse_args(); serve(Session(args.runtime),args.host,args.port)
 
 

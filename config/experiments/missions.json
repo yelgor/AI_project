@@ -1,0 +1,2489 @@
+{
+  "format_version": 2,
+  "trials": [
+    {
+      "name": "shadow-a",
+      "world": "shadow",
+      "scene": {
+        "version": 2,
+        "name": "shadow-a",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -4.0,
+            -3.5,
+            1.5
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          4,
+          3.5,
+          0
+        ],
+        [
+          4,
+          2,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -7,
+          -6,
+          7,
+          6
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            4,
+            3.5,
+            0
+          ],
+          [
+            4,
+            2,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "shadow-a",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4,
+          2
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "shadow-b",
+      "world": "shadow",
+      "scene": {
+        "version": 2,
+        "name": "shadow-b",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -5.0,
+            -2.8,
+            1.8
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          4,
+          3.5,
+          0
+        ],
+        [
+          4,
+          3,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -7,
+          -6,
+          7,
+          6
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            4,
+            3.5,
+            0
+          ],
+          [
+            4,
+            3,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "shadow-b",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4,
+          3
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "office-a",
+      "world": "office",
+      "scene": {
+        "version": 2,
+        "name": "office-a",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-0",
+            "label": "office-wall-0",
+            "center": [
+              -7.0,
+              0.0,
+              1.5
+            ],
+            "size": [
+              0.2,
+              12.0,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-1",
+            "label": "office-wall-1",
+            "center": [
+              7.0,
+              0.0,
+              1.5
+            ],
+            "size": [
+              0.2,
+              12.0,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-2",
+            "label": "office-wall-2",
+            "center": [
+              0.0,
+              6.0,
+              1.5
+            ],
+            "size": [
+              14.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-3",
+            "label": "office-wall-3",
+            "center": [
+              -6.0,
+              1.5,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-4",
+            "label": "office-wall-4",
+            "center": [
+              6.0,
+              1.5,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-5",
+            "label": "office-wall-5",
+            "center": [
+              -6.0,
+              -3.0,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-6",
+            "label": "office-wall-6",
+            "center": [
+              6.0,
+              -3.0,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-7",
+            "label": "office-wall-7",
+            "center": [
+              0.0,
+              -6.0,
+              1.5
+            ],
+            "size": [
+              14.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -4.0,
+            -3.5,
+            1.5
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          4,
+          3.5,
+          0
+        ],
+        [
+          4,
+          3,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -7,
+          -6,
+          7,
+          6
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            4,
+            3.5,
+            0
+          ],
+          [
+            4,
+            3,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "office-a",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4,
+          3
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "office-b",
+      "world": "office",
+      "scene": {
+        "version": 2,
+        "name": "office-b",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-0",
+            "label": "office-wall-0",
+            "center": [
+              -7.0,
+              0.0,
+              1.5
+            ],
+            "size": [
+              0.2,
+              12.0,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-1",
+            "label": "office-wall-1",
+            "center": [
+              7.0,
+              0.0,
+              1.5
+            ],
+            "size": [
+              0.2,
+              12.0,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-2",
+            "label": "office-wall-2",
+            "center": [
+              0.0,
+              6.0,
+              1.5
+            ],
+            "size": [
+              14.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-3",
+            "label": "office-wall-3",
+            "center": [
+              -6.0,
+              1.5,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-4",
+            "label": "office-wall-4",
+            "center": [
+              6.0,
+              1.5,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-5",
+            "label": "office-wall-5",
+            "center": [
+              -6.0,
+              -3.0,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-6",
+            "label": "office-wall-6",
+            "center": [
+              6.0,
+              -3.0,
+              1.5
+            ],
+            "size": [
+              2.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "office-wall-7",
+            "label": "office-wall-7",
+            "center": [
+              0.0,
+              -6.0,
+              1.5
+            ],
+            "size": [
+              14.0,
+              0.2,
+              3.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -5.0,
+            -2.8,
+            1.8
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          5,
+          3.5,
+          0
+        ],
+        [
+          5,
+          4,
+          1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -7,
+          -6,
+          7,
+          6
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            5,
+            3.5,
+            0
+          ],
+          [
+            5,
+            4,
+            1.5707963267948966
+          ]
+        ],
+        "label": "office-b",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5,
+          4
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "warehouse-a",
+      "world": "warehouse",
+      "scene": {
+        "version": 2,
+        "name": "warehouse-a",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-0",
+            "label": "shelf-0",
+            "center": [
+              -7.0,
+              -3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-1",
+            "label": "shelf-1",
+            "center": [
+              -7.0,
+              3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-2",
+            "label": "shelf-2",
+            "center": [
+              7.0,
+              -3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-3",
+            "label": "shelf-3",
+            "center": [
+              7.0,
+              3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-4",
+            "label": "shelf-4",
+            "center": [
+              -0.8,
+              6.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-5",
+            "label": "shelf-5",
+            "center": [
+              0.8,
+              -6.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -4.0,
+            -3.5,
+            1.5
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          5,
+          3.5,
+          0
+        ],
+        [
+          5,
+          1,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -9,
+          -9,
+          9,
+          9
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            5,
+            3.5,
+            0
+          ],
+          [
+            5,
+            1,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "warehouse-a",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5,
+          1
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "warehouse-b",
+      "world": "warehouse",
+      "scene": {
+        "version": 2,
+        "name": "warehouse-b",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-0",
+            "label": "shelf-0",
+            "center": [
+              -7.0,
+              -3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-1",
+            "label": "shelf-1",
+            "center": [
+              -7.0,
+              3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-2",
+            "label": "shelf-2",
+            "center": [
+              7.0,
+              -3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-3",
+            "label": "shelf-3",
+            "center": [
+              7.0,
+              3.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-4",
+            "label": "shelf-4",
+            "center": [
+              -0.8,
+              6.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shelf-5",
+            "label": "shelf-5",
+            "center": [
+              0.8,
+              -6.0,
+              1.4
+            ],
+            "size": [
+              1.3,
+              3.2,
+              2.8
+            ],
+            "material": "metal",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -5.0,
+            -2.8,
+            1.8
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          5,
+          3.5,
+          0
+        ],
+        [
+          5,
+          2,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -9,
+          -9,
+          9,
+          9
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            5,
+            3.5,
+            0
+          ],
+          [
+            5,
+            2,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "warehouse-b",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5,
+          2
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "train"
+    },
+    {
+      "name": "district-a",
+      "world": "district",
+      "scene": {
+        "version": 2,
+        "name": "district-a",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-0",
+            "label": "building-0",
+            "center": [
+              -8.0,
+              1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-1",
+            "label": "building-1",
+            "center": [
+              8.0,
+              -1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-2",
+            "label": "building-2",
+            "center": [
+              0.0,
+              8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-3",
+            "label": "building-3",
+            "center": [
+              0.0,
+              -8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -4.0,
+            -3.5,
+            1.5
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          4,
+          3.5,
+          0
+        ],
+        [
+          4,
+          3,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -11,
+          -11,
+          11,
+          11
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            4,
+            3.5,
+            0
+          ],
+          [
+            4,
+            3,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "district-a",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4,
+          3
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "validation"
+    },
+    {
+      "name": "district-b",
+      "world": "district",
+      "scene": {
+        "version": 2,
+        "name": "district-b",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-0",
+            "label": "building-0",
+            "center": [
+              -8.0,
+              1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-1",
+            "label": "building-1",
+            "center": [
+              8.0,
+              -1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-2",
+            "label": "building-2",
+            "center": [
+              0.0,
+              8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-3",
+            "label": "building-3",
+            "center": [
+              0.0,
+              -8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          }
+        ],
+        "tx": {
+          "position": [
+            -5.0,
+            -2.8,
+            1.8
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          5,
+          3.5,
+          0
+        ],
+        [
+          5,
+          4.5,
+          1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -11,
+          -11,
+          11,
+          11
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            5,
+            3.5,
+            0
+          ],
+          [
+            5,
+            4.5,
+            1.5707963267948966
+          ]
+        ],
+        "label": "district-b",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5,
+          4.5
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "validation"
+    },
+    {
+      "name": "courtyard-a",
+      "world": "courtyard",
+      "scene": {
+        "version": 2,
+        "name": "courtyard-a",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-0",
+            "label": "building-0",
+            "center": [
+              -8.0,
+              1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-1",
+            "label": "building-1",
+            "center": [
+              8.0,
+              -1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-2",
+            "label": "building-2",
+            "center": [
+              0.0,
+              8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-3",
+            "label": "building-3",
+            "center": [
+              0.0,
+              -8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "courtyard-block-0",
+            "label": "courtyard-block-0",
+            "center": [
+              -6.0,
+              -7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "courtyard-block-1",
+            "label": "courtyard-block-1",
+            "center": [
+              6.0,
+              7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.3
+          },
+          {
+            "id": "courtyard-block-2",
+            "label": "courtyard-block-2",
+            "center": [
+              -7.0,
+              7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.6
+          },
+          {
+            "id": "courtyard-block-3",
+            "label": "courtyard-block-3",
+            "center": [
+              7.0,
+              -7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.8999999999999999
+          }
+        ],
+        "tx": {
+          "position": [
+            -4.0,
+            -3.5,
+            1.5
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          4,
+          3.5,
+          0
+        ],
+        [
+          4,
+          3,
+          -1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -11,
+          -11,
+          11,
+          11
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            4,
+            3.5,
+            0
+          ],
+          [
+            4,
+            3,
+            -1.5707963267948966
+          ]
+        ],
+        "label": "courtyard-a",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4,
+          3
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "test"
+    },
+    {
+      "name": "courtyard-b",
+      "world": "courtyard",
+      "scene": {
+        "version": 2,
+        "name": "courtyard-b",
+        "objects": [
+          {
+            "id": "floor",
+            "label": "Floor",
+            "center": [
+              0.0,
+              0.0,
+              -0.1
+            ],
+            "size": [
+              30.0,
+              30.0,
+              0.2
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "shadow-building",
+            "label": "shadow-building",
+            "center": [
+              0.0,
+              0.0,
+              2.0
+            ],
+            "size": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-0",
+            "label": "building-0",
+            "center": [
+              -8.0,
+              1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-1",
+            "label": "building-1",
+            "center": [
+              8.0,
+              -1.0,
+              2.5
+            ],
+            "size": [
+              3.0,
+              5.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-2",
+            "label": "building-2",
+            "center": [
+              0.0,
+              8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "concrete",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "building-3",
+            "label": "building-3",
+            "center": [
+              0.0,
+              -8.0,
+              2.5
+            ],
+            "size": [
+              5.0,
+              3.0,
+              5.0
+            ],
+            "material": "brick",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "courtyard-block-0",
+            "label": "courtyard-block-0",
+            "center": [
+              -6.0,
+              -7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.0
+          },
+          {
+            "id": "courtyard-block-1",
+            "label": "courtyard-block-1",
+            "center": [
+              6.0,
+              7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.3
+          },
+          {
+            "id": "courtyard-block-2",
+            "label": "courtyard-block-2",
+            "center": [
+              -7.0,
+              7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.6
+          },
+          {
+            "id": "courtyard-block-3",
+            "label": "courtyard-block-3",
+            "center": [
+              7.0,
+              -7.0,
+              0.7
+            ],
+            "size": [
+              1.3,
+              1.3,
+              1.4
+            ],
+            "material": "wood",
+            "thickness_m": 0.2,
+            "yaw_rad": 0.8999999999999999
+          }
+        ],
+        "tx": {
+          "position": [
+            -5.0,
+            -2.8,
+            1.8
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "rx": {
+          "mode": "husky",
+          "position": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mount_position": [
+            0.0,
+            0.0,
+            0.7
+          ],
+          "mount_orientation_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "robot": {
+          "position": [
+            -4.0,
+            -3.5,
+            0.3
+          ],
+          "yaw_rad": 1.5707963267948966
+        },
+        "radio": {
+          "frequency_hz": 2400000000.0,
+          "tx_power_dbm": 20.0,
+          "bandwidth_hz": 20000000.0,
+          "noise_figure_db": 5.0,
+          "period_s": 0.5,
+          "solver": {
+            "max_depth": 3,
+            "samples_per_src": 10000,
+            "max_num_paths_per_src": 10000,
+            "seed": 42
+          }
+        }
+      },
+      "route": [
+        [
+          -4,
+          3.5,
+          1.5707963267948966
+        ],
+        [
+          5.5,
+          3.5,
+          0
+        ],
+        [
+          5.5,
+          4,
+          1.5707963267948966
+        ]
+      ],
+      "config": {
+        "method": "B1",
+        "beta": 0,
+        "q_safe_dbm": -47,
+        "hysteresis_db": 1,
+        "degraded_s": 1,
+        "stable_s": 1,
+        "timeout_s": 150,
+        "bounds": [
+          -11,
+          -11,
+          11,
+          11
+        ],
+        "grid_step_m": 1.5,
+        "route": [
+          [
+            -4,
+            3.5,
+            1.5707963267948966
+          ],
+          [
+            5.5,
+            3.5,
+            0
+          ],
+          [
+            5.5,
+            4,
+            1.5707963267948966
+          ]
+        ],
+        "label": "courtyard-b",
+        "monitor_window_s": 2,
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4
+        ],
+        "shadow_radius_m": 0.15
+      },
+      "split": "test"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 """Owned Gazebo process supervisor, ROS world-pose telemetry and deadman control."""
 import json
 import hashlib
+import math
 import os
 from pathlib import Path
 import signal
@@ -22,16 +23,21 @@ try:
     from .scenario import quat_multiply, rotate
     from .navigation import free
     from .provenance import implementation_hash
+    from .runtime_pool import RuntimePool
 except ImportError:
     from scenario import quat_multiply, rotate
     from navigation import free
     from provenance import implementation_hash
+    from runtime_pool import RuntimePool
 from nav_msgs.msg import Odometry
+from sensor_msgs.msg import JointState
 from tf2_msgs.msg import TFMessage
 from std_msgs.msg import String
 from rclpy.qos import qos_profile_sensor_data
 
 ROOT=Path(__file__).resolve().parents[1]
+RUNTIME=Path(os.environ.get('RADIO_LAB_RUNTIME',ROOT/'.runtime'))
+os.environ.setdefault('GZ_PARTITION','radio-lab')
 
 
 class Runtime(Node):
@@ -39,6 +45,9 @@ class Runtime(Node):
         super().__init__('constructor_husky_runtime',cli_args=['--ros-args','-r','/tf:=/a200_0000/tf'])
         self.lock=threading.RLock(); self.operation=threading.Lock()
         self.process=None; self.log=None; self.revision=None; self.pose=None; self.velocity=None
+        self.epoch=0;self.pool=RuntimePool(ROOT,RUNTIME)
+        self.joint_positions={}
+        self.condition=threading.Condition(self.lock)
         self.command=(0.,0.); self.command_time=0; self.closed=False; self.last_telemetry=0
         self.radio_url=os.environ.get('RADIO_URL','http://radio:8000')
         self.http=urllib.request.build_opener(urllib.request.ProxyHandler({}))
@@ -60,6 +69,7 @@ class Runtime(Node):
         self.create_subscription(Twist,'/a200_0000/nav_cmd_vel',self.on_nav_velocity,10)
         self.create_subscription(TFMessage,'/simulation/poses',self.on_pose,qos_profile_sensor_data)
         self.create_subscription(Odometry,'/a200_0000/platform/odom/filtered',self.on_odom,qos_profile_sensor_data)
+        self.create_subscription(JointState,'/a200_0000/platform/joint_states',self.on_joints,qos_profile_sensor_data)
         self.create_timer(.05,self.publish_control)
         self.sender=threading.Thread(target=self.send_telemetry,daemon=True); self.sender.start()
 
@@ -70,6 +80,7 @@ class Runtime(Node):
                 with self.lock:
                     self.pose={'position':[t.x,t.y,t.z],'quaternion_xyzw':[q.x,q.y,q.z,q.w],
                                'sim_time_s':item.header.stamp.sec+item.header.stamp.nanosec*1e-9}
+                    self.condition.notify_all()
                 self.publish_localization()
                 break
 
@@ -79,6 +90,9 @@ class Runtime(Node):
             self.velocity={'linear_velocity':[v.linear.x,v.linear.y,v.linear.z],
                            'angular_velocity':[v.angular.x,v.angular.y,v.angular.z]}
             self.odom=message
+
+    def on_joints(self,message):
+        with self.lock:self.joint_positions={name:float(value) for name,value in zip(message.name,message.position) if math.isfinite(value)}
 
     def publish_localization(self):
         """Ground truth map->odom; upstream robot publishes odom->base_link."""
@@ -120,13 +134,16 @@ class Runtime(Node):
             else:
                 linear,angular=self.command if self.authority=='teleop' and time.monotonic()-self.command_time<.5 else (0.,0.)
         msg=TwistStamped(); msg.header.stamp=self.get_clock().now().to_msg()
-        msg.twist.linear.x=linear; msg.twist.angular.z=angular
+        # ROS native serialization requires Python floats even when the
+        # stop/start arbiter's zero command was constructed from integer zeros.
+        msg.twist.linear.x=float(linear); msg.twist.angular.z=float(angular)
         self.publisher.publish(msg)
 
     def send_telemetry(self):
         while not self.closed:
             with self.lock:
-                pose=dict(self.pose,scene_revision=self.revision,navigation=self.navigation_state(),**(self.velocity or {})) if self.pose and self.process and self.process.poll() is None else None
+                pose=dict(self.pose,scene_revision=self.revision,robot_epoch=self.epoch,joint_positions=self.joint_positions,
+                    navigation=self.navigation_state(),**(self.velocity or {})) if self.pose and self.process and self.process.poll() is None else None
             if pose:
                 try:
                     request=urllib.request.Request(self.radio_url+'/api/robot/telemetry',json.dumps(pose).encode(),{'Content-Type':'application/json'})
@@ -145,16 +162,61 @@ class Runtime(Node):
     def start(self,revision):
         with self.operation:
             self.stop_owned()
-            active=json.loads((ROOT/'.runtime/active_scene.json').read_text())
+            active=json.loads((RUNTIME/'active_scene.json').read_text())
             if active['revision']!=revision: raise ValueError('Scene revision does not match exported world')
             env=dict(os.environ); env['SCENE_REVISION']=revision
+            setup=env.get('CLEARPATH_SETUP_PATH','/tmp/clearpath')
+            subprocess.run(['python3',str(ROOT/'scripts/prepare_robot.py'),setup],check=True)
             self.navigation_config_sha256=hashlib.sha256((ROOT/'config/nav2.yaml').read_bytes()).hexdigest()
-            self.log=open(ROOT/'.runtime/husky.log','a')
+            self.log=open(RUNTIME/'husky.log','a')
             self.process=subprocess.Popen(['ros2','launch',str(ROOT/'launch/husky.launch.py')],
                                           stdout=self.log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
             with self.lock:
                 self.revision=revision; self.pose=None; self.command=(0,0); self.last_measurement=None; self.lifecycle_states={}
-            return {'status':'starting','pid':self.process.pid}
+                self.epoch+=1
+            return {'status':'starting','pid':self.process.pid,'robot_epoch':self.epoch}
+
+    def reset(self,data):
+        """Reposition the real Gazebo entity without resetting its simulation clock."""
+        with self.operation:
+            if not self.process or self.process.poll() is not None:raise ValueError('Gazebo is not running')
+            self.hold()
+            # set_pose preserves link velocities. Brake before teleporting, or
+            # a moving timeout endpoint drifts away from its new checkpoint.
+            deadline=time.monotonic()+8;quiet_since=None
+            with self.condition:
+                while time.monotonic()<deadline:
+                    velocity=self.velocity or {}
+                    speed=math.sqrt(sum(v*v for v in velocity.get('linear_velocity',[1,1,1])))
+                    angular=abs(velocity.get('angular_velocity',[0,0,1])[2])
+                    quiet_since=(time.monotonic() if quiet_since is None else quiet_since) if speed<.02 and angular<.03 else None
+                    if quiet_since is not None and time.monotonic()-quiet_since>.25:break
+                    self.condition.wait(.05)
+                else:raise ValueError('Husky did not brake before checkpoint reset')
+            reset_time=self.get_clock().now().nanoseconds*1e-9
+            active=json.loads((RUNTIME/'active_scene.json').read_text())
+            if active['revision']!=data['revision']:raise ValueError('Scene revision mismatch')
+            robot=active['scenario']['robot'];x,y,z=robot['position'];yaw=robot['yaw_rad']
+            with self.lock:
+                self.epoch+=1;self.revision=data['revision'];self.pose=None;self.command=(0.,0.)
+            request=f'name: "a200_0000/robot", position: {{x: {x}, y: {y}, z: {z}}}, orientation: {{z: {math.sin(yaw/2)}, w: {math.cos(yaw/2)}}}'
+            result=subprocess.run(['gz','service','-s','/world/radio_world/set_pose',
+                '--reqtype','gz.msgs.Pose','--reptype','gz.msgs.Boolean','--timeout','5000','--req',request],
+                capture_output=True,text=True,timeout=8)
+            if result.returncode or 'data: true' not in result.stdout:raise ValueError('Gazebo refused pose reset: '+result.stderr[-300:])
+            deadline=time.monotonic()+8;stable=None
+            with self.condition:
+                while time.monotonic()<deadline:
+                    if self.pose:
+                        q=self.pose['quaternion_xyzw'];heading=math.atan2(2*(q[3]*q[2]+q[0]*q[1]),1-2*(q[1]*q[1]+q[2]*q[2]))
+                        angle=abs(math.atan2(math.sin(heading-yaw),math.cos(heading-yaw)))
+                        speed=math.sqrt(sum(v*v for v in (self.velocity or {}).get('linear_velocity',[1,1,1])))
+                        good=math.dist(self.pose['position'][:2],[x,y])<.05 and angle<.08 and speed<.03 and self.pose['sim_time_s']-reset_time>.4
+                        stable=(time.monotonic() if stable is None else stable) if good else None
+                        if stable is not None and time.monotonic()-stable>.25:
+                            return {'status':'running','robot_epoch':self.epoch,'pose':dict(self.pose),'warm_reset':True}
+                    self.condition.wait(.05)
+            raise ValueError('Gazebo pose did not settle after reset')
 
     def stop_owned(self):
         self.cancel_navigation()
@@ -194,6 +256,7 @@ class Runtime(Node):
         return {'ready':rclpy.ok() and active and self.planner.server_is_ready() and self.navigator.server_is_ready(),
                 'status':self.nav_status,'authority':self.authority,
                 'generation':self.nav_generation,
+                'ros_domain_id':os.environ.get('ROS_DOMAIN_ID','0'),'gz_partition':os.environ['GZ_PARTITION'],
                 'software':self.versions,
                 'implementation_sha256':self.implementation_sha256,
                 'navigation_config_sha256':self.navigation_config_sha256,
@@ -219,7 +282,7 @@ class Runtime(Node):
         import math
         if not self.planner.wait_for_server(timeout_sec=3): raise ValueError('Nav2 planner not ready')
         goal=ComputePathToPose.Goal(); goal.goal=self.goal_pose(data); goal.planner_id='GridBased'; goal.use_start='start' in data
-        scene=json.loads((ROOT/'.runtime/active_scene.json').read_text())['scenario']
+        scene=json.loads((RUNTIME/'active_scene.json').read_text())['scenario']
         if not free(scene,goal.goal.pose.position.x,goal.goal.pose.position.y,.55):
             raise ValueError('Nav2 goal lacks footprint clearance')
         if goal.use_start:goal.start=self.goal_pose({'position':data['start']})
@@ -272,6 +335,8 @@ class Runtime(Node):
 
 
 def main():
+    def terminate(*_):raise KeyboardInterrupt()
+    signal.signal(signal.SIGTERM,terminate)
     rclpy.init(); node=Runtime(); node.set_parameters([rclpy.parameter.Parameter('use_sim_time',value=True)])
     class Handler(BaseHTTPRequestHandler):
         def respond(self,status,data):
@@ -291,16 +356,19 @@ def main():
                 elif self.path=='/nav/goal': result=node.navigate(data)
                 elif self.path=='/nav/cancel': result=node.cancel_navigation()
                 elif self.path=='/nav/hold': result=node.hold()
+                elif self.path=='/reset':result=node.reset(data)
+                elif self.path=='/pool/start':result=node.pool.start(data['workers'])
+                elif self.path=='/pool/stop':result=node.pool.stop()
                 else: raise ValueError('Unknown route')
                 self.respond(200,result)
             except Exception as error: self.respond(400,{'error':str(error)})
         def log_message(self,*args): pass
-    server=ThreadingHTTPServer(('0.0.0.0',8766),Handler)
+    server=ThreadingHTTPServer(('0.0.0.0',int(os.environ.get('RUNTIME_PORT','8766'))),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
     try: rclpy.spin(node)
     except (KeyboardInterrupt,rclpy.executors.ExternalShutdownException): pass
     finally:
-        node.closed=True; node.stop(); server.shutdown(); server.server_close()
+        node.closed=True; node.pool.stop();node.stop(); server.shutdown(); server.server_close()
         node.destroy_node()
         if rclpy.ok(): rclpy.shutdown()
 

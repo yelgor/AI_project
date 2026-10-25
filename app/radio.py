@@ -15,6 +15,8 @@ except ImportError:
     from scenario import normalize, validate_position
 
 os.environ.setdefault('MPLCONFIGDIR', str(Path(__file__).resolve().parents[1]/'.cache/matplotlib'))
+os.environ.setdefault('DRJIT_CACHE_DIR',str(Path(__file__).resolve().parents[1]/'.cache/drjit'))
+Path(os.environ['DRJIT_CACHE_DIR']).mkdir(parents=True,exist_ok=True)
 import mitsuba as mi
 mi.set_variant('llvm_ad_mono_polarized')
 import numpy as np
@@ -63,6 +65,7 @@ def write_box(path, center, size, yaw_rad=0):
 
 class Radio:
     def __init__(self, config):
+        dr.set_thread_count(max(1,int(os.environ.get('RADIO_THREADS','2'))))
         self.scenario = normalize(config)
         config = {'buildings':self.scenario['objects'], 'transmitter':self.scenario['tx']['position'], **self.scenario['radio']}
         self.config = config
@@ -97,7 +100,7 @@ class Radio:
         # cache. Do not reuse those compiled dispatch tables for a new scene.
         dr.flush_kernel_cache()
 
-    def sample(self, position, orientation_rad=None):
+    def sample(self, position, orientation_rad=None, include_paths=True):
         mi.set_variant('llvm_ad_mono_polarized')
         dr.set_flag(dr.JitFlag.MergeFunctions, True)
         position = vector(position,'receiver')
@@ -123,9 +126,9 @@ class Radio:
         rssi = self.config.get('tx_power_dbm',20)+10*math.log10(gain) if gain>0 else None
         noise = -174+10*math.log10(self.config.get('bandwidth_hz',20e6))+self.config.get('noise_figure_db',5)
         return {'position_m':position,'rssi_dbm':rssi,'snr_db':rssi-noise if rssi is not None else None,
-                'path_gain_linear':gain,'path_count':len(coefficients),
+                'path_gain_linear':gain,'path_count':len(coefficients),'cir_saved':bool(include_paths),
                 'paths':[{'real':float(c.real),'imag':float(c.imag),'delay_s':float(t)}
-                         for c,t in zip(coefficients,delays)]}
+                         for c,t in zip(coefficients,delays)] if include_paths else []}
 
 
 def export_gazebo(config, destination):

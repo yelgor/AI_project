@@ -1,4 +1,8 @@
-# Наступному учаснику: зібрати перший датасет
+# Наступному учаснику: розширити й перевірити датасет
+
+Готові фізичні shadow-місії, серії 100+ та оцінювання: [QUALITY.md](QUALITY.md).
+Почніть із відтворення [DEMONSTRATION.md](DEMONSTRATION.md), потім додавайте
+нові геометрії до зафіксованого набору. Нижче — вимоги до нових незалежних сцен.
 
 ## Мета
 
@@ -40,6 +44,5 @@ observations. Не змішувати різні Tx/сцени в одне по�
 GPR/IDW, Nav2 RSSI recovery і live/replay вже реалізовані; використання та
 runner — у [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md).
 Подальші coding-задачі: ROS typed measurement message, calibrated modem PHY,
-mesh/CAD import, grouping doorway segments, wheel animation в web viewport,
-RF-вплив корпусу робота, багатокористувацький захищений deployment та CI fresh-build.
+mesh/CAD import, grouping doorway segments, RF-вплив корпусу робота, багатокористувацький захищений deployment та CI fresh-build.
 Це розширення, а не вимоги до вже наявного пилотного конструктора.

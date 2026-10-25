@@ -7,14 +7,19 @@ RSSI recovery B0/B1/IDW/GPR, live/replay і runner. Власний радіод�
 ## Порядок читання
 
 1. [README](../README.md): інсталяція, швидкий запуск і checks.
-2. [USER_GUIDE.md](USER_GUIDE.md): керування конструктором, Tx/Rx та Husky.
-3. [DATASET_GUIDE.md](DATASET_GUIDE.md): збір, формат, metadata й аналіз.
-4. [TECHNICAL.md](TECHNICAL.md): архітектура, API, координати, обмеження й дебаг.
-5. [DATA_COLLECTION_TASK.md](DATA_COLLECTION_TASK.md): конкретна наступна задача учасника.
-6. [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md): автономна демонстрація,
+2. [DEMONSTRATION.md](DEMONSTRATION.md): запуск місії однією кнопкою та всі елементи керування.
+3. [QUALITY.md](QUALITY.md): deliberate shadow, 100+ епізодів, full/paired, оцінка й ітерації.
+4. [USER_GUIDE.md](USER_GUIDE.md): керування конструктором, Tx/Rx та Husky.
+5. [DATASET_GUIDE.md](DATASET_GUIDE.md): збір, формат, metadata й аналіз.
+6. [TECHNICAL.md](TECHNICAL.md): архітектура, API, координати, обмеження й дебаг.
+7. [DATA_COLLECTION_TASK.md](DATA_COLLECTION_TASK.md): конкретна наступна задача учасника.
+8. [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md): автономна демонстрація,
    налаштування/навчання методів, парні експерименти, оцінка reference.
-7. [EXPERIMENT_FORMAT.md](EXPERIMENT_FORMAT.md): новий формат журналу та API.
-8. [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md): початковий план і критерії дослідження.
+9. [EXPERIMENT_FORMAT.md](EXPERIMENT_FORMAT.md): новий формат журналу та API.
+10. [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md): початковий план і критерії дослідження.
+
+Офіційна 3D-модель використовує реальні joint states коліс. Серії мають
+1–4 ізольовані Gazebo/ROS воркери, warm reset, ZIP/звіти та resume.
 
 ## Передати разом із репозиторієм
 
@@ -34,8 +39,7 @@ check послідовно. Інтеграційні checks змінюють д�
 ## Межі поточного етапу
 
 Один Tx/Rx/Husky, box walls із yaw, підтриманий URDF extras PosePublisher,
-world pose + full antenna quaternion. Немає CAD/mesh import, анімації web
-коліс, груп doorway, RF-корпусу робота, packet PHY чи авторизації.
+world pose + full antenna quaternion. Немає CAD/mesh import, груп doorway, RF-корпусу робота, packet PHY чи авторизації.
 Навігація використовує ground-truth localization і статичну occupancy;
 динамічні перешкоди, SLAM/AMCL та реальний modem link не перевірені.
 Ray tracing не доводить full-wave/real-world accuracy; потрібні convergence

@@ -11,6 +11,8 @@
   scene_revision, scene_sha256, radio_field_sha256, software/navigation_software,
   implementation_sha256, navigation_config_yaml/navigation_config_sha256, solver_runtime,
   критерій RSSI proxy, ground-truth localization, metrics і reason.
+  Додатково preparation та shadow_preflight: контрольні точки/покази,
+  запас нижче порога і controller_training=false.
 - `scenario.json`: нормалізована shared scene v2.
 - `timeline.jsonl`: події з sequence, sim_time_s та kind.
 
@@ -33,6 +35,7 @@ scene.robot.position `[x,y,z]`. UI yaw показує градусами.
 | target | target.base `[x,y,yaw]`, path, length_m, метод/β/поріг/model_version та прогноз або observation_index |
 | route | target.base/path/length_m для заданого survey waypoint |
 | mode | mode, reason, за переходів — pose; за завершення — metrics |
+| shadow_arrival | goal, reason: очікування підтвердження втрати в цільовій зоні |
 
 `map.cells[]`: position_m антени, base кандидата, mean_dbm, std_db,
 lower_dbm. Для IDW std_db=null; у B0/B1 display_method=IDW, а рішення
@@ -92,7 +95,10 @@ operator_interventions враховує явне скасування/повер
 
 Config: method, beta, q_safe_dbm, hysteresis_db, degraded_s, stable_s,
 timeout_s, stale_s, noise_db, optimize_gpr, bounds, grid_step_m, route,
-label, pair_id, split (pilot/train/validation/test), history_from.
+label, pair_id, split (pilot/train/validation/test), history_from,
+monitor_window_s, save_cir, require_shadow_loss, shadow_goal, shadow_radius_m.
+monitor_window_s усереднює лінійну потужність за measurement.sim_time_s.
+save_cir=false прибирає список paths, залишаючи точні coherent RSSI/path_count.
 Межі й defaults див. `configuration()` у app/experiments.py та пілотний JSON.
 Один активний запуск; immutable scene. Ліміти: 900 map cells, 30 waypoints,
 150 spatially distinct GPR training points, 1 MiB request body.
@@ -113,3 +119,30 @@ implementation_sha256 ідентифікує application/launch/navigation sourc
 
 Локальні bind-порти не мають авторизації. Це дослідницька інсталяція для
 одного користувача, без безпечного multiuser deployment.
+
+## Місії та серії
+
+| Метод і шлях | Тіло / відповідь |
+| --- | --- |
+| GET `/api/missions` | Список доступних фізичних сценаріїв |
+| GET `/api/missions/<name>` | scene і config обраного сценарію |
+| POST `/api/mission/start` | `{mission:"shadow",layout:0,manual:false,config:{...}}` → async preparation |
+| POST `/api/mission/stop` | `{}` → скасування підготовки/експерименту та hold |
+| POST `/api/session/prepare` | `{scene:{...},reuse:true}` → cold/warm фізична підготовка, revision/epoch/profile |
+| POST `/api/campaign/start` | `{runs:140,workers:2,methods:[...],betas:[0,1],protocol:"paired"}` або `{resume:"ID"}` |
+| POST `/api/campaign/stop` | `{}` → запит cancellation, cleanup owned workers |
+| GET `/api/campaign/state` | phase/progress/active_workers/recent/quality або null |
+| GET `/api/campaigns` | Збережені manifests серій |
+| GET `/api/campaigns/<id>.zip` | Завершена серія: reports, analysis, source/episode ZIP, attempts |
+| GET `/api/campaign/worker/<0..3>/state` | Проксі live state конкретного воркера |
+
+Серія живе в `.runtime/campaigns/<id>`. `attempts.jsonl` містить кожен завершений
+task_index, включно із SETUP_FAILED/RUN_FAILED. `sources.json` зберігає checkpoint
+парного протоколу, `source_attempts.jsonl` / `source_errors.jsonl` — всі вихідні спроби.
+`analysis/` містить оцінку близькості й causal прогнозів; див. QUALITY.md.
+
+Воркери: `.runtime/workers/<i>`, radio HTTP 8101+i, ROS runtime 8801+i,
+ROS_DOMAIN_ID=50+i, GZ_PARTITION=radio-lab-worker-i. Це внутрішні порти контейнерної
+мережі; браузер користується головним API. GUI-only клієнт може приєднатися до
+конкретної partition. World pose містить robot_epoch та joint_positions;
+старі epoch/revision/покази до reset відкидаються.

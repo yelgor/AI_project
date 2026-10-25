@@ -23,6 +23,13 @@ def sample(position):
     return json.load(urllib.request.urlopen(req,timeout=60))
 state=json.load(urllib.request.urlopen(args.url+'/api/state'))
 rx=state['scenario']['rx']['position']
+if state['scenario']['rx']['mode']=='husky':
+    # The unused static-Rx coordinates may lie inside a building in a mounted
+    # mission. Probe the actual antenna, or the free robot spawn if stopped.
+    rx=(state.get('measurement') or {}).get('position_m')
+    if rx is None:
+        robot=state['scenario']['robot']['position'];mount=state['scenario']['rx']['mount_position']
+        rx=[robot[0],robot[1],robot[2]+mount[2]]
 first=sample(rx); second=sample([rx[0]+.4,rx[1],rx[2]+.1])
 for result in (first,second):
     assert result['path_count']>0

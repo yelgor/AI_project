@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import math
+import os
 from pathlib import Path
 import threading
 import time
@@ -34,7 +35,7 @@ def configuration(data):
     for key,default,lo,hi in [('beta',0.,0.,5.),('q_safe_dbm',-40.,-160.,0.),
         ('hysteresis_db',2.,0.,20.),('degraded_s',2.,0.,30.),('stable_s',2.,.1,30.),
         ('timeout_s',180.,5.,1800.),('stale_s',8.,1.,30.),('noise_db',2.,.1,20.),
-        ('grid_step_m',1.,.3,3.)]:
+        ('grid_step_m',1.,.3,3.),('monitor_window_s',0.,0.,10.)]:
         result[key]=finite(data.get(key,default),key,lo,hi)
     if result['beta'] and not result['method'].startswith('GPR'):
         raise ValueError('beta applies to GPR uncertainty only')
@@ -53,6 +54,12 @@ def configuration(data):
     result['label']=str(data.get('label','pilot'))[:100]
     result['pair_id']=str(data.get('pair_id',''))[:100]
     result['history_from']=str(data.get('history_from',''))
+    result['save_cir']=bool(data.get('save_cir',True))
+    result['require_shadow_loss']=bool(data.get('require_shadow_loss',False))
+    goal=data.get('shadow_goal')
+    if goal is not None and len(goal)!=2:raise ValueError('shadow_goal must be [x,y]')
+    result['shadow_goal']=[finite(v,'shadow_goal',-100,100) for v in goal] if goal is not None else None
+    result['shadow_radius_m']=finite(data.get('shadow_radius_m',.25),'shadow_radius_m',.1,1)
     result['split']=data.get('split','pilot')
     if result['split'] not in ('pilot','train','validation','test'): raise ValueError('Invalid split')
     return result
@@ -121,6 +128,7 @@ class Experiments:
             raise ValueError('Nav2 configuration changed; restart Husky before collecting data')
         if state['navigation'].get('implementation_sha256') not in (None,self.implementation_sha256):
             raise ValueError('Application sources changed; restart both services before collecting data')
+        preflight=self.session.check_shadow(config) if config['shadow_goal'] is not None else None
         history=[]; checkpoint=None
         if config['history_from']:
             previous=self.replay(config['history_from'])
@@ -138,6 +146,11 @@ class Experiments:
             qa,qb=checkpoint['quaternion_xyzw'],state['robot_pose']['quaternion_xyzw']
             if 2*math.acos(min(1.,abs(sum(a*b for a,b in zip(qa,qb)))))>.35:
                 raise ValueError('Paired trial robot heading differs from the checkpoint')
+            if config['require_shadow_loss']:
+                current=state.get('measurement')
+                if not current or current.get('line_of_sight') is not False or (current['rssi_dbm'] is not None and
+                        current['rssi_dbm']>=config['q_safe_dbm']-config['hysteresis_db']):
+                    raise ValueError('Paired checkpoint did not reproduce measured link loss; no recovery trial started')
             config['route']=[]
         with self.lock:
             if self.active(): raise ValueError('An experiment is already active')
@@ -155,6 +168,8 @@ class Experiments:
                 'navigation_software':state.get('navigation',{}).get('software',{}),
                 'implementation_sha256':self.implementation_sha256,
                 'navigation_config_yaml':navigation_yaml,'navigation_config_sha256':navigation_hash,
+                'preparation':getattr(self.session,'preparation',{}),
+                'shadow_preflight':preflight,
                 'solver_runtime':{'drjit_merge_functions':True,'isolation':'process-per-scene'},
                 'metrics':{},'reason':None}
             pose=copy.deepcopy(state['robot_pose']); now=pose['sim_time_s']
@@ -164,9 +179,10 @@ class Experiments:
                 'bad_since':None,'good_since':None,'degraded_at':None,'recovered_at':None,
                 'last_arrival':now,'last_pose_event':-math.inf,'length':0.,'recovery_length':0.,
                 'route_index':0,'route_started':False,'rejected':set(),'replans':0,
-                'initial_history_count':len(history),'initial_decision_pending':bool(history),
+                'initial_history_count':len(history),'initial_decision_pending':bool(history),'loss_line_of_sight':None,
                 'navigation':copy.deepcopy(state.get('navigation',{})),'wall_started':time.monotonic(),
                 'last_wall_pose':time.monotonic()}
+            self.run['shadow_arrived_at']=None
             atomic_json(path/'manifest.json',meta); atomic_json(path/'scenario.json',state['scenario'])
             self.event('mode',mode='TELEOP',reason='Experiment started')
             self.event('pose',pose=pose)
@@ -179,7 +195,9 @@ class Experiments:
                     if row.get('robot_pose'): row['robot_pose']['sim_time_s']=row['sim_time_s']
                     self.event('observation',measurement=row); self.run['observations'].append(self.compact(row))
                 self.run['degraded_at']=now
+                self.run['loss_line_of_sight']=history[-1].get('line_of_sight')
                 self.transition('LINK_DEGRADED','Paired replay: identical pre-degradation observation history')
+            elif not config['route']:self.session.runtime('/nav/cancel',{})
             return copy.deepcopy(meta)
 
     def pose(self, pose, navigation):
@@ -206,13 +224,22 @@ class Experiments:
             r['time']=max(r['time'],measurement['sim_time_s'])
             row={**copy.deepcopy(measurement),'available_at_sim_time_s':r['time'],
                  'observation_index':len(r['observations'])}
+            window=r['config']['monitor_window_s']
+            # Seed history becomes *available* all at once in a paired run, but
+            # those samples were measured at different physical times. Smoothing
+            # by arrival would incorrectly average the entire outbound mission.
+            measured=row['sim_time_s']
+            recent=[o for o in r['observations'] if measured-window<=o['sim_time_s']<=measured] if window else []
+            powers=[10**(o['rssi_dbm']/10) if o['rssi_dbm'] is not None else 0 for o in [*recent,row]]
+            power=sum(powers)/len(powers)
+            row['monitor_rssi_dbm']=10*math.log10(power) if power>0 else None
             r['observations'].append(self.compact(row)); r['last_arrival']=r['time']
             self.event('observation',measurement=row)
 
     @staticmethod
     def compact(row):
         return {key:row[key] for key in ('position_m','rssi_dbm','robot_pose','sim_time_s',
-                'available_at_sim_time_s','observation_index')}
+                'available_at_sim_time_s','observation_index','line_of_sight','monitor_rssi_dbm') if key in row}
 
     def finish(self, status='CANCELLED', reason='Stopped by operator'):
         with self.lock:
@@ -224,6 +251,7 @@ class Experiments:
                 'path_length_m':r['length'],'recovery_path_length_m':r['recovery_length'],
                 'observation_count':len(r['observations']),'replans':r['replans'],
                 'operator_interventions':int(status=='CANCELLED' and reason!='Survey complete without link degradation'),
+                'loss_line_of_sight':r['loss_line_of_sight'],
                 'wall_duration_s':time.monotonic()-r['wall_started']}
             self.event('mode',mode=status,reason=reason,metrics=r['manifest']['metrics'])
             atomic_json(r['path']/'manifest.json',r['manifest']); self.generation+=1
@@ -329,11 +357,17 @@ class Experiments:
                 if generation!=self.generation or not self.active(): return
                 live=self.run
                 for row in r['observations'][r['consumed']:]:
-                    signal=row['rssi_dbm']; t=row['available_at_sim_time_s']
+                    signal=row.get('monitor_rssi_dbm',row['rssi_dbm']); t=row['available_at_sim_time_s']
                     if live['mode'] in ('TELEOP','SURVEY'):
                         bad=signal is None or signal<config['q_safe_dbm']-config['hysteresis_db']
                         live['bad_since']=(t if live['bad_since'] is None else live['bad_since']) if bad else None
                         if live['bad_since'] is not None and t-live['bad_since']>=config['degraded_s']:
+                            goal=config['shadow_goal']
+                            if goal and math.dist(live['pose']['position'][:2],goal)>config['shadow_radius_m']:
+                                continue  # Intentionally reach the independently validated shadow anchor first.
+                            if config['require_shadow_loss'] and row.get('line_of_sight') is not False:
+                                raise ValueError('Signal degraded before the obstacle: invalid shadowing trial')
+                            live['loss_line_of_sight']=row.get('line_of_sight')
                             live['degraded_at']=t; self.transition('LINK_DEGRADED','RSSI below configured threshold')
                     elif live['mode']=='RECOVERY':
                         good=signal is not None and signal>=config['q_safe_dbm']
@@ -364,6 +398,15 @@ class Experiments:
                     self.run['route_index']+=1; self.run['route_started']=False
                 index+=1
             if index>=len(config['route']):
+                if config['shadow_goal']:
+                    with self.lock:
+                        if self.run['shadow_arrived_at'] is None:
+                            self.run['shadow_arrived_at']=now
+                            self.session.runtime('/nav/hold',{})
+                            self.event('shadow_arrival',goal=config['shadow_goal'],reason='Waiting for measured link-loss confirmation')
+                        elif now-self.run['shadow_arrived_at']>8:
+                            raise ValueError('Shadow anchor reached but measured signal did not confirm link loss')
+                    return
                 # No loss in this control run; finish as a non-recovery control, not a recovery success.
                 self.session.runtime('/nav/hold',{});self.finish('CANCELLED','Survey complete without link degradation'); return
             if not r['route_started'] or index!=r['route_index']:
@@ -388,12 +431,17 @@ class Experiments:
             time.sleep(.2)
 
     def manifests(self):
-        return [json.loads(p.read_text()) for p in sorted(self.root.glob('*/manifest.json'),reverse=True)]
+        paths=[*self.root.glob('*/manifest.json'),*(self.root.parent/'workers').glob('*/experiments/*/manifest.json')]
+        return sorted([json.loads(p.read_text()) for p in paths],key=lambda m:m['started_at'],reverse=True)
 
     def directory(self, identity):
         if not identity or any(c not in '0123456789TZabcdefghijklmnopqrstuvwxyz-' for c in identity): raise ValueError('Invalid experiment id')
         path=self.root/identity
-        if not (path/'manifest.json').is_file(): raise FileNotFoundError('Experiment not found')
+        if not (path/'manifest.json').is_file():
+            library=Path(os.environ.get('RADIO_EXPERIMENT_LIBRARY',str(self.root.parent)))
+            candidates=[library/'experiments'/identity,*(library/'workers').glob('*/experiments/'+identity)]
+            path=next((p for p in candidates if (p/'manifest.json').is_file()),None)
+            if path is None:raise FileNotFoundError('Experiment not found')
         return path
 
     def replay(self, identity, after=-1):
@@ -407,8 +455,9 @@ class Experiments:
                 offset=offsets[index] if index<len(offsets) else end
         with (path/'timeline.jsonl').open('rb') as file:
             file.seek(offset); payload=file.read(end-offset)
+        if payload and not payload.endswith(b'\n'):payload=payload.rsplit(b'\n',1)[0]+b'\n'
         return {'manifest':manifest,'scenario':scene,
-                'timeline':[row for line in payload.decode().splitlines() if (row:=json.loads(line))['sequence']>after]}
+                'timeline':[row for line in payload.decode().splitlines() if line and (row:=json.loads(line))['sequence']>after]}
 
     def archive(self, identity):
         with self.lock:

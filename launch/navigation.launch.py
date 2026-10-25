@@ -1,6 +1,7 @@
 """Static-map Nav2 with upstream plugins and explicit Gazebo localization."""
 from pathlib import Path
 import copy
+import os
 import yaml
 from launch import LaunchDescription
 from launch_ros.actions import Node
@@ -8,6 +9,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     root = Path(__file__).resolve().parents[1]
+    runtime=Path(os.environ.get('RADIO_LAB_RUNTIME',root/'.runtime'))
     config = yaml.safe_load((root/'config/nav2.yaml').read_text())
     namespace = 'a200_0000'
     remaps = [('/tf','tf'),('/tf_static','tf_static'),('cmd_vel','nav_cmd_vel')]
@@ -15,12 +17,12 @@ def generate_launch_description():
     packages = {'map_server':'nav2_map_server','planner_server':'nav2_planner',
                 'controller_server':'nav2_controller','behavior_server':'nav2_behaviors',
                 'bt_navigator':'nav2_bt_navigator'}
-    file = root/'.runtime/navigation/costmaps.yaml'
+    file = runtime/'navigation/costmaps.yaml'
     file.write_text(yaml.safe_dump({f'/{namespace}/{key}/{key}': {'ros__parameters':
         dict(copy.deepcopy(config['costmap']), use_sim_time=True)} for key in ('global_costmap','local_costmap')}))
     for name, package in packages.items():
         params = dict(config.get(name, {}))
-        if name == 'map_server': params['yaml_filename'] = str(root/'.runtime/navigation/map.yaml')
+        if name == 'map_server': params['yaml_filename'] = str(runtime/'navigation/map.yaml')
         parameters = [config['common'], params]
         if name in ('planner_server','controller_server'):
             parameters.append(str(file))

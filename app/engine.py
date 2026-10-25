@@ -58,10 +58,10 @@ class RadioWorker:
         if kind!='ok':raise RuntimeError('Sionna worker: '+str(value))
         return value
 
-    def sample(self,position,orientation=None):
+    def sample(self,position,orientation=None,include_paths=True):
         with self.lock:
             if self.closed or not self.process.is_alive():raise RuntimeError('Sionna worker is not running; reapply scene')
-            try:self.connection.send(('sample',(position,orientation)))
+            try:self.connection.send(('sample',(position,orientation,include_paths)))
             except (BrokenPipeError,OSError) as error:raise RuntimeError('Sionna worker connection closed') from error
             return self.receive()
 

@@ -7,9 +7,11 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def implementation_hash():
     digest=hashlib.sha256()
-    files=['app/builder.py','app/datasets.py','app/experiments.py','app/radio_maps.py',
+    files=['app/builder.py','app/datasets.py','app/experiments.py','app/radio_maps.py','app/campaigns.py','app/missions.py','app/runtime_pool.py',
            'app/radio.py','app/engine.py','app/scenario.py','app/navigation.py','app/husky_runtime.py',
-           'app/provenance.py','launch/husky.launch.py','launch/navigation.launch.py','config/nav2.yaml']
+           'app/provenance.py','launch/husky.launch.py','launch/navigation.launch.py','config/nav2.yaml',
+           'scripts/run_experiments.py','scripts/analyze_campaign.py','scripts/validate_missions.py',
+           'scripts/prepare_robot.py','scripts/prepare_husky_assets.py']
     for name in files:
         digest.update(name.encode()+b'\0'+(ROOT/name).read_bytes()+b'\0')
     return digest.hexdigest()

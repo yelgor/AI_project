@@ -40,6 +40,18 @@ class MapTests(unittest.TestCase):
             self.assertGreater(std[1],std[0]*3)
         with self.assertRaises(ValueError): configuration({'method':'IDW','beta':1})
 
+    def test_vectorized_spatial_thinning_preserves_capped_training_set(self):
+        rng=np.random.default_rng(42)
+        observations=[{'position_m':p.tolist(),'rssi_dbm':-40.} for p in rng.normal(size=(250,3))]
+        observations+=observations[-20:]
+        old=[]
+        for i in reversed(range(len(observations))):
+            if any(np.linalg.norm(np.asarray(observations[i]['position_m'])-observations[j]['position_m'])<.15 for j in old):continue
+            old.append(i)
+            if len(old)>=150:break
+        model=RadioMap('IDW',[0,0,1]).fit(observations)
+        self.assertEqual(model.training_indices,sorted(old))
+
     def test_route_distance_and_unreachable_candidates(self):
         candidates=[{'base':[1,0,0]},{'base':[0,2,0]},{'base':[0,3,0]}]
         def plan(point):
@@ -152,6 +164,17 @@ class ExperimentTests(unittest.TestCase):
         self.session.scene['tx']['position'][0]+=1
         with self.assertRaisesRegex(ValueError,'different RF field'):
             self.exp.start({'method':'B1','history_from':source['experiment_id']})
+
+    def test_paired_monitor_uses_physical_time_instead_of_bulk_seed_arrival(self):
+        source=self.exp.start({'method':'B1','degraded_s':0,'monitor_window_s':2})
+        self.observation(0,0,-10)
+        self.observation(4,1,-60)
+        self.exp.finish('CANCELLED','Source collected')
+        self.session.current={'position':[1,0,.13],'quaternion_xyzw':[0,0,0,1],'sim_time_s':10.}
+        self.exp.start({'method':'B1','history_from':source['experiment_id'],'monitor_window_s':2})
+        self.observation(10.5,1,-60)
+        self.assertLess(self.exp.run['observations'][-1]['monitor_rssi_dbm'],-59)
+        self.assertNotEqual(self.exp.state()['mode'],'RECOVERED_WAIT')
 
 
 if __name__=='__main__':unittest.main()

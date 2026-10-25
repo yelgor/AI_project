@@ -18,9 +18,10 @@ class API:
         request=urllib.request.Request(self.url+route,json.dumps(data).encode() if data is not None else None,{'Content-Type':'application/json'})
         try: return json.load(self.http.open(request,timeout=120))
         except urllib.error.HTTPError as e: raise RuntimeError(json.load(e).get('error',str(e))) from e
-    def wait(self,predicate,timeout=90):
+    def wait(self,predicate,timeout=90,cancel=None):
         deadline=time.monotonic()+timeout
         while time.monotonic()<deadline:
+            if cancel is not None and cancel.is_set():raise RuntimeError('Campaign cancelled')
             try:
                 state=self.call('/api/state')
                 if predicate(state): return state
@@ -29,7 +30,8 @@ class API:
         raise TimeoutError('Service readiness timeout; inspect .runtime/husky.log')
 
 
-def run_trial(api,trial,method,beta,repeat,output):
+def run_trial(api,trial,method,beta,repeat,output,reuse=True,keep_running=False,cancel=None):
+    setup_started=time.monotonic()
     state=api.call('/api/state')
     if state['experiment'] and state['experiment']['status']=='running': raise RuntimeError('Another experiment is active')
     if state['recording'] or (state['job'] and state['job']['status']=='running'): raise RuntimeError('Another dataset is active')
@@ -39,8 +41,21 @@ def run_trial(api,trial,method,beta,repeat,output):
     if 'tx' in trial: scene['tx']['position']=trial['tx']
     if 'spawn' in trial: scene['robot']['position']=trial['spawn']
     if 'yaw_rad' in trial: scene['robot']['yaw_rad']=trial['yaw_rad']
-    api.call('/api/scene',scene); api.call('/api/robot/start',{})
-    state=api.wait(lambda s:s['robot_status']=='running' and s['navigation'].get('ready') and s['measurement'] is not None)
+    setup_failures=[]
+    for preparation_attempt in range(2):
+        prepared=api.call('/api/session/prepare',{'scene':scene,'reuse':reuse if not preparation_attempt else False})
+        try:
+            state=api.wait(lambda s:s['robot_status']=='running' and s['navigation'].get('ready') and s['measurement'] is not None,
+                           timeout=40,cancel=cancel)
+            break
+        except TimeoutError:
+            snapshot=api.call('/api/state')
+            setup_failures.append({'robot_status':snapshot['robot_status'],'navigation':snapshot['navigation'],
+                                   'error':snapshot['error'],'has_pose':snapshot['robot_pose'] is not None})
+            if preparation_attempt:raise RuntimeError('Gazebo/Nav2 readiness failed twice: '+json.dumps(setup_failures))
+            print('Readiness failed; one cold preparation retry (before experiment start):',setup_failures[-1],flush=True)
+            api.call('/api/robot/stop',{})
+    readiness_wall_s=time.monotonic()-setup_started
     config={**trial.get('config',{}),'method':method,'beta':beta,
             'route':trial['route'],'label':trial['name'],'split':trial.get('split','pilot'),
             'pair_id':trial['name']+'-'+str(repeat)}
@@ -48,16 +63,18 @@ def run_trial(api,trial,method,beta,repeat,output):
     print(f'{trial["name"]}: {method} beta={beta} repeat={repeat} id={identity}',flush=True)
     result=manifest
     try:
-        state=api.wait(lambda s:s['experiment']['status']!='running',timeout=config.get('timeout_s',180)*8+45)
+        state=api.wait(lambda s:s['experiment']['status']!='running',timeout=config.get('timeout_s',180)*8+45,cancel=cancel)
         run=api.call('/api/experiments/'+identity)
         package=api.http.open(api.url+'/api/experiments/'+identity+'.zip',timeout=60).read()
         (output/(identity+'.zip')).write_bytes(package)
         result=run['manifest']
+        result['execution_profile']={**prepared['preparation'],'ready_wall_s':readiness_wall_s,'setup_retries':setup_failures}
     except Exception as error:
         result={**manifest,'status':'RUN_FAILED','reason':str(error),'metrics':{}}
     finally:
-        try:api.call('/api/robot/stop',{})
-        except Exception as error:result['cleanup_warning']=str(error)
+        if not keep_running:
+            try:api.call('/api/robot/stop',{})
+            except Exception as error:result['cleanup_warning']=str(error)
     return result
 
 
@@ -74,7 +91,9 @@ def report(manifests,output):
     for item in manifests:
         rows.append({'experiment_id':item.get('experiment_id'),'label':item['config'].get('label'),
             'pair_id':item['config'].get('pair_id'),'method':item['config']['method'],'beta':item['config']['beta'],
-            'status':item['status'],'reason':item.get('reason'),**item.get('metrics',{})})
+            'status':item['status'],'reason':item.get('reason'),'task_index':item.get('task_index'),
+            'worker_index':item.get('worker_index'),'setup_kind':item.get('execution_profile',{}).get('kind'),
+            'ready_wall_s':item.get('execution_profile',{}).get('ready_wall_s'),**item.get('metrics',{})})
     columns=list(dict.fromkeys(k for row in rows for k in row))
     with open(output/'trials.csv','w',newline='') as file:
         writer=csv.DictWriter(file,fieldnames=columns,lineterminator="\n"); writer.writeheader(); writer.writerows(rows)
@@ -87,8 +106,9 @@ def report(manifests,output):
         if row.get('success'):
             group['successes']+=1; group['successful_recovery_times_s'].append(row['recovery_time_s'])
     for group in groups.values():
-        group['success_fraction']=group['successes']/group['recovery_attempts'] if group['recovery_attempts'] else None
-        group['wilson_95']=wilson(group['successes'],group['recovery_attempts'])
+        group['success_fraction']=group['successes']/group['total_runs']
+        group['wilson_95']=wilson(group['successes'],group['total_runs'])
+        group['success_fraction_after_loss']=group['successes']/group['recovery_attempts'] if group['recovery_attempts'] else None
     paired={}; by_pair={}
     for row in rows:
         by_pair.setdefault(row['pair_id'],{})[f'{row["method"]}/beta={row["beta"]}']=row
@@ -108,25 +128,53 @@ def report(manifests,output):
     (output/'report.json').write_text(json.dumps({'format_version':1,'groups':groups,'trials':rows,
         'paired_success_only_differences':paired,
         'notes':['RSSI recovery proxy, not packet reception','Ground-truth localization; static obstacles',
-                 'Closed-loop wall-clock sampling may differ before degradation; use offline replay for identical observations',
-                 'Pilot sample sizes do not establish statistical superiority']},indent=2)+'\n')
+                 'Full missions may have different observations; paired protocol fixes the initial pre-loss history',
+                 'Wilson intervals use all attempted runs, including setup failures',
+                 'Repeated episodes share fields and histories; intervals are descriptive, not proof of independent generalization',
+                 'Paired time/path comparisons condition on both runs succeeding; compare success fractions too']},indent=2)+'\n')
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url',default='http://127.0.0.1:8010')
-    parser.add_argument('--suite',default='config/experiments/pilot.json')
+    parser.add_argument('--suite',default='config/experiments/missions.json')
     parser.add_argument('--world',help='Filter trial name or world')
     parser.add_argument('--methods',nargs='+',choices=['B0','B1','IDW','GPR-zero','GPR-pathloss'],default=['B0','B1','IDW','GPR-zero','GPR-pathloss'])
     parser.add_argument('--betas',nargs='+',type=float,default=[0.,1.])
     parser.add_argument('--repeats',type=int,default=1)
     parser.add_argument('--output',default='.runtime/reports/pilot')
     parser.add_argument('--history-from',help='Finished experiment ID: reset to its loss checkpoint and reuse exactly its causal history')
+    parser.add_argument('--runs',type=int,help='Start a physical parallel campaign with this many episodes')
+    parser.add_argument('--workers',type=int,default=2)
+    parser.add_argument('--cold',action='store_true',help='Disable warm simulator reuse')
+    parser.add_argument('--protocol',choices=['full','paired'],default='full')
+    parser.add_argument('--resume',help='Resume unfinished task indices of this campaign; its saved configuration is used')
+    parser.add_argument('--history-source-campaign',help='Reuse completed pre-loss source histories from this campaign (paired only)')
     args=parser.parse_args(); api=API(args.url); output=Path(args.output); output.mkdir(parents=True,exist_ok=True)
     suite=json.loads(Path(args.suite).read_text()); manifests=[]
     if args.repeats<1: parser.error('--repeats must be positive')
     if any(not math.isfinite(beta) or not 0<=beta<=5 for beta in args.betas): parser.error('--betas must be finite values between 0 and 5')
     api.wait(lambda s:True)
+    if args.runs is not None or args.resume:
+        options={'resume':args.resume} if args.resume else {'runs':args.runs,'workers':args.workers,'protocol':args.protocol,'methods':args.methods,'betas':args.betas,
+            'trials':[t for t in suite['trials'] if not args.world or args.world in (t['world'],t['name'])],
+            'history_source_campaign':args.history_source_campaign}
+        job=api.call('/api/campaign/start',options)
+        print('Physical campaign:',job['campaign_id'],flush=True);last=-1
+        try:
+            while True:
+                state=api.call('/api/campaign/state')
+                if state['completed']!=last:
+                    print(f'{state["completed"]}/{state["total"]}: {state["successes"]} recovered, {state["failures"]} failed',flush=True);last=state['completed']
+                if state['status'] not in ('starting','running','finishing'):break
+                time.sleep(1)
+        except KeyboardInterrupt:
+            api.call('/api/campaign/stop',{})
+            print('Stopping workers; saved progress can be resumed with --resume '+job['campaign_id'],flush=True)
+            return
+        package=api.http.open(api.url+'/api/campaigns/'+job['campaign_id']+'.zip',timeout=120).read()
+        path=output/(job['campaign_id']+'.zip');path.write_bytes(package);print(state['status'],path)
+        return
     if args.history_from:
         source=api.call('/api/experiments/'+args.history_from); pose=None
         for event in source['timeline']:
@@ -144,7 +192,7 @@ def main():
             for repeat in range(args.repeats):
                 for method in args.methods:
                     for beta in (args.betas if method.startswith('GPR') else [0.]):
-                        try: result=run_trial(api,trial,method,beta,repeat,output)
+                        try: result=run_trial(api,trial,method,beta,repeat,output,reuse=not args.cold,keep_running=True)
                         except Exception as e:
                             result={'status':'SETUP_FAILED','reason':str(e),'config':{'method':method,'beta':beta,'label':trial['name'],'pair_id':trial['name']+'-'+str(repeat)},'metrics':{}}
                             print('FAILED:',e,flush=True)
@@ -154,6 +202,7 @@ def main():
                         print(result['status'],result.get('metrics',{}),flush=True)
     except KeyboardInterrupt:
         api.call('/api/robot/stop',{}); print('Cancelled; finished attempts are saved',flush=True)
+    finally:api.call('/api/robot/stop',{})
     if not manifests: raise SystemExit('No matching trials')
     print('Report:',output/'report.json')
     if all(m['status']=='SETUP_FAILED' for m in manifests): raise SystemExit('No trial started; inspect setup failures in the report')

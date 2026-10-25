@@ -22,12 +22,14 @@ class RadioMap:
 
     def fit(self, observations):
         # Keep up to 150 recent spatially distinct points; stationary repeats do not dominate.
-        chosen=[]
+        chosen=[];positions=np.asarray([row['position_m'] for row in observations],dtype=float).reshape(-1,3)
         for i in reversed(range(len(observations))):
             row=observations[i]; value=row.get('rssi_dbm')
             if value is None or not math.isfinite(value): continue
-            point=np.asarray(row['position_m'],dtype=float)
-            if any(np.linalg.norm(point-np.asarray(observations[j]['position_m']))<.15 for j in chosen): continue
+            point=positions[i]
+            if chosen:
+                offsets=positions[chosen]-point
+                if np.any(np.einsum('ij,ij->i',offsets,offsets)<.15**2):continue
             chosen.append(i)
             if len(chosen)>=150: break
         self.training_indices=sorted(chosen)

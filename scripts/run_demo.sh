@@ -14,4 +14,4 @@ else
 fi
 docker compose build husky
 docker compose up --no-build --force-recreate -d
-printf '%s\n' 'Services started. Run python scripts/check_api.py and the Husky check command in README; inspect docker compose logs -f.'
+printf '%s\n' 'Services started. Open http://127.0.0.1:8010/experiments.html and click ▶ Запустити місію. Logs: docker compose logs -f radio husky.'

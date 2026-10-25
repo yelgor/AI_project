@@ -57,7 +57,16 @@ for link in robot.findall('link'):
         shutil.copyfile(path,output/identity)
         local,Q=transform(visual.find('origin')); offset=rotate(q,local)
         rgba=visual.find('material/color')
+        if rgba is None:
+            material=visual.find('material')
+            if material is not None:
+                definition=next((m for m in robot.findall('material') if m.get('name')==material.get('name')),None)
+                if definition is not None:rgba=definition.find('color')
+        joint=next((j for j in robot.findall('joint') if j.find('child').get('link')==link.get('name')),None)
+        axis=joint.find('axis') if joint is not None else None
         items.append({'file':identity,'source':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+                      'link':link.get('name'),'joint_name':joint.get('name') if joint is not None else None,
+                      'joint_axis':list(map(float,axis.get('xyz','0 0 1').split())) if axis is not None else [0,0,1],
                       'position':[p[i]+offset[i] for i in range(3)],'quaternion_xyzw':quat_multiply(q,Q),
                       'scale':list(map(float,mesh.get('scale','1 1 1').split())),
                       'color':list(map(float,rgba.get('rgba').split()))[:3] if rgba is not None else [.7,.55,.12]})

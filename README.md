@@ -15,23 +15,29 @@ Docker Engine + Compose v2. Потрібен вільний диск для кі
 bash scripts/run_demo.sh
 ```
 
-Браузерна адреса на локальній машині: `http://127.0.0.1:8010`.
-Перший запуск будує образи; на підготовленій машині:
+Для демонстрації відкрийте **http://127.0.0.1:8010/experiments.html** →
+**Місія → Заїзд за будівлю → ▶ Запустити місію**.
+Одна кнопка готує Gazebo, Husky, Nav2, радіоканал і запис.
+Tx стоїть на базі; Rx їде на Husky до перевіреної радіотіні,
+після чого робот автономно повертається до зв’язку.
+
+**[Покрокова демонстрація й керування](docs/DEMONSTRATION.md)** ·
+**[Серії 100+, математичні оцінки та ітерації](docs/QUALITY.md)**.
+
+Для власної геометрії: **http://127.0.0.1:8010/** — конструктор,
+збереження/імпорт JSON, Tx/Rx у 3D, ручне керування, recording/grid.
+Для вікна самого Gazebo на Linux desktop після старту місії:
+`bash scripts/gazebo_gui.sh`.
+
+Повторний запуск без оновлення коду, якщо образи вже побудовані:
 
 ```bash
 docker compose up -d --no-build
 ```
 
-Під час старту готуються офіційні visual assets Husky. Після відкриття UI:
-**Кімната → Tx/Rx → Застосувати сцену → Виміряти**.
-Для руху: **Rx: Антена на Husky → Apply → Запустити Husky → WASD**.
-Для даних: **Почати/завершити запис** або **Зібрати сітку → ZIP**.
-
-Для автономної демонстрації: **Експерименти / Replay → Підготувати демо
-відновлення → дочекатися Nav2: ready → Почати експеримент**.
-Адреса: `http://127.0.0.1:8010/experiments.html`.
-Після оновлення зі старої версії спершу виконати `bash scripts/run_demo.sh`:
-потрібні нові Docker images з Nav2 та scikit-learn.
+Після оновлення коду виконайте `bash scripts/run_demo.sh`:
+він збирає frontend/images і перезапускає сервіси. Docker tags локальні;
+вхід у Docker Hub для `ai-project-radio` / `ai-project-husky` не потрібний.
 
 ![3D-конструктор](docs/constructor.png)
 
@@ -49,8 +55,12 @@ docker compose up -d --no-build
 - Режими деградації/відновлення RSSI, B0/B1/IDW/GPR-zero/GPR-pathloss, μ−βσ.
 - Live/replay: карти, невизначеність, часовий RSSI, траєкторія/ціль/маршрут,
   збережені рішення й окремий ZIP експерименту.
-- Runner 10 пілотних умов, парний запуск зі спільної історії до втрати,
-  reports CSV/JSON, spatial holdout MAE/RMSE/NLPD/coverage.
+- П’ять сімейств світів × два Tx, перевірені цілі радіотіні й фізичні маршрути.
+- Серії 100+ повних місій або парних повернень, 1–4 ізольовані воркери,
+  warm reset Gazebo/RF, прогрес/продовження та ZIP усіх результатів.
+- Reports CSV/JSON: усі невдачі, Wilson95, парні різниці часу/шляху,
+  близькість до відомих точок, causal MAE/RMSE за просторовою відстанню,
+  spatial holdout NLPD/coverage. Нові та повторені seed-покази рахуються окремо.
 
 Радіомодель: coherent narrowband multipath із reflection/refraction/diffraction.
 SNR — synthetic thermal noise model. Не моделюються modem PHY/packet loss,
@@ -68,7 +78,9 @@ Recovery використовує RSSI proxy, статичні перешкод�
 - [Передача проєкту](docs/HANDOFF.md)
 - [Наступна задача: зібрати датасет](docs/DATA_COLLECTION_TASK.md)
 - [План автономних експериментів, карт і демонстрації](docs/EXPERIMENT_PLAN.md)
-- [Запуск автономних експериментів і демонстрації](docs/EXPERIMENT_GUIDE.md)
+- [Демонстрація та керування](docs/DEMONSTRATION.md)
+- [Якість, серії експериментів та методика оцінювання](docs/QUALITY.md)
+- [Додаткові параметри автономних експериментів](docs/EXPERIMENT_GUIDE.md)
 - [Формат експерименту, часові події та новий API](docs/EXPERIMENT_FORMAT.md)
 - [Готові результати, ZIP і графік для демонстрації](examples/experiments/README.md)
 - [Перевірений стан і обмеження середовища](docs/simulation-stack.md)
@@ -85,6 +97,7 @@ Recovery використовує RSSI proxy, статичні перешкод�
 python scripts/check_api.py
 python scripts/check_constructor_integration.py
 python3 scripts/check_navigation_experiments.py
+.venv/bin/python scripts/validate_missions.py
 npm --prefix frontend run test:e2e
 ```
 
@@ -92,8 +105,9 @@ npm --prefix frontend run test:e2e
 записує вимірювання та перевіряє world pose/mount/CSV/JSONL/ZIP.
 Browser test редагує Rx.Z, збирає сітку на двох висотах і завантажує ZIP.
 Navigation check реально об'їжджає перешкоду, відхиляє solid goal, виконує
-B1 recovery та перевіряє causal timeline/ZIP. Другий browser test перевіряє
-цей завершений експеримент у replay; спочатку виконати navigation check.
+B1 recovery та перевіряє causal timeline/ZIP. Browser tests перевіряють
+3D replay з реальною моделлю Husky, mounted Rx та повний запуск місії однією кнопкою.
+Для replay потрібен завершений фізичний проїзд; спочатку виконати navigation check.
 Для нього потрібен Chromium; default `/usr/bin/chromium`, можна задати
 `PLAYWRIGHT_CHROMIUM_PATH`. Tests змінюють demo active scene.
 
@@ -123,6 +137,6 @@ tail -n 100 .runtime/husky.log
 docker compose down
 ```
 
-Stop у UI завершує Gazebo й активний запис; container runtime лишається
-готовим до нового Run. Закриття браузера не завершує весь стек.
+Stop конструктора завершує Gazebo й активний запис. Stop місії зупиняє
+експеримент і рух, зберігаючи прогрітий симулятор. Закриття браузера не завершує весь стек.
 Хмарна публікація не зберігає живі процеси: перевірте images і перезапустіть.

@@ -12,14 +12,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     root=Path(__file__).resolve().parents[1]
-    scene=json.loads((root/'.runtime/active_scene.json').read_text())['scenario']
+    runtime=Path(os.environ.get('RADIO_LAB_RUNTIME',root/'.runtime'))
+    scene=json.loads((runtime/'active_scene.json').read_text())['scenario']
     robot=scene['robot']
     clearpath=get_package_share_directory('clearpath_gz')
     gz=get_package_share_directory('ros_gz_sim')
     resources=':'.join([os.path.join(p,'share') for p in os.environ['AMENT_PREFIX_PATH'].split(':')])
     return LaunchDescription([
-        DeclareLaunchArgument('world_file',default_value=str(root/'.runtime/world.sdf')),
-        DeclareLaunchArgument('setup_path',default_value='/tmp/clearpath'),
+        DeclareLaunchArgument('world_file',default_value=str(runtime/'world.sdf')),
+        DeclareLaunchArgument('setup_path',default_value=os.environ.get('CLEARPATH_SETUP_PATH','/tmp/clearpath')),
         DeclareLaunchArgument('gz_args',default_value='-r -s'),
         SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH',resources),
         IncludeLaunchDescription(PythonLaunchDescriptionSource(os.path.join(gz,'launch','gz_sim.launch.py')),
