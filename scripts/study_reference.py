@@ -6,6 +6,8 @@ not an additional physical recovery campaign or a learned Nav2 controller.
 import argparse
 import csv
 import json
+import hashlib
+import importlib.metadata
 import math
 import os
 from pathlib import Path
@@ -102,6 +104,9 @@ def main():
         print(method,recommended[method],flush=True)
     output=args.campaign/'reference-study';output.mkdir(exist_ok=True)
     summary={'minimum_spatial_distance_m':args.min_distance,'recommended_profiles':recommended,'scores':rows,
+        'source_campaign':json.loads((args.campaign/'manifest.json').read_text())['campaign_id'],
+        'software':{n:importlib.metadata.version(n) for n in ('numpy','scikit-learn')},
+        'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         'test_macro_mae_db':{m:float(np.mean([r['mae_db'] for r in rows if r['method']==m and r['stage']=='frozen test'])) for m in recommended},
         'notes':['Controller never reads reference grids; this study runs offline after collection.',
             '150-point cap applies to fitting; spatial holdout excludes points near every known observation.',

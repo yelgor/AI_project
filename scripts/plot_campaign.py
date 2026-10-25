@@ -17,7 +17,7 @@ def main():
     fig,axes=plt.subplots(2,2,figsize=(14,10));x=np.arange(len(keys))
     success=np.asarray([groups[k]['success_fraction_all_attempts'] for k in keys])
     low=np.asarray([groups[k]['wilson_95_descriptive'][0] for k in keys]);high=np.asarray([groups[k]['wilson_95_descriptive'][1] for k in keys])
-    ax=axes[0,0];ax.bar(x,success,color='#337861');ax.errorbar(x,success,yerr=[success-low,high-success],fmt='none',ecolor='#333333',capsize=4)
+    ax=axes[0,0];ax.bar(x,success,color='#337861');ax.errorbar(x,success,yerr=[np.maximum(0,success-low),np.maximum(0,high-success)],fmt='none',ecolor='#333333',capsize=4)
     for i,k in enumerate(keys):ax.text(i,.03,f'{groups[k]["successes"]}/{groups[k]["attempts"]}',ha='center',color='white',fontsize=9)
     ax.set_ylim(0,1.08);ax.set_title('Recovery success / all attempts (descriptive Wilson95)');ax.set_ylabel('Fraction')
     ax.set_xticks(x,keys,rotation=35,ha='right',fontsize=8)

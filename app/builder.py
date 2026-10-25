@@ -20,7 +20,7 @@ try:
     from .engine import RadioWorker as Radio
     from .datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
     from .navigation import export_map,free
-    from .experiments import Experiments
+    from .experiments import Experiments,configuration
     from .missions import mission,catalog,line_of_sight
     from .campaigns import Campaigns
 except ImportError:
@@ -29,7 +29,7 @@ except ImportError:
     from engine import RadioWorker as Radio
     from datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
     from navigation import export_map,free
-    from experiments import Experiments
+    from experiments import Experiments,configuration
     from missions import mission,catalog,line_of_sight
     from campaigns import Campaigns
 
@@ -51,6 +51,7 @@ class Session:
         self.mission={'status':'idle','phase':'idle'};self.mission_lock=threading.Lock();self.mission_cancel=threading.Event()
         self.preparation={}
         self.shadow_checks={}
+        self.last_shadow_preflight=None
         for file in self.data.glob('*/manifest.json'):
             manifest=json.loads(file.read_text())
             if manifest.get('status')=='collecting':
@@ -155,15 +156,23 @@ class Session:
 
     def launch_mission(self,data):
         spec=mission(data.get('mission','shadow'),int(data.get('layout',0)))
+        config=configuration({**spec['config'],**data.get('config',{})})
+        shadow_config={**config,'shadow_goal':config['shadow_goal'] or spec['config']['shadow_goal']}
+        manual=bool(data.get('manual'))
+        if manual:
+            config['route']=[]
+            if 'shadow_goal' not in data.get('config',{}):config['shadow_goal']=None
+            config['require_shadow_loss']=data.get('config',{}).get('require_shadow_loss',False)
         if not self.mission_lock.acquire(blocking=False):raise ValueError('A mission is already being prepared')
         if self.experiments.active():
             self.mission_lock.release();raise ValueError('Stop the current mission first')
-        config={**spec['config'],**data.get('config',{})}
-        if data.get('manual'):config['route']=[]
-        self.mission_cancel.clear();self.mission={'status':'starting','phase':'preparing','mission':spec['id']}
+        self.mission_cancel.clear();self.mission={'status':'starting','phase':'preparing','mission':spec['id'],'manual':manual}
         def work():
             try:
+                if self.mission_cancel.is_set():raise ValueError('Mission cancelled')
                 self.prepare({'scene':spec['scene'],'reuse':True})
+                self.mission['phase']='validating_shadow'
+                self.check_shadow(shadow_config)
                 self.mission['phase']='waiting_for_nav2_and_radio'
                 deadline=time.monotonic()+90
                 while time.monotonic()<deadline:
@@ -190,7 +199,8 @@ class Session:
         with self.lock:scene=self.scene;model=self.model
         goal=config['shadow_goal'];radius=config['shadow_radius_m']
         key=json.dumps([field_hash(scene),goal,radius,config['q_safe_dbm']])
-        if key in self.shadow_checks:return self.shadow_checks[key]
+        if key in self.shadow_checks:
+            self.last_shadow_preflight=self.shadow_checks[key];return self.last_shadow_preflight
         if not free(scene,*goal,.6):raise ValueError('Shadow anchor has insufficient Husky clearance')
         # A200's settled base height is ~0.13228m on this flat-world model.
         height=.13228+scene['rx']['mount_position'][2]
@@ -204,9 +214,10 @@ class Session:
         margin=config['q_safe_dbm']-worst
         if margin<3:raise ValueError(f'Shadow anchor is not sufficiently weak: worst RSSI {worst:.1f} dBm; require 3 dB margin')
         report={'goal':goal,'radius_m':radius,'positions_m':points,'rssi_dbm':values,
+                'radio_field_sha256':field_hash(scene),
                 'worst_rssi_dbm':worst,'margin_db':margin,'controller_training':False,
                 'criterion':'geometrically occluded; every probe at least 3 dB below q_safe'}
-        self.shadow_checks[key]=report;return report
+        self.shadow_checks[key]=report;self.last_shadow_preflight=report;return report
 
     def stop_mission(self):
         self.mission_cancel.set()

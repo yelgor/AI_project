@@ -4,6 +4,7 @@ import math
 import tempfile
 import threading
 import unittest
+import types
 from unittest.mock import patch
 from app.campaigns import schedule
 from app.missions import mission,line_of_sight
@@ -14,6 +15,23 @@ from test_experiments import FakeSession
 
 
 class MissionTests(unittest.TestCase):
+    def test_manual_mode_validates_world_without_requiring_precise_anchor_arrival(self):
+        for manual in (False,True):
+            captured=[];probes=[]
+            def start(config):captured.append(config);return {'experiment_id':'test'}
+            node=types.SimpleNamespace(mission_lock=threading.Lock(),mission_cancel=threading.Event(),
+                operation=threading.Lock(),experiments=types.SimpleNamespace(active=lambda:False,start=start),
+                prepare=lambda data:None,check_shadow=probes.append,
+                state=lambda:{'robot_status':'running','navigation':{'ready':True},'measurement':{'rssi_dbm':-20}})
+            with patch('app.builder.threading.Thread',side_effect=lambda target,**kw:types.SimpleNamespace(start=target)):
+                Session.launch_mission(node,{'mission':'shadow','manual':manual})
+            self.assertTrue(probes[0]['shadow_goal'])
+            if manual:
+                self.assertEqual(captured[0]['route'],[])
+                self.assertIsNone(captured[0]['shadow_goal'])
+                self.assertFalse(captured[0]['require_shadow_loss'])
+            else:self.assertTrue(captured[0]['route'])
+
     def test_physical_routes_and_obstacle_shadow_all_families(self):
         for name in ('shadow','office','warehouse','district','courtyard'):
             for layout in (0,1):

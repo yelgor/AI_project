@@ -129,6 +129,9 @@ class Experiments:
         if state['navigation'].get('implementation_sha256') not in (None,self.implementation_sha256):
             raise ValueError('Application sources changed; restart both services before collecting data')
         preflight=self.session.check_shadow(config) if config['shadow_goal'] is not None else None
+        if preflight is None:
+            previous=getattr(self.session,'last_shadow_preflight',None)
+            if previous and previous.get('radio_field_sha256')==field_hash(state['scenario']):preflight=previous
         history=[]; checkpoint=None
         if config['history_from']:
             previous=self.replay(config['history_from'])
