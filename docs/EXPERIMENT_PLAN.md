@@ -1,5 +1,10 @@
 # План експериментів і демонстрації відновлення зв’язку
 
+> Історичне завдання/план. Поточна реалізація, запуск і готові дані:
+> [DEMONSTRATION.md](DEMONSTRATION.md), [QUALITY.md](QUALITY.md),
+> [перевірений корпус](../examples/experiments/shadow-benchmark/README.md).
+
+
 Це початковий план етапу. Його основні компоненти вже реалізовані:
 Nav2 зі статичною occupancy та ground-truth localization, RSSI recovery,
 B0/B1/IDW/GPR, live/replay, paired runner й spatial holdout evaluation.

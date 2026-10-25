@@ -31,6 +31,10 @@ Scene v2 — єдине джерело геометрії й параметрі�
 | `app/builder.py` | HTTP/static frontend, active scene/revision, lifecycle, sampler, grid jobs |
 | `app/datasets.py` | Dataset writer, snapshot/hash, CSV/JSONL, metadata, ZIP |
 | `app/husky_runtime.py` | ROS node, owned process groups, deadman, world-pose telemetry |
+| `app/missions.py` | 5 сімейств × 2 Tx, deliberate shadow goals та LOS-діагностика |
+| `app/campaigns.py` | Bounded worker pool, full/paired, source reuse, resume, всі результати/ZIP |
+| `app/runtime_pool.py` | Owned Gazebo/ROS процеси, окремі domain/partition/runtime directories |
+| `frontend/src/mission-view.js` | Original COLLADA materials, actual pose/joints, Rx, causal layers/reference overlay |
 | `launch/husky.launch.py` | ros_gz_sim, clock/world-pose bridges, official robot spawn |
 | `config/pose_publisher.urdf.xacro` | Supported Clearpath extras hook for upstream Gazebo PosePublisher |
 | `scripts/prepare_robot.py` | Local generated Clearpath config; dynamic absolute extras path |

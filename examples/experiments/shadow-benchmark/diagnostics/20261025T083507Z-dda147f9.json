@@ -1,0 +1,757 @@
+{
+  "manifest.json": {
+    "campaign_id": "20261025T083507Z-dda147f9",
+    "status": "cancelled",
+    "total": 140,
+    "completed": 10,
+    "successes": 0,
+    "failures": 10,
+    "workers": 3,
+    "config": {
+      "runs": 140,
+      "workers": 3,
+      "methods": [
+        "B0",
+        "B1",
+        "IDW",
+        "GPR-zero",
+        "GPR-pathloss"
+      ],
+      "betas": [
+        0,
+        1
+      ],
+      "protocol": "paired"
+    },
+    "active_workers": {},
+    "recent": [
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "B0",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0"
+        },
+        "task_index": 56,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "GPR-pathloss",
+          "beta": 1.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0"
+        },
+        "task_index": 62,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "GPR-zero",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0"
+        },
+        "task_index": 59,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "GPR-zero",
+          "beta": 1.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0"
+        },
+        "task_index": 60,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "IDW",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0"
+        },
+        "task_index": 58,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "B0",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1"
+        },
+        "task_index": 126,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "B1",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1"
+        },
+        "task_index": 127,
+        "worker_index": 0
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T083829Z-87814861",
+        "status": "RUN_FAILED",
+        "config": {
+          "method": "GPR-pathloss",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0",
+          "history_from": "20261025T083523Z-b9572d16",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "0913ab32c128",
+        "scene_sha256": "757bdc9f5b5f56800223750b09d0f6fa9a9935d814ea4c771122ad932c254d39",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:38:29.422222+00:00",
+        "finished_at": null,
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "93e837c2b4a4e5a406903b164238311c3041210e7f5b4204a6247538ee9fc948",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "cold",
+          "radio_reused": false,
+          "wall_s": 5.82900780300406
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {},
+        "reason": "Campaign cancelled",
+        "task_index": 61,
+        "worker_index": 2
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T083826Z-ca32fa24",
+        "status": "RUN_FAILED",
+        "config": {
+          "method": "B1",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0",
+          "history_from": "20261025T083523Z-b9572d16",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "a6be1396ab61",
+        "scene_sha256": "757bdc9f5b5f56800223750b09d0f6fa9a9935d814ea4c771122ad932c254d39",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:38:26.019842+00:00",
+        "finished_at": null,
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "93e837c2b4a4e5a406903b164238311c3041210e7f5b4204a6247538ee9fc948",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "cold",
+          "radio_reused": false,
+          "wall_s": 2.684973244999128
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {},
+        "reason": "Campaign cancelled",
+        "task_index": 57,
+        "worker_index": 1
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "metrics": {},
+        "config": {
+          "method": "GPR-pathloss",
+          "beta": 0.0,
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1"
+        },
+        "task_index": 131,
+        "worker_index": 0
+      }
+    ],
+    "started_at": "2026-10-25T08:35:07.453263+00:00",
+    "wall_started": 1792917307.4532716,
+    "error": null,
+    "mode": "physical Gazebo episodes; mounted receiver; measured RSSI",
+    "protocol": "paired",
+    "phase": "episodes",
+    "sources_completed": 4,
+    "sources_total": 10,
+    "quality": {
+      "attempts": 10,
+      "physical_starts": 2,
+      "successes": 0,
+      "success_fraction_all_attempts": 0.0,
+      "wilson_95_descriptive": [
+        2.7755575615628914e-17,
+        0.27753279986287815
+      ],
+      "recovery_time_s": null,
+      "recovery_path_length_m": null,
+      "return_to_known_safe_m": null,
+      "path_stretch": null
+    },
+    "wall_duration_s": 208.52582335472107
+  },
+  "report.json": {
+    "format_version": 1,
+    "groups": {
+      "B0/beta=0.0": {
+        "total_runs": 2,
+        "statuses": {
+          "SETUP_FAILED": 2
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.6576197724933345
+        ],
+        "success_fraction_after_loss": null
+      },
+      "GPR-pathloss/beta=1.0": {
+        "total_runs": 1,
+        "statuses": {
+          "SETUP_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.7934506856227534
+        ],
+        "success_fraction_after_loss": null
+      },
+      "GPR-zero/beta=0.0": {
+        "total_runs": 1,
+        "statuses": {
+          "SETUP_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.7934506856227534
+        ],
+        "success_fraction_after_loss": null
+      },
+      "GPR-zero/beta=1.0": {
+        "total_runs": 1,
+        "statuses": {
+          "SETUP_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.7934506856227534
+        ],
+        "success_fraction_after_loss": null
+      },
+      "IDW/beta=0.0": {
+        "total_runs": 1,
+        "statuses": {
+          "SETUP_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.7934506856227534
+        ],
+        "success_fraction_after_loss": null
+      },
+      "B1/beta=0.0": {
+        "total_runs": 2,
+        "statuses": {
+          "SETUP_FAILED": 1,
+          "RUN_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.6576197724933345
+        ],
+        "success_fraction_after_loss": null
+      },
+      "GPR-pathloss/beta=0.0": {
+        "total_runs": 2,
+        "statuses": {
+          "RUN_FAILED": 1,
+          "SETUP_FAILED": 1
+        },
+        "recovery_attempts": 0,
+        "successes": 0,
+        "successful_recovery_times_s": [],
+        "success_fraction": 0.0,
+        "wilson_95": [
+          0.0,
+          0.6576197724933345
+        ],
+        "success_fraction_after_loss": null
+      }
+    },
+    "trials": [
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "B0",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 56,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "GPR-pathloss",
+        "beta": 1.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 62,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "GPR-zero",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 59,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "GPR-zero",
+        "beta": 1.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 60,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "IDW",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 58,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "method": "B0",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 126,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "method": "B1",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 127,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": "20261025T083829Z-87814861",
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "GPR-pathloss",
+        "beta": 0.0,
+        "status": "RUN_FAILED",
+        "reason": "Campaign cancelled",
+        "task_index": 61,
+        "worker_index": 2,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": "20261025T083826Z-ca32fa24",
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "method": "B1",
+        "beta": 0.0,
+        "status": "RUN_FAILED",
+        "reason": "Campaign cancelled",
+        "task_index": 57,
+        "worker_index": 1,
+        "setup_kind": null,
+        "ready_wall_s": null
+      },
+      {
+        "experiment_id": null,
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "method": "GPR-pathloss",
+        "beta": 0.0,
+        "status": "SETUP_FAILED",
+        "reason": "Husky runtime unavailable. Start the husky service; static radio still works.",
+        "task_index": 131,
+        "worker_index": 0,
+        "setup_kind": null,
+        "ready_wall_s": null
+      }
+    ],
+    "paired_success_only_differences": {
+      "B0/beta=0.0 vs B1/beta=0.0": {
+        "pair_count": 2,
+        "both_successful": 0
+      },
+      "B0/beta=0.0 vs GPR-pathloss/beta=0.0": {
+        "pair_count": 2,
+        "both_successful": 0
+      },
+      "B0/beta=0.0 vs GPR-pathloss/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B0/beta=0.0 vs GPR-zero/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B0/beta=0.0 vs GPR-zero/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B0/beta=0.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B1/beta=0.0 vs GPR-pathloss/beta=0.0": {
+        "pair_count": 2,
+        "both_successful": 0
+      },
+      "B1/beta=0.0 vs GPR-pathloss/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B1/beta=0.0 vs GPR-zero/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B1/beta=0.0 vs GPR-zero/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "B1/beta=0.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=0.0 vs GPR-pathloss/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=0.0 vs GPR-zero/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=0.0 vs GPR-zero/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=0.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=1.0 vs GPR-zero/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=1.0 vs GPR-zero/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-pathloss/beta=1.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-zero/beta=0.0 vs GPR-zero/beta=1.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-zero/beta=0.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      },
+      "GPR-zero/beta=1.0 vs IDW/beta=0.0": {
+        "pair_count": 1,
+        "both_successful": 0
+      }
+    },
+    "notes": [
+      "RSSI recovery proxy, not packet reception",
+      "Ground-truth localization; static obstacles",
+      "Full missions may have different observations; paired protocol fixes the initial pre-loss history",
+      "Wilson intervals use all attempted runs, including setup failures",
+      "Repeated episodes share fields and histories; intervals are descriptive, not proof of independent generalization",
+      "Paired time/path comparisons condition on both runs succeeding; compare success fractions too"
+    ]
+  },
+  "source_errors": [
+    {
+      "scene": "office-a",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    },
+    {
+      "scene": "office-b",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    },
+    {
+      "scene": "shadow-a",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    },
+    {
+      "scene": "shadow-b",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    },
+    {
+      "scene": "warehouse-a",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    },
+    {
+      "scene": "warehouse-b",
+      "error": "Husky runtime unavailable. Start the husky service; static radio still works."
+    }
+  ],
+  "valid_for_curated_benchmark": false,
+  "role": "diagnostic or preliminary pilot; excluded from curated totals"
+}

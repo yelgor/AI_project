@@ -1,0 +1,56 @@
+{
+  "paired_physical_comparisons": 30,
+  "improved_success": 1,
+  "regressed_success": 0,
+  "mcnemar_exact_p": 1.0,
+  "by_beta": {
+    "0.0": {
+      "pairs": 20,
+      "baseline_successes": 19,
+      "tuned_successes": 20,
+      "recovery_time_s": {
+        "mean_tuned_minus_baseline": -9.11315789473684,
+        "bootstrap_95": [
+          -24.210526315789473,
+          -0.13684210526315638
+        ],
+        "n": 19
+      },
+      "recovery_path_length_m": {
+        "mean_tuned_minus_baseline": -0.28901421027398394,
+        "bootstrap_95": [
+          -0.8804103170543526,
+          0.07473792548548353
+        ],
+        "n": 19
+      }
+    },
+    "1.0": {
+      "pairs": 10,
+      "baseline_successes": 10,
+      "tuned_successes": 10,
+      "recovery_time_s": {
+        "mean_tuned_minus_baseline": 0.08500000000000156,
+        "bootstrap_95": [
+          -2.6750000000000007,
+          1.875000000000007
+        ],
+        "n": 10
+      },
+      "recovery_path_length_m": {
+        "mean_tuned_minus_baseline": 0.17935556692691765,
+        "bootstrap_95": [
+          -0.3089862433239965,
+          0.6021099256324204
+        ],
+        "n": 10
+      }
+    }
+  },
+  "notes": [
+    "Uses only identical pair_id/method/beta and identical source-history IDs.",
+    "Baseline repeat 0 matches tuned repeat 0; baseline repeat 1 remains in the original 100-run report.",
+    "Time/path differences condition on both successes; all success/failure outcomes are also reported.",
+    "Related scene families and shared histories limit independence; bootstrap intervals are descriptive."
+  ]
+}

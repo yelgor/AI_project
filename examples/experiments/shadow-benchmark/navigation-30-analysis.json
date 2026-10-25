@@ -1,0 +1,438 @@
+{
+  "format_version": 1,
+  "campaign_id": "20261025T093218Z-328b97cc",
+  "protocol": "paired",
+  "overall": {
+    "attempts": 30,
+    "physical_starts": 30,
+    "successes": 30,
+    "success_fraction_all_attempts": 1.0,
+    "wilson_95_descriptive": [
+      0.8864866068260369,
+      1.0
+    ],
+    "recovery_time_s": 15.525,
+    "recovery_path_length_m": 5.601830054069843,
+    "return_to_known_safe_m": 0.2920618233826908,
+    "path_stretch": 1.0310880863575116
+  },
+  "unique_source_fields": 10,
+  "source_episodes": 10,
+  "new_source_episodes": 0,
+  "history_source_campaign": "20261025T085813Z-c98fac62",
+  "new_episode_observations": 962,
+  "duplicated_seed_observations": 2586,
+  "groups": {
+    "label": {
+      "courtyard-a": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 14.1,
+        "recovery_path_length_m": 5.335931375805812,
+        "return_to_known_safe_m": 0.1586274518469466,
+        "path_stretch": 1.0337016068157958
+      },
+      "courtyard-b": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 15.549999999999997,
+        "recovery_path_length_m": 6.137191751897137,
+        "return_to_known_safe_m": 0.2822382624188553,
+        "path_stretch": 1.0259915453947304
+      },
+      "district-a": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 14.15,
+        "recovery_path_length_m": 4.663088928856511,
+        "return_to_known_safe_m": 0.1606573476587694,
+        "path_stretch": 1.0306045075696257
+      },
+      "district-b": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 14.149999999999999,
+        "recovery_path_length_m": 4.287893116265822,
+        "return_to_known_safe_m": 0.2698429719665022,
+        "path_stretch": 1.0202375660416
+      },
+      "office-a": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 14.95,
+        "recovery_path_length_m": 5.071820584953797,
+        "return_to_known_safe_m": 0.48878556019597996,
+        "path_stretch": 1.018835647039063
+      },
+      "office-b": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 16.39999999999999,
+        "recovery_path_length_m": 5.909729409198006,
+        "return_to_known_safe_m": 0.145549995755401,
+        "path_stretch": 1.0214681679445903
+      },
+      "shadow-a": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 17.049999999999997,
+        "recovery_path_length_m": 6.597007890427198,
+        "return_to_known_safe_m": 0.4905053697618145,
+        "path_stretch": 1.0315716651453974
+      },
+      "shadow-b": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 16.4,
+        "recovery_path_length_m": 6.330690831008959,
+        "return_to_known_safe_m": 0.4826803414024027,
+        "path_stretch": 1.0226334548015972
+      },
+      "warehouse-a": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 17.900000000000002,
+        "recovery_path_length_m": 5.7397783075147,
+        "return_to_known_safe_m": 0.45577896057971523,
+        "path_stretch": 1.0549557088667327
+      },
+      "warehouse-b": {
+        "attempts": 3,
+        "physical_starts": 3,
+        "successes": 3,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.4385029682449681,
+          1.0
+        ],
+        "recovery_time_s": 15.0,
+        "recovery_path_length_m": 4.917504089253031,
+        "return_to_known_safe_m": 0.3953711014410949,
+        "path_stretch": 1.023832754140981
+      }
+    },
+    "family": {
+      "courtyard": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 14.825,
+        "recovery_path_length_m": 5.621288039778304,
+        "return_to_known_safe_m": 0.22043285713290095,
+        "path_stretch": 1.032812268248609
+      },
+      "district": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 14.149999999999999,
+        "recovery_path_length_m": 4.475491022561167,
+        "return_to_known_safe_m": 0.2152501598126358,
+        "path_stretch": 1.025421036805613
+      },
+      "office": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 15.250000000000002,
+        "recovery_path_length_m": 5.490774997075901,
+        "return_to_known_safe_m": 0.3171677779756905,
+        "path_stretch": 1.0201519074918266
+      },
+      "shadow": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 16.849999999999998,
+        "recovery_path_length_m": 6.385094311425124,
+        "return_to_known_safe_m": 0.48659285558210863,
+        "path_stretch": 1.0290644041288615
+      },
+      "warehouse": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 16.125,
+        "recovery_path_length_m": 5.434097561996264,
+        "return_to_known_safe_m": 0.41067796792986955,
+        "path_stretch": 1.0370710945515986
+      }
+    },
+    "method": {
+      "B1": {
+        "attempts": 10,
+        "physical_starts": 10,
+        "successes": 10,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.7224672001371218,
+          0.9999999999999999
+        ],
+        "recovery_time_s": 15.674999999999999,
+        "recovery_path_length_m": 4.2096883463055095,
+        "return_to_known_safe_m": 0.026937439886161863,
+        "path_stretch": 1.0325313362343145
+      },
+      "GPR-pathloss": {
+        "attempts": 20,
+        "physical_starts": 20,
+        "successes": 20,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.838874841947188,
+          0.9999999999999999
+        ],
+        "recovery_time_s": 15.525,
+        "recovery_path_length_m": 6.023460580547571,
+        "return_to_known_safe_m": 0.46922965099105896,
+        "path_stretch": 1.0251949486266534
+      }
+    },
+    "split": {
+      "test": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 14.825,
+        "recovery_path_length_m": 5.621288039778304,
+        "return_to_known_safe_m": 0.22043285713290095,
+        "path_stretch": 1.032812268248609
+      },
+      "train": {
+        "attempts": 18,
+        "physical_starts": 18,
+        "successes": 18,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.8241207763533505,
+          1.0
+        ],
+        "recovery_time_s": 16.399999999999995,
+        "recovery_path_length_m": 5.712151207866242,
+        "return_to_known_safe_m": 0.4408818974991797,
+        "path_stretch": 1.0290644041288615
+      },
+      "validation": {
+        "attempts": 6,
+        "physical_starts": 6,
+        "successes": 6,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.6096657120978477,
+          1.0
+        ],
+        "recovery_time_s": 14.149999999999999,
+        "recovery_path_length_m": 4.475491022561167,
+        "return_to_known_safe_m": 0.2152501598126358,
+        "path_stretch": 1.025421036805613
+      }
+    },
+    "method_beta": {
+      "B1/beta=0.0": {
+        "attempts": 10,
+        "physical_starts": 10,
+        "successes": 10,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.7224672001371218,
+          0.9999999999999999
+        ],
+        "recovery_time_s": 15.674999999999999,
+        "recovery_path_length_m": 4.2096883463055095,
+        "return_to_known_safe_m": 0.026937439886161863,
+        "path_stretch": 1.0325313362343145
+      },
+      "GPR-pathloss/beta=0.0": {
+        "attempts": 10,
+        "physical_starts": 10,
+        "successes": 10,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.7224672001371218,
+          0.9999999999999999
+        ],
+        "recovery_time_s": 15.250000000000002,
+        "recovery_path_length_m": 5.604854316902413,
+        "return_to_known_safe_m": 0.4896829645130285,
+        "path_stretch": 1.0367120205526916
+      },
+      "GPR-pathloss/beta=1.0": {
+        "attempts": 10,
+        "physical_starts": 10,
+        "successes": 10,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.7224672001371218,
+          0.9999999999999999
+        ],
+        "recovery_time_s": 15.674999999999997,
+        "recovery_path_length_m": 6.171554546469453,
+        "return_to_known_safe_m": 0.42557503101040506,
+        "path_stretch": 1.0207836581642304
+      }
+    }
+  },
+  "causal_forecast_by_distance": {
+    "IDW": {
+      "0.15\u20130.5m": {
+        "n": 204,
+        "mae_db": 4.044402339384315,
+        "rmse_db": 5.156694296585805,
+        "bias_db": 1.6936959922958077,
+        "false_safe_fraction": 0.03431372549019608,
+        "predicted_safe_count": 108,
+        "false_safe_given_predicted_safe": 0.06481481481481481
+      },
+      "0.5\u20131m": {
+        "n": 0
+      },
+      "1\u20132m": {
+        "n": 0
+      },
+      "2m+": {
+        "n": 0
+      }
+    },
+    "GPR-zero": {
+      "0.15\u20130.5m": {
+        "n": 204,
+        "mae_db": 5.837337792305631,
+        "rmse_db": 7.6034115997938905,
+        "bias_db": 1.1450550355691382,
+        "false_safe_fraction": 0.07352941176470588,
+        "predicted_safe_count": 108,
+        "false_safe_given_predicted_safe": 0.1388888888888889,
+        "coverage_95": 0.9411764705882353,
+        "nlpd": 3.467186890523974
+      },
+      "0.5\u20131m": {
+        "n": 0
+      },
+      "1\u20132m": {
+        "n": 0
+      },
+      "2m+": {
+        "n": 0
+      }
+    },
+    "GPR-pathloss": {
+      "0.15\u20130.5m": {
+        "n": 204,
+        "mae_db": 5.558053954082588,
+        "rmse_db": 7.429407723083981,
+        "bias_db": -0.4047984245844502,
+        "false_safe_fraction": 0.05392156862745098,
+        "predicted_safe_count": 102,
+        "false_safe_given_predicted_safe": 0.10784313725490197,
+        "coverage_95": 0.9166666666666666,
+        "nlpd": 3.446717570421043
+      },
+      "0.5\u20131m": {
+        "n": 0
+      },
+      "1\u20132m": {
+        "n": 0
+      },
+      "2m+": {
+        "n": 0
+      }
+    }
+  },
+  "occupied_pose_count": 0,
+  "macro_scene_success": 1.0,
+  "worst_scene_success": 1.0,
+  "macro_family_success": 1.0,
+  "notes": [
+    "All setup/navigation/radio failures remain in the denominator.",
+    "Repeated episodes share histories and fields; Wilson intervals are descriptive, not independent-trial proof.",
+    "Forecast scores use only results available before the test pose, never future or current labels.",
+    "Near points on a trajectory are correlated. Use independent spatial reference grids for map generalization.",
+    "Path stretch uses observed displacement, not an oracle shortest safe route.",
+    "Occupied-pose check uses a 0.35m radius as a diagnostic, not a contact sensor.",
+    "Universal quality requires more unseen geometries and hardware validation."
+  ]
+}

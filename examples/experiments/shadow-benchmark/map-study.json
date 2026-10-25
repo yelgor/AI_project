@@ -1,0 +1,2964 @@
+{
+  "minimum_spatial_distance_m": 1.0,
+  "recommended_profiles": {
+    "IDW": {
+      "noise_db": 2.0,
+      "optimize_gpr": false,
+      "validation_macro_mae_db": 8.273024680659152,
+      "empirical_validation_beta95": 0.0,
+      "beta_within_supported_range": true,
+      "beta": 0.0
+    },
+    "GPR-zero": {
+      "noise_db": 8.0,
+      "optimize_gpr": true,
+      "validation_macro_mae_db": 14.545009946854472,
+      "empirical_validation_beta95": 2.2718698671045243,
+      "beta_within_supported_range": true,
+      "beta": 2.2718698671045243
+    },
+    "GPR-pathloss": {
+      "noise_db": 8.0,
+      "optimize_gpr": false,
+      "validation_macro_mae_db": 7.556326866668702,
+      "empirical_validation_beta95": 0.37252930987887106,
+      "beta_within_supported_range": true,
+      "beta": 0.37252930987887106
+    }
+  },
+  "scores": [
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 4.189289945621783,
+      "rmse_db": 5.259263612285984,
+      "false_safe_fraction": 0.0641025641025641,
+      "false_safe_given_predicted_safe": 0.08196721311475409,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 3.6784111638470374
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 3.9343004194382276
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 4.994525831363343
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 5.701229573146576,
+      "rmse_db": 7.091948797388083,
+      "false_safe_fraction": 0.05263157894736842,
+      "false_safe_given_predicted_safe": 0.06896551724137931,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.770712531916608
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 6.721860091251095
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 6.0648468206136235
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 5.056533801459581,
+      "rmse_db": 6.801619320546396,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 3.4715707493016605
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 2.951053573045769
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 10.411286373930135
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 4.676401953923045,
+      "rmse_db": 5.94185578807495,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 3.753402878713097
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 4.1273092623865235
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 6.2733779898042865
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 7.569135619112238,
+      "rmse_db": 10.859301504918578,
+      "false_safe_fraction": 0.10138248847926268,
+      "false_safe_given_predicted_safe": 0.16296296296296298,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 4.2536222964022485
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 6.771602656636458
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 8.7270072730103
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 7.964823371458159,
+      "rmse_db": 11.191968751694043,
+      "false_safe_fraction": 0.2018348623853211,
+      "false_safe_given_predicted_safe": 0.27848101265822783,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.291485175005529
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 4.532947199315777
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 10.130238519913238
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "district-a",
+      "split": "validation",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 336,
+      "mae_db": 7.944958174655669,
+      "rmse_db": 11.377207027109558,
+      "false_safe_fraction": 0.17857142857142858,
+      "false_safe_given_predicted_safe": 0.24096385542168675,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 3.6653303223138547
+        },
+        "2\u20134m": {
+          "n": 44,
+          "mae_db": 3.8190272576673254
+        },
+        "4m+": {
+          "n": 258,
+          "mae_db": 9.212587272822757
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-b",
+      "split": "validation",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 57,
+      "test_count": 333,
+      "mae_db": 8.601091186662632,
+      "rmse_db": 12.296183528941565,
+      "false_safe_fraction": 0.3033033033033033,
+      "false_safe_given_predicted_safe": 0.3470790378006873,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 37,
+          "mae_db": 4.296980135410255
+        },
+        "2\u20134m": {
+          "n": 49,
+          "mae_db": 6.354015554226813
+        },
+        "4m+": {
+          "n": 247,
+          "mae_db": 9.691612704418475
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "courtyard-a",
+      "split": "test",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 52,
+      "test_count": 312,
+      "mae_db": 9.264965045394895,
+      "rmse_db": 12.430881967940959,
+      "false_safe_fraction": 0.2916666666666667,
+      "false_safe_given_predicted_safe": 0.36693548387096775,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 3.5436922270188775
+        },
+        "2\u20134m": {
+          "n": 37,
+          "mae_db": 4.2843018484774325
+        },
+        "4m+": {
+          "n": 241,
+          "mae_db": 10.836781701456017
+        }
+      },
+      "stage": "frozen test"
+    },
+    {
+      "scene": "courtyard-b",
+      "split": "test",
+      "method": "IDW",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 57,
+      "test_count": 309,
+      "mae_db": 9.844950250303157,
+      "rmse_db": 14.146688951370242,
+      "false_safe_fraction": 0.39158576051779936,
+      "false_safe_given_predicted_safe": 0.4275618374558304,
+      "coverage_95": null,
+      "nlpd": null,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 3.947316973952149
+        },
+        "2\u20134m": {
+          "n": 39,
+          "mae_db": 5.3544471217017415
+        },
+        "4m+": {
+          "n": 234,
+          "mae_db": 11.500695634765089
+        }
+      },
+      "stage": "frozen test"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 24.94789271873687,
+      "rmse_db": 27.598388977153842,
+      "false_safe_fraction": 0.24358974358974358,
+      "false_safe_given_predicted_safe": 0.24358974358974358,
+      "coverage_95": 1.0,
+      "nlpd": 4.724453928371447,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 14.229169854627207
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 27.224930599803482
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.388925508730125
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 24.672692540816445,
+      "rmse_db": 28.041137998014197,
+      "false_safe_fraction": 0.15789473684210525,
+      "false_safe_given_predicted_safe": 0.16666666666666666,
+      "coverage_95": 1.0,
+      "nlpd": 4.722034042440406,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 11.846912575968087
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 30.824315504666796
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.469551871475765
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 27.741260363596233,
+      "rmse_db": 30.397144703779063,
+      "false_safe_fraction": 0.24285714285714285,
+      "false_safe_given_predicted_safe": 0.24817518248175183,
+      "coverage_95": 1.0,
+      "nlpd": 4.810421896864783,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 15.4900746627251
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 30.76615859125933
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 34.183814525162006
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 30.215740005075745,
+      "rmse_db": 33.57971810684957,
+      "false_safe_fraction": 0.2624113475177305,
+      "false_safe_given_predicted_safe": 0.26618705035971224,
+      "coverage_95": 1.0,
+      "nlpd": 4.891689535149907,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 15.383908639793116
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 32.10096085814918
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 39.30485693292897
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 35.884501367381546,
+      "rmse_db": 39.76664948743003,
+      "false_safe_fraction": 0.35023041474654376,
+      "false_safe_given_predicted_safe": 0.3568075117370892,
+      "coverage_95": 0.9907834101382489,
+      "nlpd": 5.047986470766556,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 12.66081321130412
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 30.68626527039266
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 43.83784657570953
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 36.57510128684055,
+      "rmse_db": 40.46042597326761,
+      "false_safe_fraction": 0.41284403669724773,
+      "false_safe_given_predicted_safe": 0.4186046511627907,
+      "coverage_95": 0.9908256880733946,
+      "nlpd": 5.064469967009856,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 10.042974932192426
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 30.836763190638333
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 44.87798645718579
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 22.977258342110336,
+      "rmse_db": 25.510572921649736,
+      "false_safe_fraction": 0.23076923076923078,
+      "false_safe_given_predicted_safe": 0.23376623376623376,
+      "coverage_95": 1.0,
+      "nlpd": 4.571540559290232,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 12.959693728121872
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 24.450272182017102
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 33.2895904167913
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 25.03744588985469,
+      "rmse_db": 28.329328733597713,
+      "false_safe_fraction": 0.15789473684210525,
+      "false_safe_given_predicted_safe": 0.16666666666666666,
+      "coverage_95": 1.0,
+      "nlpd": 4.683787491793465,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 12.266310165479167
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 31.234538579226996
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.73592459591499
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 6.855787131688333,
+      "rmse_db": 9.013006813721386,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.695516724545212,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.759659554542389
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 7.53534345911761
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 7.664714667890836
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 6.023483881317576,
+      "rmse_db": 7.272744115647432,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.677435558137225,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.61311184243358
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 7.027811612114989
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 5.610896900846721
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 37.00584945823209,
+      "rmse_db": 40.707451988177404,
+      "false_safe_fraction": 0.3548387096774194,
+      "false_safe_given_predicted_safe": 0.3598130841121495,
+      "coverage_95": 0.9861751152073732,
+      "nlpd": 5.099027950397297,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 13.895003670619285
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 32.834554780802215
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 44.51528861010237
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 24.58468923001441,
+      "rmse_db": 29.49493229523664,
+      "false_safe_fraction": 0.3577981651376147,
+      "false_safe_given_predicted_safe": 0.3842364532019704,
+      "coverage_95": 0.9862385321100917,
+      "nlpd": 4.63497204848969,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 6.629866081446547
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 14.314189510474732
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 32.663692956100824
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 25.07857666010557,
+      "rmse_db": 27.708655613785545,
+      "false_safe_fraction": 0.24358974358974358,
+      "false_safe_given_predicted_safe": 0.24358974358974358,
+      "coverage_95": 1.0,
+      "nlpd": 4.731448778621367,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 14.351045183824954
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 27.39603240870179
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.49557349930947
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 24.725364764473692,
+      "rmse_db": 27.992415991401355,
+      "false_safe_fraction": 0.18421052631578946,
+      "false_safe_given_predicted_safe": 0.1891891891891892,
+      "coverage_95": 1.0,
+      "nlpd": 4.725748825038103,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 11.99394849006296
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 30.65652331918379
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.57082214782911
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 28.010444094818773,
+      "rmse_db": 30.52810680599947,
+      "false_safe_fraction": 0.25,
+      "false_safe_given_predicted_safe": 0.2536231884057971,
+      "coverage_95": 1.0,
+      "nlpd": 4.816535322135602,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 15.836732499021574
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 31.02831039277127
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 34.39035154038314
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 29.483077994566838,
+      "rmse_db": 32.522055621370086,
+      "false_safe_fraction": 0.24822695035460993,
+      "false_safe_given_predicted_safe": 0.25547445255474455,
+      "coverage_95": 1.0,
+      "nlpd": 4.863869269382932,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 14.570685749503783
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 31.33837117298408
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 38.68372751206741
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 36.06095197077068,
+      "rmse_db": 39.93751555569502,
+      "false_safe_fraction": 0.35023041474654376,
+      "false_safe_given_predicted_safe": 0.3568075117370892,
+      "coverage_95": 0.9907834101382489,
+      "nlpd": 5.053843248048726,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 12.776522695941088
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 31.114822676606696
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 43.927600968175774
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 36.83041408641564,
+      "rmse_db": 40.65762305887693,
+      "false_safe_fraction": 0.41284403669724773,
+      "false_safe_given_predicted_safe": 0.4186046511627907,
+      "coverage_95": 0.9908256880733946,
+      "nlpd": 5.07140692460113,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 10.438934101198551
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 31.363984066818578
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 44.99626772019917
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 6.3088806567539955,
+      "rmse_db": 7.960994031477791,
+      "false_safe_fraction": 0.05128205128205128,
+      "false_safe_given_predicted_safe": 0.06666666666666667,
+      "coverage_95": 0.9615384615384616,
+      "nlpd": 3.624673604065305,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 5.5138248877723
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 8.204445970364596
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 5.622312817139295
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 6.281965234528999,
+      "rmse_db": 8.984534977318173,
+      "false_safe_fraction": 0.039473684210526314,
+      "false_safe_given_predicted_safe": 0.05454545454545454,
+      "coverage_95": 0.868421052631579,
+      "nlpd": 3.8966735081596218,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.34339898122493
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 9.509222326561641
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 5.0426448154446115
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 6.372128378402943,
+      "rmse_db": 8.507702945437874,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.664943787985974,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.573550287944327
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 7.215773891737657
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 6.594413834161978
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 6.110360108735065,
+      "rmse_db": 7.524868891410982,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.591446626625314,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.428740291817817
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.447143343987862
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 6.95045923930065
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 17.30955675428779,
+      "rmse_db": 21.070533257975658,
+      "false_safe_fraction": 0.24423963133640553,
+      "false_safe_given_predicted_safe": 0.29444444444444445,
+      "coverage_95": 0.9308755760368663,
+      "nlpd": 4.357983878898485,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 6.046201759315972
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 12.453003850882336
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 22.11175537042946
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 12.481185971747891,
+      "rmse_db": 15.83545716220139,
+      "false_safe_fraction": 0.13761467889908258,
+      "false_safe_given_predicted_safe": 0.22388059701492538,
+      "coverage_95": 0.926605504587156,
+      "nlpd": 4.119004092870063,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.611028814557699
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 8.536818692336196
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 15.807719085839038
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 24.94950977606747,
+      "rmse_db": 27.632428529823027,
+      "false_safe_fraction": 0.24358974358974358,
+      "false_safe_given_predicted_safe": 0.24358974358974358,
+      "coverage_95": 1.0,
+      "nlpd": 4.74340398142398,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 13.977191948329688
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 27.356938758788704
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.57282120730848
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 24.701571042711073,
+      "rmse_db": 27.883808288304266,
+      "false_safe_fraction": 0.18421052631578946,
+      "false_safe_given_predicted_safe": 0.1891891891891892,
+      "coverage_95": 1.0,
+      "nlpd": 4.74077963207133,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 12.19532387527913
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 30.35694251319624
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 35.48009428314077
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 28.15300121305103,
+      "rmse_db": 30.64966594268343,
+      "false_safe_fraction": 0.24285714285714285,
+      "false_safe_given_predicted_safe": 0.24817518248175183,
+      "coverage_95": 1.0,
+      "nlpd": 4.829664960989515,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 15.978583096373667
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 31.130912197898688
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 34.60594759725622
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 29.237753572435658,
+      "rmse_db": 32.21538159655926,
+      "false_safe_fraction": 0.24113475177304963,
+      "false_safe_given_predicted_safe": 0.25,
+      "coverage_95": 1.0,
+      "nlpd": 4.8644972039319505,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 14.31389824310576
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 31.091781669978495
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 38.44964059283881
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 36.24179806651043,
+      "rmse_db": 40.07552482662145,
+      "false_safe_fraction": 0.3548387096774194,
+      "false_safe_given_predicted_safe": 0.3598130841121495,
+      "coverage_95": 0.9907834101382489,
+      "nlpd": 5.060991851268181,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 12.954105326832455
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 31.567149293952387
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 43.99943352723524
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 36.98780334199837,
+      "rmse_db": 40.76483480554439,
+      "false_safe_fraction": 0.41743119266055045,
+      "false_safe_given_predicted_safe": 0.4212962962962963,
+      "coverage_95": 0.9908256880733946,
+      "nlpd": 5.077614619408617,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 10.665511997169418
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 31.73381407942582
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 45.055940181579636
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 5.722945150416301,
+      "rmse_db": 7.177920169662306,
+      "false_safe_fraction": 0.02564102564102564,
+      "false_safe_given_predicted_safe": 0.03636363636363636,
+      "coverage_95": 0.9871794871794872,
+      "nlpd": 3.5742948600827447,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.714774435857146
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 8.075501670452605
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 4.895594304107684
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 6.348853401545396,
+      "rmse_db": 8.999625872152365,
+      "false_safe_fraction": 0.039473684210526314,
+      "false_safe_given_predicted_safe": 0.05555555555555555,
+      "coverage_95": 0.9605263157894737,
+      "nlpd": 3.6453254093592458,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.369944263556589
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 9.50572181509651
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 5.209071994629316
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 7.001193635035971,
+      "rmse_db": 8.85219499880724,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.7659779818314423,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.529789873603556
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 8.503205816189631
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 6.685942804610889
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 8.090632407737818,
+      "rmse_db": 9.711395685204195,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.735942317820027,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.015574085402166
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 8.293418099562773
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 10.266130336089962
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 14.48574132603765,
+      "rmse_db": 18.309445350860422,
+      "false_safe_fraction": 0.12903225806451613,
+      "false_safe_given_predicted_safe": 0.1830065359477124,
+      "coverage_95": 0.967741935483871,
+      "nlpd": 4.203084476687127,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 5.840678135685092
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 10.410091256990786
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 18.31243246299275
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 12.114023152736188,
+      "rmse_db": 15.238925836454976,
+      "false_safe_fraction": 0.11926605504587157,
+      "false_safe_given_predicted_safe": 0.1984732824427481,
+      "coverage_95": 0.9403669724770642,
+      "nlpd": 4.073978957610018,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.866441947581429
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 8.071872528185684
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 15.335259077450434
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "district-a",
+      "split": "validation",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 336,
+      "mae_db": 16.342478450723696,
+      "rmse_db": 20.02682156850881,
+      "false_safe_fraction": 0.14583333333333334,
+      "false_safe_given_predicted_safe": 0.23333333333333334,
+      "coverage_95": 0.9761904761904762,
+      "nlpd": 4.339095652284228,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.241224433655956
+        },
+        "2\u20134m": {
+          "n": 44,
+          "mae_db": 11.63516195809421
+        },
+        "4m+": {
+          "n": 258,
+          "mae_db": 18.608232567995017
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-b",
+      "split": "validation",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 57,
+      "test_count": 333,
+      "mae_db": 12.747541442985248,
+      "rmse_db": 16.82220564183194,
+      "false_safe_fraction": 0.17417417417417416,
+      "false_safe_given_predicted_safe": 0.23481781376518218,
+      "coverage_95": 0.9429429429429429,
+      "nlpd": 4.1721565838966725,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 37,
+          "mae_db": 4.591319080498584
+        },
+        "2\u20134m": {
+          "n": 49,
+          "mae_db": 7.407741528093012
+        },
+        "4m+": {
+          "n": 247,
+          "mae_db": 15.028636273923409
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-a",
+      "split": "validation",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 336,
+      "mae_db": 18.407281956138416,
+      "rmse_db": 21.944926805067805,
+      "false_safe_fraction": 0.15178571428571427,
+      "false_safe_given_predicted_safe": 0.24170616113744076,
+      "coverage_95": 0.9345238095238095,
+      "nlpd": 4.479035265724196,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.881502694861644
+        },
+        "2\u20134m": {
+          "n": 44,
+          "mae_db": 13.628428598141257
+        },
+        "4m+": {
+          "n": 258,
+          "mae_db": 20.872964291934093
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-b",
+      "split": "validation",
+      "method": "GPR-zero",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 57,
+      "test_count": 333,
+      "mae_db": 13.545322971717134,
+      "rmse_db": 17.43952730402298,
+      "false_safe_fraction": 0.18618618618618618,
+      "false_safe_given_predicted_safe": 0.25,
+      "coverage_95": 0.7537537537537538,
+      "nlpd": 4.331830026611135,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 37,
+          "mae_db": 4.585690566708687
+        },
+        "2\u20134m": {
+          "n": 49,
+          "mae_db": 7.958281744813443
+        },
+        "4m+": {
+          "n": 247,
+          "mae_db": 15.995814547035325
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "courtyard-a",
+      "split": "test",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 52,
+      "test_count": 312,
+      "mae_db": 14.60405383288406,
+      "rmse_db": 19.655422277751253,
+      "false_safe_fraction": 0.20192307692307693,
+      "false_safe_given_predicted_safe": 0.30434782608695654,
+      "coverage_95": 0.9038461538461539,
+      "nlpd": 4.3155795651192665,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.451906813709003
+        },
+        "2\u20134m": {
+          "n": 37,
+          "mae_db": 7.734893206679034
+        },
+        "4m+": {
+          "n": 241,
+          "mae_db": 17.090908363263885
+        }
+      },
+      "stage": "frozen test"
+    },
+    {
+      "scene": "courtyard-b",
+      "split": "test",
+      "method": "GPR-zero",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 57,
+      "test_count": 309,
+      "mae_db": 14.379213358837243,
+      "rmse_db": 18.83568494758308,
+      "false_safe_fraction": 0.22330097087378642,
+      "false_safe_given_predicted_safe": 0.3,
+      "coverage_95": 0.8932038834951457,
+      "nlpd": 4.381271546953945,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.315243981170759
+        },
+        "2\u20134m": {
+          "n": 39,
+          "mae_db": 6.135076648759107
+        },
+        "4m+": {
+          "n": 234,
+          "mae_db": 17.301539125029723
+        }
+      },
+      "stage": "frozen test"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 5.441659550148934,
+      "rmse_db": 6.7728859553728515,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.02040816326530612,
+      "coverage_95": 1.0,
+      "nlpd": 4.460541587232973,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.163594396325383
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 4.3463456694173574
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 7.843154165179753
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.965798701691888,
+      "rmse_db": 9.861713486624454,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.047619047619047616,
+      "coverage_95": 1.0,
+      "nlpd": 4.47963200618134,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.48517732022366
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 7.576985666172218
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.20759525939915
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 9.240047710710185,
+      "rmse_db": 11.062367084795119,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.521816641737569,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 5.250915162843997
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 7.248455566694185
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 16.727762450500848
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 9.057088682904459,
+      "rmse_db": 11.264885341041502,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.535585052494869,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.899404276423616
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.910233917920277
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 14.935822719673995
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.4030051587955,
+      "rmse_db": 11.894516650908956,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.012658227848101266,
+      "coverage_95": 1.0,
+      "nlpd": 4.58470558510821,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 5.052754451104
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 8.210926781148663
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 10.981161092910778
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.278867642936723,
+      "rmse_db": 10.52121765816094,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.047619047619047616,
+      "coverage_95": 1.0,
+      "nlpd": 4.5767113599954845,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.5696119095948635
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 6.072239926080794
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 9.75095333930788
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 5.967631670747003,
+      "rmse_db": 7.336294968141335,
+      "false_safe_fraction": 0.02564102564102564,
+      "false_safe_given_predicted_safe": 0.043478260869565216,
+      "coverage_95": 0.9615384615384616,
+      "nlpd": 3.4149086082476785,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 5.814073038100115
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 4.312119503414724
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 7.5456326961591875
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.993395977492201,
+      "rmse_db": 9.919198421809876,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.05555555555555555,
+      "coverage_95": 0.7631578947368421,
+      "nlpd": 4.216990902738729,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.959945968489584
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 6.945157125155464
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.183914764933709
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 9.856033563882793,
+      "rmse_db": 11.771064554064267,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 0.9714285714285714,
+      "nlpd": 3.7662541217893777,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.657121551625339
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 8.033593529452698
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 18.214528557074274
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 9.036360723202892,
+      "rmse_db": 11.26813761707412,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 0.8865248226950354,
+      "nlpd": 3.776722074609191,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.632351901979003
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.057385921461975
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 17.211828866887934
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.468232313674026,
+      "rmse_db": 11.926763172639188,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.014084507042253521,
+      "coverage_95": 0.8663594470046083,
+      "nlpd": 4.049734225191981,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 6.124745391309794
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 7.845186304152532
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 10.967136946824091
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 2.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.138732202967876,
+      "rmse_db": 10.48781235911917,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.05128205128205128,
+      "coverage_95": 0.7798165137614679,
+      "nlpd": 4.104702024290303,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.968565509178098
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 5.960629836395027
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 9.705669170147663
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 5.399798841651216,
+      "rmse_db": 6.7154982762337285,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.02,
+      "coverage_95": 1.0,
+      "nlpd": 4.469568077848174,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.162247252991622
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 4.232584285930955
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 7.815386068021741
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.583585392228002,
+      "rmse_db": 9.50709089518647,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.04878048780487805,
+      "coverage_95": 1.0,
+      "nlpd": 4.484395094332795,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.803501807704496
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 7.20364108172386
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.175952046835986
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 8.90032111671125,
+      "rmse_db": 10.746950399267966,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.5262658775666536,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.716069707122038
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 6.909331165443433
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 16.576790778337067
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 8.678508589070002,
+      "rmse_db": 10.7496090956379,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.535575592599879,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.050530163588709
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.200437791264394
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 15.4505530729683
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.297756770124927,
+      "rmse_db": 11.800698537783912,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.012658227848101266,
+      "coverage_95": 1.0,
+      "nlpd": 4.58919775798859,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 4.696177069187414
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 8.001914794815319
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 10.981205280219182
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.181497313163787,
+      "rmse_db": 10.439752662704215,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.047619047619047616,
+      "coverage_95": 1.0,
+      "nlpd": 4.581595744360401,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.263194606297026
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 5.931016471377271
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 9.718477962687997
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 6.615926451280275,
+      "rmse_db": 8.090249196698213,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.023809523809523808,
+      "coverage_95": 0.9102564102564102,
+      "nlpd": 3.4509716290703976,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.297169693506556
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 5.451813066937325
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 10.276434035463222
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.9255620590473965,
+      "rmse_db": 9.740193576108444,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.04878048780487805,
+      "coverage_95": 0.7368421052631579,
+      "nlpd": 4.147105088473568,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.23963992575401
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 7.13385014426283
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.706566386470538
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 10.538479594372559,
+      "rmse_db": 12.71568828861367,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 0.9714285714285714,
+      "nlpd": 3.8273300524589113,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.495645594124609
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 8.502130791302744
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 20.10543618395644
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 10.037912394638907,
+      "rmse_db": 12.5348634381441,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 0.8652482269503546,
+      "nlpd": 3.877113602279233,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.6879133418558965
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.720672250621192
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 19.502688041204948
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.641012699171755,
+      "rmse_db": 12.074940623545277,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.013513513513513514,
+      "coverage_95": 0.9078341013824884,
+      "nlpd": 4.000556995977481,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 4.299700809025854
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 8.679308627138129
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 11.37562039529845
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.341507985425663,
+      "rmse_db": 10.597478845469878,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.04819277108433735,
+      "coverage_95": 0.8486238532110092,
+      "nlpd": 3.923144787807399,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.199143612203361
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 6.345309180895404
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 9.831994158799475
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 5.388256134062747,
+      "rmse_db": 6.68639394787942,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.02,
+      "coverage_95": 1.0,
+      "nlpd": 4.496213933872197,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.255280341198232
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 4.077175514071211
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 7.804911804283869
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.505024824844982,
+      "rmse_db": 9.42401145939953,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.04878048780487805,
+      "coverage_95": 1.0,
+      "nlpd": 4.510103143264137,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 4.629102309861526
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 7.069442200576499
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.252319741213766
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 8.885365009124264,
+      "rmse_db": 10.729654021275813,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.548995221555911,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.609145596445763
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 6.997917772950373
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 16.463820784261472
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 8.671951096827485,
+      "rmse_db": 10.731152321375284,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 4.557290384383455,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.741256015471894
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.202377266906542
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 15.675901851850133
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.226338010280227,
+      "rmse_db": 11.731158474076102,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.01282051282051282,
+      "coverage_95": 1.0,
+      "nlpd": 4.60687332324117,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 4.33634446947483
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 7.911508437264994
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 10.990122393611411
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.178030859920451,
+      "rmse_db": 10.441295379181627,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.04819277108433735,
+      "coverage_95": 1.0,
+      "nlpd": 4.600178320235492,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.094280365209777
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 5.994530210702353
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 9.727203445812092
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 86,
+      "training_count": 53,
+      "test_count": 78,
+      "mae_db": 6.042730573504059,
+      "rmse_db": 7.5413009938690445,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.022727272727272728,
+      "coverage_95": 1.0,
+      "nlpd": 3.457563252242564,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 30,
+          "mae_db": 4.043097148683941
+        },
+        "2\u20134m": {
+          "n": 22,
+          "mae_db": 4.717699821812427
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 9.47117977665096
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "office-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 76,
+      "mae_db": 7.896801195398705,
+      "rmse_db": 9.795569653139777,
+      "false_safe_fraction": 0.02631578947368421,
+      "false_safe_given_predicted_safe": 0.04878048780487805,
+      "coverage_95": 0.9473684210526315,
+      "nlpd": 3.7149495624107,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.432373745691796
+        },
+        "2\u20134m": {
+          "n": 19,
+          "mae_db": 6.950075739986256
+        },
+        "4m+": {
+          "n": 26,
+          "mae_db": 11.526994833619884
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 55,
+      "test_count": 140,
+      "mae_db": 9.839623467421335,
+      "rmse_db": 12.046848576505337,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 1.0,
+      "nlpd": 3.811069914625497,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.012270476469768
+        },
+        "2\u20134m": {
+          "n": 67,
+          "mae_db": 7.60750252603163
+        },
+        "4m+": {
+          "n": 37,
+          "mae_db": 19.551429163296113
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "shadow-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 141,
+      "mae_db": 9.987505104970033,
+      "rmse_db": 12.440783005729326,
+      "false_safe_fraction": 0.0,
+      "false_safe_given_predicted_safe": 0.0,
+      "coverage_95": 0.9645390070921985,
+      "nlpd": 3.8512879199313246,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.766876617306913
+        },
+        "2\u20134m": {
+          "n": 65,
+          "mae_db": 6.704439061681333
+        },
+        "4m+": {
+          "n": 42,
+          "mae_db": 19.2946637095965
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-a",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 88,
+      "training_count": 62,
+      "test_count": 217,
+      "mae_db": 9.636936873480977,
+      "rmse_db": 12.066702546618268,
+      "false_safe_fraction": 0.004608294930875576,
+      "false_safe_given_predicted_safe": 0.013513513513513514,
+      "coverage_95": 0.9400921658986175,
+      "nlpd": 3.8958793992414082,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 33,
+          "mae_db": 4.290941390073794
+        },
+        "2\u20134m": {
+          "n": 53,
+          "mae_db": 8.569626356798615
+        },
+        "4m+": {
+          "n": 131,
+          "mae_db": 11.415450677577176
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "warehouse-b",
+      "split": "train",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": true,
+      "available_count": 84,
+      "training_count": 59,
+      "test_count": 218,
+      "mae_db": 8.737141865790258,
+      "rmse_db": 11.057306443588349,
+      "false_safe_fraction": 0.01834862385321101,
+      "false_safe_given_predicted_safe": 0.04819277108433735,
+      "coverage_95": 0.9357798165137615,
+      "nlpd": 3.821460309321474,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 31,
+          "mae_db": 5.347445177117053
+        },
+        "2\u20134m": {
+          "n": 52,
+          "mae_db": 6.786492858750407
+        },
+        "4m+": {
+          "n": 135,
+          "mae_db": 10.266877759975012
+        }
+      },
+      "stage": "training selection"
+    },
+    {
+      "scene": "district-a",
+      "split": "validation",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 336,
+      "mae_db": 8.113015453032217,
+      "rmse_db": 9.808953242180124,
+      "false_safe_fraction": 0.002976190476190476,
+      "false_safe_given_predicted_safe": 0.009615384615384616,
+      "coverage_95": 1.0,
+      "nlpd": 4.6167201197701315,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 4.5565023621023295
+        },
+        "2\u20134m": {
+          "n": 44,
+          "mae_db": 4.9781365792397185
+        },
+        "4m+": {
+          "n": 258,
+          "mae_db": 9.116333730313169
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-b",
+      "split": "validation",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 57,
+      "test_count": 333,
+      "mae_db": 6.999638280305186,
+      "rmse_db": 8.879522680497363,
+      "false_safe_fraction": 0.04804804804804805,
+      "false_safe_given_predicted_safe": 0.11594202898550725,
+      "coverage_95": 1.0,
+      "nlpd": 4.6088041349187865,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 37,
+          "mae_db": 4.720007283084158
+        },
+        "2\u20134m": {
+          "n": 49,
+          "mae_db": 4.933157518382364
+        },
+        "4m+": {
+          "n": 247,
+          "mae_db": 7.751071090958613
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-a",
+      "split": "validation",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 87,
+      "training_count": 53,
+      "test_count": 336,
+      "mae_db": 8.12701413101432,
+      "rmse_db": 9.807707924177041,
+      "false_safe_fraction": 0.005952380952380952,
+      "false_safe_given_predicted_safe": 0.01904761904761905,
+      "coverage_95": 1.0,
+      "nlpd": 4.599564080979126,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 5.003636987605799
+        },
+        "2\u20134m": {
+          "n": 44,
+          "mae_db": 5.01671192062929
+        },
+        "4m+": {
+          "n": 258,
+          "mae_db": 9.069061108273356
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "district-b",
+      "split": "validation",
+      "method": "GPR-pathloss",
+      "noise_db": 4.0,
+      "optimize": false,
+      "available_count": 84,
+      "training_count": 57,
+      "test_count": 333,
+      "mae_db": 7.140961928696168,
+      "rmse_db": 9.007360392919777,
+      "false_safe_fraction": 0.036036036036036036,
+      "false_safe_given_predicted_safe": 0.08888888888888889,
+      "coverage_95": 1.0,
+      "nlpd": 4.593039556170613,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 37,
+          "mae_db": 6.003820017405171
+        },
+        "2\u20134m": {
+          "n": 49,
+          "mae_db": 5.1994938409277935
+        },
+        "4m+": {
+          "n": 247,
+          "mae_db": 7.696452564398264
+        }
+      },
+      "stage": "validation selection"
+    },
+    {
+      "scene": "courtyard-a",
+      "split": "test",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 52,
+      "test_count": 312,
+      "mae_db": 7.3560319754653785,
+      "rmse_db": 9.068235383957227,
+      "false_safe_fraction": 0.01282051282051282,
+      "false_safe_given_predicted_safe": 0.04040404040404041,
+      "coverage_95": 1.0,
+      "nlpd": 4.609756437544505,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 34,
+          "mae_db": 3.853461353368729
+        },
+        "2\u20134m": {
+          "n": 37,
+          "mae_db": 4.953994219631485
+        },
+        "4m+": {
+          "n": 241,
+          "mae_db": 8.218948150225296
+        }
+      },
+      "stage": "frozen test"
+    },
+    {
+      "scene": "courtyard-b",
+      "split": "test",
+      "method": "GPR-pathloss",
+      "noise_db": 8.0,
+      "optimize": false,
+      "available_count": 86,
+      "training_count": 57,
+      "test_count": 309,
+      "mae_db": 7.1505042037282935,
+      "rmse_db": 10.094766320117184,
+      "false_safe_fraction": 0.06796116504854369,
+      "false_safe_given_predicted_safe": 0.15441176470588236,
+      "coverage_95": 0.9967637540453075,
+      "nlpd": 4.614015728348827,
+      "distance_bins": {
+        "1\u20132m": {
+          "n": 36,
+          "mae_db": 4.039965748132351
+        },
+        "2\u20134m": {
+          "n": 39,
+          "mae_db": 4.69428679763177
+        },
+        "4m+": {
+          "n": 234,
+          "mae_db": 8.038418149195039
+        }
+      },
+      "stage": "frozen test"
+    }
+  ],
+  "source_campaign": "20261025T085813Z-c98fac62",
+  "software": {
+    "numpy": "2.5.4",
+    "scikit-learn": "1.7.2"
+  },
+  "script_sha256": "5791a7259c331d3389bf78fc83cc2f0808e5a142940b225d16544fd8841bb449",
+  "test_macro_mae_db": {
+    "IDW": 9.554957647849026,
+    "GPR-zero": 14.491633595860652,
+    "GPR-pathloss": 7.253268089596836
+  },
+  "notes": [
+    "Controller never reads reference grids; this study runs offline after collection.",
+    "150-point cap applies to fitting; spatial holdout excludes points near every known observation.",
+    "Top two profiles chosen on train families; final profile on validation families; test scored once per method.",
+    "Empirical beta95 uses validation overprediction divided by latent sigma; it is not a general safety guarantee.",
+    "These recommended profiles were not used retroactively in the physical campaign.",
+    "Few related scene families limit evidence of generalization."
+  ]
+}

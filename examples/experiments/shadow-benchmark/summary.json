@@ -1,0 +1,121 @@
+{
+  "format_version": 1,
+  "cohorts": [
+    {
+      "name": "baseline-100",
+      "campaign_id": "20261025T085813Z-c98fac62",
+      "code_revision": "e85ca09",
+      "implementation_sha256": "80e2ec7d679c2f868c24740c471ae0e96140469884fca102681420029a3552fc",
+      "outcomes": {
+        "attempts": 100,
+        "physical_starts": 100,
+        "successes": 98,
+        "success_fraction_all_attempts": 0.98,
+        "wilson_95_descriptive": [
+          0.9299882092714581,
+          0.9944980324498375
+        ],
+        "recovery_time_s": 14.724999999999994,
+        "recovery_path_length_m": 4.998643988586448,
+        "return_to_known_safe_m": 0.3864158755602567,
+        "path_stretch": 1.0297262688704905
+      },
+      "new_measurements": 4269,
+      "duplicated_seed_measurements": 8620,
+      "wall_duration_s": 1405.1820108890533,
+      "preparation": {
+        "cold": {
+          "n": 10,
+          "median_ready_wall_s": 11.14745339000001
+        },
+        "warm": {
+          "n": 90,
+          "median_ready_wall_s": 2.161847799001407
+        }
+      }
+    },
+    {
+      "name": "gpr-tuned-20",
+      "campaign_id": "20261025T092140Z-0ae08b9c",
+      "code_revision": "e85ca09",
+      "implementation_sha256": "80e2ec7d679c2f868c24740c471ae0e96140469884fca102681420029a3552fc",
+      "outcomes": {
+        "attempts": 20,
+        "physical_starts": 20,
+        "successes": 18,
+        "success_fraction_all_attempts": 0.9,
+        "wilson_95_descriptive": [
+          0.6989663547715196,
+          0.9721335187862309
+        ],
+        "recovery_time_s": 14.625,
+        "recovery_path_length_m": 5.239245878788176,
+        "return_to_known_safe_m": 0.5907987036478575,
+        "path_stretch": 1.0264452885134063
+      },
+      "new_measurements": 1149,
+      "duplicated_seed_measurements": 1724,
+      "wall_duration_s": 427.3845229148865,
+      "preparation": {
+        "cold": {
+          "n": 10,
+          "median_ready_wall_s": 11.771746205500676
+        },
+        "warm": {
+          "n": 10,
+          "median_ready_wall_s": 3.138094262994855
+        }
+      }
+    },
+    {
+      "name": "navigation-30",
+      "campaign_id": "20261025T093218Z-328b97cc",
+      "code_revision": "103767a",
+      "implementation_sha256": "896581df5d3d995e4bd14534ac7cf67d02c629bae2e82e255d51431379bde41c",
+      "outcomes": {
+        "attempts": 30,
+        "physical_starts": 30,
+        "successes": 30,
+        "success_fraction_all_attempts": 1.0,
+        "wilson_95_descriptive": [
+          0.8864866068260369,
+          1.0
+        ],
+        "recovery_time_s": 15.525,
+        "recovery_path_length_m": 5.601830054069843,
+        "return_to_known_safe_m": 0.2920618233826908,
+        "path_stretch": 1.0310880863575116
+      },
+      "new_measurements": 962,
+      "duplicated_seed_measurements": 2586,
+      "wall_duration_s": 367.46649074554443,
+      "preparation": {
+        "cold": {
+          "n": 10,
+          "median_ready_wall_s": 10.895658165500208
+        },
+        "warm": {
+          "n": 20,
+          "median_ready_wall_s": 2.6871056485033478
+        }
+      }
+    }
+  ],
+  "unique_source_episodes": 10,
+  "source_measurements": 1228,
+  "new_recovery_measurements": 6380,
+  "reference_measurements": 7356,
+  "physical_recovery_episodes": 150,
+  "physical_episodes_including_common_sources": 160,
+  "curated_measurements_without_seed_duplication": 14964,
+  "geometries": 5,
+  "rf_fields": 10,
+  "coordinate_frame": "world Z-up, metres",
+  "notes": [
+    "Paired recovery episodes start from rest at common measured shadow checkpoints.",
+    "10 full source missions are counted once; repeated seed histories are excluded from new measurements.",
+    "The standalone browser demo and aborted diagnostic pilots are separate from these cohort counts.",
+    "Success uses synthetic narrowband RSSI, not packet delivery; repeated fields/histories are dependent.",
+    "Numerical sensitivity is reported in convergence.json; this is not hardware or full-wave validation."
+  ]
+}

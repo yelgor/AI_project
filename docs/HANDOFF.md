@@ -4,6 +4,10 @@
 RSSI recovery B0/B1/IDW/GPR, live/replay і runner. Власний радіодвижок,
 фізика Husky або планувальник шляху не писалися.
 
+Готовий корпус: [shadow-benchmark](../examples/experiments/shadow-benchmark/README.md)
+із 150 physical recovery, 10 повними source-місіями, reference, відео й усіма
+невдачами. [ITERATIONS.md](ITERATIONS.md) пояснює, що виявлено й виправлено.
+
 ## Порядок читання
 
 1. [README](../README.md): інсталяція, швидкий запуск і checks.
@@ -44,3 +48,5 @@ world pose + full antenna quaternion. Немає CAD/mesh import, груп doorw
 динамічні перешкоди, SLAM/AMCL та реальний modem link не перевірені.
 Ray tracing не доводить full-wave/real-world accuracy; потрібні convergence
 checks і калібрування. Не підміняти пропуски/помилки нульовим RSSI.
+
+Окремий перевірений стан і команди приймальних тестів: [VERIFICATION.md](VERIFICATION.md).

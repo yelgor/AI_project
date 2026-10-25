@@ -56,3 +56,26 @@ test('one button prepares a physical Gazebo shadow mission and recovers',async({
  await page.screenshot({path:'test-results/mission-recovered.png',fullPage:true});
  expect(errors).toEqual([]);
 });
+
+test('constructor scene and custom 3D receiver mount survive the manual mission launch',async({page,request})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const scene=await(await request.get('/api/preset/room')).json();scene.name='custom-room';scene.rx.mount_position=[.25,0,.8];
+ expect((await request.post('/api/scene',{data:scene})).ok()).toBeTruthy();
+ await page.goto('/experiments.html');
+ await page.locator('#mission-select').selectOption('current');
+ await expect(page.locator('#drive-mode')).toHaveValue('manual');
+ await page.locator('#start-mission').click();
+ await expect.poll(()=>page.evaluate(()=>window.experimentLab?.getState()?.experiment?.mode),{timeout:90000}).toBe('TELEOP');
+ let state=await page.evaluate(()=>window.experimentLab.getState());
+ expect(state.scenario.name).toBe('custom-room');expect(state.scenario.tx).toEqual(scene.tx);
+ expect(state.scenario.rx.mount_position).toEqual([.25,0,.8]);expect(state.scenario.rx.mode).toBe('husky');
+ const start=state.robot_pose.position;
+ await page.locator('#viewport canvas').click();await page.keyboard.down('w');await page.waitForTimeout(2000);await page.keyboard.up('w');
+ await page.waitForTimeout(700);state=await page.evaluate(()=>window.experimentLab.getState());
+ expect(Math.hypot(...state.robot_pose.position.map((v,i)=>v-start[i]))).toBeGreaterThan(.1);
+ const m=state.measurement;
+ expect(Math.hypot(...m.position_m.map((v,i)=>v-m.robot_pose.position[i]))).toBeCloseTo(Math.hypot(.25,.8),4);
+ await page.locator('#stop-mission').click();
+ await expect.poll(()=>page.evaluate(()=>window.experimentLab.getState()?.experiment?.status)).toBe('CANCELLED');
+ expect(errors).toEqual([]);
+});

@@ -1,0 +1,3927 @@
+{
+  "valid_for_curated_benchmark": false,
+  "manifest": {
+    "campaign_id": "20261025T084042Z-ada42719",
+    "status": "cancelled",
+    "total": 140,
+    "completed": 19,
+    "successes": 14,
+    "failures": 5,
+    "workers": 2,
+    "config": {
+      "runs": 140,
+      "workers": 2,
+      "methods": [
+        "B0",
+        "B1",
+        "IDW",
+        "GPR-zero",
+        "GPR-pathloss"
+      ],
+      "betas": [
+        0,
+        1
+      ],
+      "protocol": "paired"
+    },
+    "active_workers": {},
+    "recent": [
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085128Z-c124ac81",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "B1",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "1e843710e5ad",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:51:28.348523+00:00",
+        "finished_at": "2026-10-25T08:51:43.265328+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8624583119963063
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 13.75,
+          "recovery_time_s": 13.75,
+          "path_length_m": 3.834514928170408,
+          "recovery_path_length_m": 3.8344149343194283,
+          "observation_count": 113,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 14.915522890994907
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8624583119963063,
+          "ready_wall_s": 1.1704869019959006,
+          "setup_retries": []
+        },
+        "task_index": 127,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085144Z-fbcf00cd",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "GPR-pathloss",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "30c7caae6990",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:51:44.903753+00:00",
+        "finished_at": "2026-10-25T08:51:59.906706+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8719857679971028
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 13.699999999999989,
+          "recovery_time_s": 13.699999999999989,
+          "path_length_m": 5.2917994322510795,
+          "recovery_path_length_m": 5.291449453772679,
+          "observation_count": 112,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 15.001402417998179
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8719857679971028,
+          "ready_wall_s": 1.1793397539950092,
+          "setup_retries": []
+        },
+        "task_index": 131,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T084839Z-61a83893",
+        "status": "FAILED",
+        "config": {
+          "method": "GPR-zero",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-0",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "e3fe207eb356",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:48:39.199706+00:00",
+        "finished_at": "2026-10-25T08:52:04.535620+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.9208286779976333
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": false,
+          "duration_sim_s": 150.05,
+          "recovery_time_s": 150.05,
+          "path_length_m": 8.883463655201504,
+          "recovery_path_length_m": 8.883463655201504,
+          "observation_count": 373,
+          "replans": 5,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 205.33388521899906
+        },
+        "reason": "Experiment timeout",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.9208286779976333,
+          "ready_wall_s": 1.2300286289973883,
+          "setup_retries": []
+        },
+        "task_index": 59,
+        "worker_index": 0
+      },
+      {
+        "status": "SETUP_FAILED",
+        "reason": "Gazebo pose did not settle after reset",
+        "metrics": {},
+        "config": {
+          "method": "GPR-pathloss",
+          "beta": 1.0,
+          "label": "courtyard-a",
+          "split": "test",
+          "pair_id": "courtyard-a-1"
+        },
+        "task_index": 132,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085219Z-15232d4b",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "GPR-zero",
+          "optimize_gpr": false,
+          "beta": 1.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "c042948a13f8",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:52:19.840644+00:00",
+        "finished_at": "2026-10-25T08:54:50.671163+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "cold",
+          "radio_reused": false,
+          "wall_s": 2.3218048740018276
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 125.6,
+          "recovery_time_s": 125.6,
+          "path_length_m": 24.2339756886973,
+          "recovery_path_length_m": 24.233974688091276,
+          "observation_count": 327,
+          "replans": 5,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 150.82902775399998
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "cold",
+          "radio_reused": false,
+          "wall_s": 2.3218048740018276,
+          "ready_wall_s": 10.517815122999309,
+          "setup_retries": []
+        },
+        "task_index": 130,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085206Z-2f345de8",
+        "status": "FAILED",
+        "config": {
+          "method": "GPR-zero",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "2fae08753387",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:52:06.882961+00:00",
+        "finished_at": "2026-10-25T08:55:05.638786+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.9344296510025742
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": false,
+          "duration_sim_s": 150.05,
+          "recovery_time_s": 150.05,
+          "path_length_m": 13.946103800056738,
+          "recovery_path_length_m": 13.945903812354778,
+          "observation_count": 375,
+          "replans": 8,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 178.75305520700203
+        },
+        "reason": "Experiment timeout",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.9344296510025742,
+          "ready_wall_s": 1.2466176689995336,
+          "setup_retries": []
+        },
+        "task_index": 129,
+        "worker_index": 0
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085452Z-d20133d7",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "IDW",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-a",
+          "pair_id": "courtyard-a-1",
+          "history_from": "20261025T084057Z-12155bbf",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            4.0,
+            3.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "b8350f4baeea",
+        "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+        "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+        "started_at": "2026-10-25T08:54:52.649569+00:00",
+        "finished_at": "2026-10-25T08:55:06.996254+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8452207700029248
+        },
+        "shadow_preflight": {
+          "goal": [
+            4.0,
+            3.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              4.0,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.15,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              3.85,
+              3.0,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              3.15,
+              0.8322799999999999
+            ],
+            [
+              4.0,
+              2.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -68.67195913097314,
+            -79.88042982700162,
+            -59.70581508029372,
+            -59.7310876683201,
+            -63.49929078414833
+          ],
+          "worst_rssi_dbm": -59.70581508029372,
+          "margin_db": 12.705815080293718,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 12.550000000000011,
+          "recovery_time_s": 12.550000000000011,
+          "path_length_m": 4.611919668480477,
+          "recovery_path_length_m": 4.611919668480477,
+          "observation_count": 110,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 14.345125630003167
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8452207700029248,
+          "ready_wall_s": 1.1532306879962562,
+          "setup_retries": []
+        },
+        "task_index": 128,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085509Z-902349c0",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "B0",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-b",
+          "pair_id": "courtyard-b-0",
+          "history_from": "20261025T084100Z-98950391",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            5.5,
+            4.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "1921906f1884",
+        "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+        "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+        "started_at": "2026-10-25T08:55:09.775278+00:00",
+        "finished_at": "2026-10-25T08:55:27.488221+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": false,
+          "wall_s": 2.2674464430019725
+        },
+        "shadow_preflight": {
+          "goal": [
+            5.5,
+            4.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              5.5,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.65,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.35,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              4.15,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              3.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -60.245415429774766,
+            -58.05605153609328,
+            -71.55643159680332,
+            -57.88430347301683,
+            -59.80905230793252
+          ],
+          "worst_rssi_dbm": -57.88430347301683,
+          "margin_db": 10.884303473016828,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 15.949999999999989,
+          "recovery_time_s": 15.949999999999989,
+          "path_length_m": 3.7486954203574583,
+          "recovery_path_length_m": 3.7484672636881395,
+          "observation_count": 116,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 17.71162575299968
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": false,
+          "wall_s": 2.2674464430019725,
+          "ready_wall_s": 2.8759420229980606,
+          "setup_retries": []
+        },
+        "task_index": 63,
+        "worker_index": 0
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085510Z-0bae57e3",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "B1",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-b",
+          "pair_id": "courtyard-b-0",
+          "history_from": "20261025T084100Z-98950391",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            5.5,
+            4.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "efaaf4a07598",
+        "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+        "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+        "started_at": "2026-10-25T08:55:10.530180+00:00",
+        "finished_at": "2026-10-25T08:55:28.516867+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": false,
+          "wall_s": 2.4408994640034507
+        },
+        "shadow_preflight": {
+          "goal": [
+            5.5,
+            4.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              5.5,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.65,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.35,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              4.15,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              3.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -60.245415429774766,
+            -58.05605153609328,
+            -71.55643159680332,
+            -57.88430347301683,
+            -59.80905230793252
+          ],
+          "worst_rssi_dbm": -57.88430347301683,
+          "margin_db": 10.884303473016828,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 15.799999999999983,
+          "recovery_time_s": 15.799999999999983,
+          "path_length_m": 3.753428079436101,
+          "recovery_path_length_m": 3.753384554681489,
+          "observation_count": 117,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 17.985259081004187
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": false,
+          "wall_s": 2.4408994640034507,
+          "ready_wall_s": 3.0523229710015585,
+          "setup_retries": []
+        },
+        "task_index": 64,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085530Z-815bb031",
+        "status": "RECOVERED_WAIT",
+        "config": {
+          "method": "GPR-pathloss",
+          "optimize_gpr": false,
+          "beta": 1.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-b",
+          "pair_id": "courtyard-b-0",
+          "history_from": "20261025T084100Z-98950391",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            5.5,
+            4.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "4487ea73a116",
+        "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+        "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+        "started_at": "2026-10-25T08:55:30.201152+00:00",
+        "finished_at": "2026-10-25T08:55:44.362183+00:00",
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8735718549942249
+        },
+        "shadow_preflight": {
+          "goal": [
+            5.5,
+            4.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              5.5,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.65,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.35,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              4.15,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              3.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -60.245415429774766,
+            -58.05605153609328,
+            -71.55643159680332,
+            -57.88430347301683,
+            -59.80905230793252
+          ],
+          "worst_rssi_dbm": -57.88430347301683,
+          "margin_db": 10.884303473016828,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {
+          "success": true,
+          "duration_sim_s": 13.150000000000006,
+          "recovery_time_s": 13.150000000000006,
+          "path_length_m": 5.280819124255009,
+          "recovery_path_length_m": 5.280520707952132,
+          "observation_count": 111,
+          "replans": 1,
+          "operator_interventions": 0,
+          "loss_line_of_sight": false,
+          "wall_duration_s": 14.15977976800059
+        },
+        "reason": "RSSI proxy stable above q_safe",
+        "execution_profile": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8735718549942249,
+          "ready_wall_s": 1.1806432939993101,
+          "setup_retries": []
+        },
+        "task_index": 69,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085546Z-6f78569d",
+        "status": "RUN_FAILED",
+        "config": {
+          "method": "GPR-zero",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-b",
+          "pair_id": "courtyard-b-0",
+          "history_from": "20261025T084100Z-98950391",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            5.5,
+            4.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "8d68ac4975bc",
+        "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+        "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+        "started_at": "2026-10-25T08:55:46.210889+00:00",
+        "finished_at": null,
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 1.2268884020013502
+        },
+        "shadow_preflight": {
+          "goal": [
+            5.5,
+            4.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              5.5,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.65,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.35,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              4.15,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              3.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -60.245415429774766,
+            -58.05605153609328,
+            -71.55643159680332,
+            -57.88430347301683,
+            -59.80905230793252
+          ],
+          "worst_rssi_dbm": -57.88430347301683,
+          "margin_db": 10.884303473016828,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {},
+        "reason": "Campaign cancelled",
+        "task_index": 66,
+        "worker_index": 1
+      },
+      {
+        "format_version": 1,
+        "experiment_id": "20261025T085529Z-69cbdc81",
+        "status": "RUN_FAILED",
+        "config": {
+          "method": "GPR-pathloss",
+          "optimize_gpr": false,
+          "beta": 0.0,
+          "q_safe_dbm": -47.0,
+          "hysteresis_db": 1.0,
+          "degraded_s": 1.0,
+          "stable_s": 1.0,
+          "timeout_s": 150.0,
+          "stale_s": 8.0,
+          "noise_db": 2.0,
+          "grid_step_m": 1.5,
+          "monitor_window_s": 2.0,
+          "bounds": [
+            -11.0,
+            -11.0,
+            11.0,
+            11.0
+          ],
+          "route": [],
+          "label": "courtyard-b",
+          "pair_id": "courtyard-b-0",
+          "history_from": "20261025T084100Z-98950391",
+          "save_cir": false,
+          "require_shadow_loss": true,
+          "shadow_goal": [
+            5.5,
+            4.0
+          ],
+          "shadow_radius_m": 0.15,
+          "split": "test"
+        },
+        "scene_revision": "7bac9aa979c6",
+        "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+        "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+        "started_at": "2026-10-25T08:55:29.064136+00:00",
+        "finished_at": null,
+        "criterion": "synthetic RSSI proxy; not packet delivery",
+        "localization": "Gazebo ground truth",
+        "static_obstacles_only": true,
+        "software": {
+          "sionna-rt": "2.2.0",
+          "mitsuba": "3.9.1",
+          "numpy": "2.5.4",
+          "scikit-learn": "1.7.2"
+        },
+        "navigation_software": {
+          "nav2_planner": "1.3.13",
+          "nav2_controller": "1.3.13",
+          "clearpath_gz": "2.9.4"
+        },
+        "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+        "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+        "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+        "preparation": {
+          "kind": "warm",
+          "radio_reused": true,
+          "wall_s": 0.8612269239965826
+        },
+        "shadow_preflight": {
+          "goal": [
+            5.5,
+            4.0
+          ],
+          "radius_m": 0.15,
+          "positions_m": [
+            [
+              5.5,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.65,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.35,
+              4.0,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              4.15,
+              0.8322799999999999
+            ],
+            [
+              5.5,
+              3.85,
+              0.8322799999999999
+            ]
+          ],
+          "rssi_dbm": [
+            -60.245415429774766,
+            -58.05605153609328,
+            -71.55643159680332,
+            -57.88430347301683,
+            -59.80905230793252
+          ],
+          "worst_rssi_dbm": -57.88430347301683,
+          "margin_db": 10.884303473016828,
+          "controller_training": false,
+          "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+        },
+        "solver_runtime": {
+          "drjit_merge_functions": true,
+          "isolation": "process-per-scene"
+        },
+        "metrics": {},
+        "reason": "Campaign cancelled",
+        "task_index": 68,
+        "worker_index": 0
+      }
+    ],
+    "started_at": "2026-10-25T08:40:42.360523+00:00",
+    "wall_started": 1792917642.3605328,
+    "error": null,
+    "mode": "physical Gazebo episodes; mounted receiver; measured RSSI",
+    "protocol": "paired",
+    "phase": "episodes",
+    "sources_completed": 10,
+    "sources_total": 10,
+    "quality": {
+      "attempts": 19,
+      "physical_starts": 18,
+      "successes": 14,
+      "success_fraction_all_attempts": 0.7368421052631579,
+      "wilson_95_descriptive": [
+        0.5120844910218552,
+        0.8819358765321723
+      ],
+      "recovery_time_s": 13.9,
+      "recovery_path_length_m": 4.654387765134568,
+      "return_to_known_safe_m": 0.1525314719475597,
+      "path_stretch": 1.0278396225523836
+    },
+    "wall_duration_s": 930.4940071105957
+  },
+  "attempts": [
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084755Z-810e9a85",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B1",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "b79bc376535a",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:47:55.880697+00:00",
+      "finished_at": "2026-10-25T08:48:14.007742+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.685814805998234
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.8,
+        "recovery_time_s": 13.8,
+        "path_length_m": 3.849043187721592,
+        "recovery_path_length_m": 3.849043187721592,
+        "observation_count": 112,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 18.12557343699882
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.685814805998234,
+        "ready_wall_s": 9.969903305995103,
+        "setup_retries": []
+      },
+      "task_index": 57,
+      "worker_index": 0
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084757Z-53eb8770",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B0",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "8e553d55be5d",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:47:57.813888+00:00",
+      "finished_at": "2026-10-25T08:48:15.801612+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.7549602900035097
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.7,
+        "recovery_time_s": 13.7,
+        "path_length_m": 3.8367262216099274,
+        "recovery_path_length_m": 3.8367262216099274,
+        "observation_count": 112,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 17.98592783499771
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.7549602900035097,
+        "ready_wall_s": 11.537384215000202,
+        "setup_retries": []
+      },
+      "task_index": 56,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084815Z-5a1f5091",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-pathloss",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "10fa924e8dd6",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:48:15.698331+00:00",
+      "finished_at": "2026-10-25T08:48:37.617999+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9530320050034788
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 15.599999999999998,
+        "recovery_time_s": 15.599999999999998,
+        "path_length_m": 6.132288224553174,
+        "recovery_path_length_m": 6.132088236851215,
+        "observation_count": 116,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 21.918317672003468
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9530320050034788,
+        "ready_wall_s": 1.2644179150011041,
+        "setup_retries": []
+      },
+      "task_index": 61,
+      "worker_index": 0
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084817Z-f3ab6bc6",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-pathloss",
+        "optimize_gpr": false,
+        "beta": 1.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "e45b94ffcda3",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:48:17.616864+00:00",
+      "finished_at": "2026-10-25T08:48:37.965001+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9764456880002399
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 15.5,
+        "recovery_time_s": 15.5,
+        "path_length_m": 6.4972139914986435,
+        "recovery_path_length_m": 6.496964006871194,
+        "observation_count": 116,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 20.346919044997776
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9764456880002399,
+        "ready_wall_s": 1.285521570003766,
+        "setup_retries": []
+      },
+      "task_index": 62,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084840Z-f2fc0ce2",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-zero",
+        "optimize_gpr": false,
+        "beta": 1.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "3e098cb0ad0e",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:48:40.116311+00:00",
+      "finished_at": "2026-10-25T08:50:48.791144+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 1.3392707630046061
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 86.95,
+        "recovery_time_s": 86.95,
+        "path_length_m": 24.466987853110957,
+        "recovery_path_length_m": 24.466986646576153,
+        "observation_count": 254,
+        "replans": 4,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 128.67255225699773
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 1.3392707630046061,
+        "ready_wall_s": 1.6480115270023816,
+        "setup_retries": []
+      },
+      "task_index": 60,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085051Z-cef9636a",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "IDW",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "9d49c520fc91",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:50:51.026371+00:00",
+      "finished_at": "2026-10-25T08:51:08.633448+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9194434879973414
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.599999999999994,
+        "recovery_time_s": 13.599999999999994,
+        "path_length_m": 4.697155843341573,
+        "recovery_path_length_m": 4.696855861788659,
+        "observation_count": 112,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 17.605640059002326
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9194434879973414,
+        "ready_wall_s": 1.228460747995996,
+        "setup_retries": []
+      },
+      "task_index": 58,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085110Z-81487642",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B0",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "c48e6a9ab0f5",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:51:10.155531+00:00",
+      "finished_at": "2026-10-25T08:51:26.767784+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9594930309976917
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 14.0,
+        "recovery_time_s": 14.0,
+        "path_length_m": 3.8212497351993027,
+        "recovery_path_length_m": 3.8210497474973595,
+        "observation_count": 113,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 16.610899027000414
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9594930309976917,
+        "ready_wall_s": 1.264515543996822,
+        "setup_retries": []
+      },
+      "task_index": 126,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085128Z-c124ac81",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B1",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "1e843710e5ad",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:51:28.348523+00:00",
+      "finished_at": "2026-10-25T08:51:43.265328+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8624583119963063
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.75,
+        "recovery_time_s": 13.75,
+        "path_length_m": 3.834514928170408,
+        "recovery_path_length_m": 3.8344149343194283,
+        "observation_count": 113,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 14.915522890994907
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8624583119963063,
+        "ready_wall_s": 1.1704869019959006,
+        "setup_retries": []
+      },
+      "task_index": 127,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085144Z-fbcf00cd",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-pathloss",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "30c7caae6990",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:51:44.903753+00:00",
+      "finished_at": "2026-10-25T08:51:59.906706+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8719857679971028
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.699999999999989,
+        "recovery_time_s": 13.699999999999989,
+        "path_length_m": 5.2917994322510795,
+        "recovery_path_length_m": 5.291449453772679,
+        "observation_count": 112,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 15.001402417998179
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8719857679971028,
+        "ready_wall_s": 1.1793397539950092,
+        "setup_retries": []
+      },
+      "task_index": 131,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T084839Z-61a83893",
+      "status": "FAILED",
+      "config": {
+        "method": "GPR-zero",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-0",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "e3fe207eb356",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:48:39.199706+00:00",
+      "finished_at": "2026-10-25T08:52:04.535620+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9208286779976333
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": false,
+        "duration_sim_s": 150.05,
+        "recovery_time_s": 150.05,
+        "path_length_m": 8.883463655201504,
+        "recovery_path_length_m": 8.883463655201504,
+        "observation_count": 373,
+        "replans": 5,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 205.33388521899906
+      },
+      "reason": "Experiment timeout",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9208286779976333,
+        "ready_wall_s": 1.2300286289973883,
+        "setup_retries": []
+      },
+      "task_index": 59,
+      "worker_index": 0
+    },
+    {
+      "status": "SETUP_FAILED",
+      "reason": "Gazebo pose did not settle after reset",
+      "metrics": {},
+      "config": {
+        "method": "GPR-pathloss",
+        "beta": 1.0,
+        "label": "courtyard-a",
+        "split": "test",
+        "pair_id": "courtyard-a-1"
+      },
+      "task_index": 132,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085219Z-15232d4b",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-zero",
+        "optimize_gpr": false,
+        "beta": 1.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "c042948a13f8",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:52:19.840644+00:00",
+      "finished_at": "2026-10-25T08:54:50.671163+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.3218048740018276
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 125.6,
+        "recovery_time_s": 125.6,
+        "path_length_m": 24.2339756886973,
+        "recovery_path_length_m": 24.233974688091276,
+        "observation_count": 327,
+        "replans": 5,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 150.82902775399998
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "cold",
+        "radio_reused": false,
+        "wall_s": 2.3218048740018276,
+        "ready_wall_s": 10.517815122999309,
+        "setup_retries": []
+      },
+      "task_index": 130,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085206Z-2f345de8",
+      "status": "FAILED",
+      "config": {
+        "method": "GPR-zero",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "2fae08753387",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:52:06.882961+00:00",
+      "finished_at": "2026-10-25T08:55:05.638786+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9344296510025742
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": false,
+        "duration_sim_s": 150.05,
+        "recovery_time_s": 150.05,
+        "path_length_m": 13.946103800056738,
+        "recovery_path_length_m": 13.945903812354778,
+        "observation_count": 375,
+        "replans": 8,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 178.75305520700203
+      },
+      "reason": "Experiment timeout",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.9344296510025742,
+        "ready_wall_s": 1.2466176689995336,
+        "setup_retries": []
+      },
+      "task_index": 129,
+      "worker_index": 0
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085452Z-d20133d7",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "IDW",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-a",
+        "pair_id": "courtyard-a-1",
+        "history_from": "20261025T084057Z-12155bbf",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          4.0,
+          3.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "b8350f4baeea",
+      "scene_sha256": "6dd237ee29e3034b85faa64af33389845c8b42c75437f55f44daf271140579a2",
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff",
+      "started_at": "2026-10-25T08:54:52.649569+00:00",
+      "finished_at": "2026-10-25T08:55:06.996254+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8452207700029248
+      },
+      "shadow_preflight": {
+        "goal": [
+          4.0,
+          3.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            4.0,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.15,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            3.85,
+            3.0,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            3.15,
+            0.8322799999999999
+          ],
+          [
+            4.0,
+            2.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -68.67195913097314,
+          -79.88042982700162,
+          -59.70581508029372,
+          -59.7310876683201,
+          -63.49929078414833
+        ],
+        "worst_rssi_dbm": -59.70581508029372,
+        "margin_db": 12.705815080293718,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 12.550000000000011,
+        "recovery_time_s": 12.550000000000011,
+        "path_length_m": 4.611919668480477,
+        "recovery_path_length_m": 4.611919668480477,
+        "observation_count": 110,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 14.345125630003167
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8452207700029248,
+        "ready_wall_s": 1.1532306879962562,
+        "setup_retries": []
+      },
+      "task_index": 128,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085509Z-902349c0",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B0",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-b",
+        "pair_id": "courtyard-b-0",
+        "history_from": "20261025T084100Z-98950391",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "1921906f1884",
+      "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+      "started_at": "2026-10-25T08:55:09.775278+00:00",
+      "finished_at": "2026-10-25T08:55:27.488221+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": false,
+        "wall_s": 2.2674464430019725
+      },
+      "shadow_preflight": {
+        "goal": [
+          5.5,
+          4.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            5.5,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.65,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.35,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            4.15,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            3.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -60.245415429774766,
+          -58.05605153609328,
+          -71.55643159680332,
+          -57.88430347301683,
+          -59.80905230793252
+        ],
+        "worst_rssi_dbm": -57.88430347301683,
+        "margin_db": 10.884303473016828,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 15.949999999999989,
+        "recovery_time_s": 15.949999999999989,
+        "path_length_m": 3.7486954203574583,
+        "recovery_path_length_m": 3.7484672636881395,
+        "observation_count": 116,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 17.71162575299968
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": false,
+        "wall_s": 2.2674464430019725,
+        "ready_wall_s": 2.8759420229980606,
+        "setup_retries": []
+      },
+      "task_index": 63,
+      "worker_index": 0
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085510Z-0bae57e3",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "B1",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-b",
+        "pair_id": "courtyard-b-0",
+        "history_from": "20261025T084100Z-98950391",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "efaaf4a07598",
+      "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+      "started_at": "2026-10-25T08:55:10.530180+00:00",
+      "finished_at": "2026-10-25T08:55:28.516867+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": false,
+        "wall_s": 2.4408994640034507
+      },
+      "shadow_preflight": {
+        "goal": [
+          5.5,
+          4.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            5.5,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.65,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.35,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            4.15,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            3.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -60.245415429774766,
+          -58.05605153609328,
+          -71.55643159680332,
+          -57.88430347301683,
+          -59.80905230793252
+        ],
+        "worst_rssi_dbm": -57.88430347301683,
+        "margin_db": 10.884303473016828,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 15.799999999999983,
+        "recovery_time_s": 15.799999999999983,
+        "path_length_m": 3.753428079436101,
+        "recovery_path_length_m": 3.753384554681489,
+        "observation_count": 117,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 17.985259081004187
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": false,
+        "wall_s": 2.4408994640034507,
+        "ready_wall_s": 3.0523229710015585,
+        "setup_retries": []
+      },
+      "task_index": 64,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085530Z-815bb031",
+      "status": "RECOVERED_WAIT",
+      "config": {
+        "method": "GPR-pathloss",
+        "optimize_gpr": false,
+        "beta": 1.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-b",
+        "pair_id": "courtyard-b-0",
+        "history_from": "20261025T084100Z-98950391",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "4487ea73a116",
+      "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+      "started_at": "2026-10-25T08:55:30.201152+00:00",
+      "finished_at": "2026-10-25T08:55:44.362183+00:00",
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8735718549942249
+      },
+      "shadow_preflight": {
+        "goal": [
+          5.5,
+          4.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            5.5,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.65,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.35,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            4.15,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            3.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -60.245415429774766,
+          -58.05605153609328,
+          -71.55643159680332,
+          -57.88430347301683,
+          -59.80905230793252
+        ],
+        "worst_rssi_dbm": -57.88430347301683,
+        "margin_db": 10.884303473016828,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {
+        "success": true,
+        "duration_sim_s": 13.150000000000006,
+        "recovery_time_s": 13.150000000000006,
+        "path_length_m": 5.280819124255009,
+        "recovery_path_length_m": 5.280520707952132,
+        "observation_count": 111,
+        "replans": 1,
+        "operator_interventions": 0,
+        "loss_line_of_sight": false,
+        "wall_duration_s": 14.15977976800059
+      },
+      "reason": "RSSI proxy stable above q_safe",
+      "execution_profile": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8735718549942249,
+        "ready_wall_s": 1.1806432939993101,
+        "setup_retries": []
+      },
+      "task_index": 69,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085546Z-6f78569d",
+      "status": "RUN_FAILED",
+      "config": {
+        "method": "GPR-zero",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-b",
+        "pair_id": "courtyard-b-0",
+        "history_from": "20261025T084100Z-98950391",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "8d68ac4975bc",
+      "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+      "started_at": "2026-10-25T08:55:46.210889+00:00",
+      "finished_at": null,
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 1.2268884020013502
+      },
+      "shadow_preflight": {
+        "goal": [
+          5.5,
+          4.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            5.5,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.65,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.35,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            4.15,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            3.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -60.245415429774766,
+          -58.05605153609328,
+          -71.55643159680332,
+          -57.88430347301683,
+          -59.80905230793252
+        ],
+        "worst_rssi_dbm": -57.88430347301683,
+        "margin_db": 10.884303473016828,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {},
+      "reason": "Campaign cancelled",
+      "task_index": 66,
+      "worker_index": 1
+    },
+    {
+      "format_version": 1,
+      "experiment_id": "20261025T085529Z-69cbdc81",
+      "status": "RUN_FAILED",
+      "config": {
+        "method": "GPR-pathloss",
+        "optimize_gpr": false,
+        "beta": 0.0,
+        "q_safe_dbm": -47.0,
+        "hysteresis_db": 1.0,
+        "degraded_s": 1.0,
+        "stable_s": 1.0,
+        "timeout_s": 150.0,
+        "stale_s": 8.0,
+        "noise_db": 2.0,
+        "grid_step_m": 1.5,
+        "monitor_window_s": 2.0,
+        "bounds": [
+          -11.0,
+          -11.0,
+          11.0,
+          11.0
+        ],
+        "route": [],
+        "label": "courtyard-b",
+        "pair_id": "courtyard-b-0",
+        "history_from": "20261025T084100Z-98950391",
+        "save_cir": false,
+        "require_shadow_loss": true,
+        "shadow_goal": [
+          5.5,
+          4.0
+        ],
+        "shadow_radius_m": 0.15,
+        "split": "test"
+      },
+      "scene_revision": "7bac9aa979c6",
+      "scene_sha256": "e9223587eef889205fb4ea614330ff84e990db5035e0c6fca519967035c5aac3",
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231",
+      "started_at": "2026-10-25T08:55:29.064136+00:00",
+      "finished_at": null,
+      "criterion": "synthetic RSSI proxy; not packet delivery",
+      "localization": "Gazebo ground truth",
+      "static_obstacles_only": true,
+      "software": {
+        "sionna-rt": "2.2.0",
+        "mitsuba": "3.9.1",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.7.2"
+      },
+      "navigation_software": {
+        "nav2_planner": "1.3.13",
+        "nav2_controller": "1.3.13",
+        "clearpath_gz": "2.9.4"
+      },
+      "implementation_sha256": "9a6b5abd0b496162adbaefbd23a3c32d8d9d12e7f0353060643063811acd12ba",
+      "navigation_config_yaml": "# Upstream Nav2 Jazzy plugins. Ground-truth localization is supplied by the runtime.\ncommon:\n  use_sim_time: true\n  enable_stamped_cmd_vel: false\nplanner_server:\n  expected_planner_frequency: 1.0\n  planner_plugins: [GridBased]\n  GridBased:\n    plugin: nav2_navfn_planner::NavfnPlanner\n    tolerance: 0.25\n    use_astar: true\n    allow_unknown: false\ncontroller_server:\n  controller_frequency: 20.0\n  min_x_velocity_threshold: 0.001\n  min_y_velocity_threshold: 0.001\n  min_theta_velocity_threshold: 0.001\n  failure_tolerance: 1.0\n  odom_topic: platform/odom/filtered\n  progress_checker_plugins: [progress_checker]\n  goal_checker_plugins: [goal_checker]\n  controller_plugins: [FollowPath]\n  progress_checker:\n    plugin: nav2_controller::SimpleProgressChecker\n    required_movement_radius: 0.15\n    movement_time_allowance: 20.0\n  goal_checker:\n    plugin: nav2_controller::SimpleGoalChecker\n    xy_goal_tolerance: 0.03\n    yaw_goal_tolerance: 0.05\n    stateful: false\n  FollowPath:\n    plugin: nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController\n    desired_linear_vel: 0.6\n    lookahead_dist: 0.65\n    min_lookahead_dist: 0.35\n    max_lookahead_dist: 1.0\n    use_velocity_scaled_lookahead_dist: true\n    rotate_to_heading_angular_vel: 1.0\n    use_rotate_to_heading: true\n    max_angular_accel: 1.2\n    transform_tolerance: 0.5\n    max_allowed_time_to_collision_up_to_carrot: 1.0\n    use_collision_detection: true\nbehavior_server:\n  local_costmap_topic: local_costmap/costmap_raw\n  global_costmap_topic: global_costmap/costmap_raw\n  local_footprint_topic: local_costmap/published_footprint\n  global_footprint_topic: global_costmap/published_footprint\n  cycle_frequency: 10.0\n  behavior_plugins: [spin, backup, wait]\n  spin: {plugin: nav2_behaviors::Spin}\n  backup: {plugin: nav2_behaviors::BackUp}\n  wait: {plugin: nav2_behaviors::Wait}\n  local_frame: odom\n  global_frame: map\n  robot_base_frame: base_link\n  transform_tolerance: 0.5\nbt_navigator:\n  global_frame: map\n  robot_base_frame: base_link\n  odom_topic: platform/odom/filtered\n  transform_tolerance: 0.5\n  navigators: [navigate_to_pose]\n  navigate_to_pose:\n    plugin: nav2_bt_navigator::NavigateToPoseNavigator\ncostmap:\n  global_frame: map\n  robot_base_frame: base_link\n  update_frequency: 5.0\n  publish_frequency: 2.0\n  transform_tolerance: 0.5\n  resolution: 0.1\n  robot_radius: 0.55\n  track_unknown_space: true\n  plugins: [static_layer, inflation_layer]\n  static_layer:\n    plugin: nav2_costmap_2d::StaticLayer\n    map_subscribe_transient_local: true\n  inflation_layer:\n    plugin: nav2_costmap_2d::InflationLayer\n    cost_scaling_factor: 3.0\n    inflation_radius: 0.7\n",
+      "navigation_config_sha256": "825a1886317e103994a9423624cbf0e57aba88919a24f39f160b14caf7b022a4",
+      "preparation": {
+        "kind": "warm",
+        "radio_reused": true,
+        "wall_s": 0.8612269239965826
+      },
+      "shadow_preflight": {
+        "goal": [
+          5.5,
+          4.0
+        ],
+        "radius_m": 0.15,
+        "positions_m": [
+          [
+            5.5,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.65,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.35,
+            4.0,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            4.15,
+            0.8322799999999999
+          ],
+          [
+            5.5,
+            3.85,
+            0.8322799999999999
+          ]
+        ],
+        "rssi_dbm": [
+          -60.245415429774766,
+          -58.05605153609328,
+          -71.55643159680332,
+          -57.88430347301683,
+          -59.80905230793252
+        ],
+        "worst_rssi_dbm": -57.88430347301683,
+        "margin_db": 10.884303473016828,
+        "controller_training": false,
+        "criterion": "geometrically occluded; every probe at least 3 dB below q_safe"
+      },
+      "solver_runtime": {
+        "drjit_merge_functions": true,
+        "isolation": "process-per-scene"
+      },
+      "metrics": {},
+      "reason": "Campaign cancelled",
+      "task_index": 68,
+      "worker_index": 0
+    }
+  ]
+}

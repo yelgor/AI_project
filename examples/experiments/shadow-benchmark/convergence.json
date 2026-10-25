@@ -1,0 +1,1379 @@
+{
+  "evaluation_only": true,
+  "controller_training": false,
+  "probes": [
+    {
+      "scene": "shadow-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.25408253107554,
+      "path_count": 17,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        2,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -69.60211107826184,
+      "path_count": 8,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.25370486124879,
+      "path_count": 18,
+      "delta_vs_baseline_db": 0.00037766982674725114,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        2,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -69.60281153889909,
+      "path_count": 9,
+      "delta_vs_baseline_db": -0.0007004606372476019,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -33.260641842442794,
+      "path_count": 26,
+      "delta_vs_baseline_db": -0.00655931136725485,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        2,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -69.77068684773256,
+      "path_count": 15,
+      "delta_vs_baseline_db": -0.16857576947072062,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -33.26105526701813,
+      "path_count": 26,
+      "delta_vs_baseline_db": -0.006972735942589736,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        2,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -69.69266694754735,
+      "path_count": 13,
+      "delta_vs_baseline_db": -0.09055586928550952,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -35.40572847619755,
+      "path_count": 17,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-b",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -70.8324419827794,
+      "path_count": 9,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -35.405728133352945,
+      "path_count": 17,
+      "delta_vs_baseline_db": 3.4284460781464077e-07,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-b",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -70.83240694083166,
+      "path_count": 9,
+      "delta_vs_baseline_db": 3.5041947739955503e-05,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -35.39381281617804,
+      "path_count": 24,
+      "delta_vs_baseline_db": 0.011915660019511165,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-b",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -70.41287229696195,
+      "path_count": 16,
+      "delta_vs_baseline_db": 0.41956968581745,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "shadow-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -35.394102077656136,
+      "path_count": 24,
+      "delta_vs_baseline_db": 0.01162639854141645,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "shadow-b",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -70.61206058748829,
+      "path_count": 12,
+      "delta_vs_baseline_db": 0.22038139529111334,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -30.494311332535922,
+      "path_count": 85,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -61.805593991882375,
+      "path_count": 33,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -30.497932459630533,
+      "path_count": 124,
+      "delta_vs_baseline_db": -0.003621127094611154,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -61.5491071329632,
+      "path_count": 56,
+      "delta_vs_baseline_db": 0.25648685891917467,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -30.57558431841678,
+      "path_count": 267,
+      "delta_vs_baseline_db": -0.08127298588085807,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -60.1259299408153,
+      "path_count": 136,
+      "delta_vs_baseline_db": 1.6796640510670784,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -30.58347073654018,
+      "path_count": 259,
+      "delta_vs_baseline_db": -0.08915940400425626,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -62.23095867212433,
+      "path_count": 138,
+      "delta_vs_baseline_db": -0.4253646802419553,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -43.57547214489099,
+      "path_count": 88,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -57.49541217028042,
+      "path_count": 52,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -44.202590354493466,
+      "path_count": 126,
+      "delta_vs_baseline_db": -0.6271182096024788,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -54.907079088378836,
+      "path_count": 76,
+      "delta_vs_baseline_db": 2.588333081901581,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -44.931020195673014,
+      "path_count": 291,
+      "delta_vs_baseline_db": -1.3555480507820263,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -62.25364053904478,
+      "path_count": 215,
+      "delta_vs_baseline_db": -4.758228368764364,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "office-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -45.238700472823325,
+      "path_count": 283,
+      "delta_vs_baseline_db": -1.6632283279323374,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "office-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -60.00876341254981,
+      "path_count": 188,
+      "delta_vs_baseline_db": -2.513351242269394,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -35.3402600880049,
+      "path_count": 63,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "shadow",
+      "position_m": [
+        5,
+        1,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -71.32753523054268,
+      "path_count": 27,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -35.21969332923149,
+      "path_count": 80,
+      "delta_vs_baseline_db": 0.12056675877340695,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "shadow",
+      "position_m": [
+        5,
+        1,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -55.33483092368945,
+      "path_count": 52,
+      "delta_vs_baseline_db": 15.992704306853227,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -34.55297159440393,
+      "path_count": 106,
+      "delta_vs_baseline_db": 0.7872884936009683,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "shadow",
+      "position_m": [
+        5,
+        1,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -54.72936529841901,
+      "path_count": 65,
+      "delta_vs_baseline_db": 16.598169932123668,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -34.584820760704,
+      "path_count": 112,
+      "delta_vs_baseline_db": 0.7554393273008984,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-a",
+      "point": "shadow",
+      "position_m": [
+        5,
+        1,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -55.546788883342344,
+      "path_count": 60,
+      "delta_vs_baseline_db": 15.780746347200335,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -44.9441421274972,
+      "path_count": 74,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        2,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -60.30602262568394,
+      "path_count": 27,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -44.55857310329267,
+      "path_count": 85,
+      "delta_vs_baseline_db": 0.38556902420452843,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        2,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -67.15656955302188,
+      "path_count": 42,
+      "delta_vs_baseline_db": -6.850546927337945,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -44.505519314610524,
+      "path_count": 125,
+      "delta_vs_baseline_db": 0.4386228128866776,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        2,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -51.7745728311845,
+      "path_count": 71,
+      "delta_vs_baseline_db": 8.531449794499437,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -44.63156138492141,
+      "path_count": 128,
+      "delta_vs_baseline_db": 0.3125807425757898,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "warehouse-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        2,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -54.97942526781634,
+      "path_count": 73,
+      "delta_vs_baseline_db": 5.326597357867598,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -32.46014888884589,
+      "path_count": 56,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -69.02019171564321,
+      "path_count": 46,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -32.37463240848719,
+      "path_count": 67,
+      "delta_vs_baseline_db": 0.08551648035870585,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -66.7680865971471,
+      "path_count": 63,
+      "delta_vs_baseline_db": 2.252105118496104,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -32.400823786823814,
+      "path_count": 102,
+      "delta_vs_baseline_db": 0.05932510202207908,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -69.71171299621167,
+      "path_count": 103,
+      "delta_vs_baseline_db": -0.6915212805684661,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -32.373210491173296,
+      "path_count": 94,
+      "delta_vs_baseline_db": 0.08693839767259703,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -68.45039468531537,
+      "path_count": 107,
+      "delta_vs_baseline_db": 0.5697970303278339,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.55205196258733,
+      "path_count": 59,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -83.60791742518961,
+      "path_count": 45,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.60527253750671,
+      "path_count": 68,
+      "delta_vs_baseline_db": -0.05322057491937926,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -71.22978506832834,
+      "path_count": 60,
+      "delta_vs_baseline_db": 12.378132356861272,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -33.56141587177902,
+      "path_count": 112,
+      "delta_vs_baseline_db": -0.009363909191691278,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -72.15130444027652,
+      "path_count": 117,
+      "delta_vs_baseline_db": 11.456612984913093,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "district-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -33.57023380537043,
+      "path_count": 116,
+      "delta_vs_baseline_db": -0.01818184278310042,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "district-b",
+      "point": "shadow",
+      "position_m": [
+        5,
+        4.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -70.40687823221866,
+      "path_count": 109,
+      "delta_vs_baseline_db": 13.201039192970953,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -31.374164993036672,
+      "path_count": 69,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -68.67195913097314,
+      "path_count": 48,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -31.203383575023267,
+      "path_count": 90,
+      "delta_vs_baseline_db": 0.17078141801340507,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -66.59476420571971,
+      "path_count": 77,
+      "delta_vs_baseline_db": 2.0771949252534228,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -31.163184778199934,
+      "path_count": 126,
+      "delta_vs_baseline_db": 0.2109802148367379,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -68.56908960884053,
+      "path_count": 118,
+      "delta_vs_baseline_db": 0.10286952213260747,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -31.245285745753534,
+      "path_count": 119,
+      "delta_vs_baseline_db": 0.1288792472831375,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-a",
+      "point": "shadow",
+      "position_m": [
+        4,
+        3,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -58.858554551522545,
+      "path_count": 120,
+      "delta_vs_baseline_db": 9.81340457945059,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.61030854846711,
+      "path_count": 63,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "shadow",
+      "position_m": [
+        5.5,
+        4,
+        0.83228
+      ],
+      "setting": "baseline",
+      "rays": 10000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -60.245415429774766,
+      "path_count": 49,
+      "delta_vs_baseline_db": 0.0,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -33.11045794703417,
+      "path_count": 77,
+      "delta_vs_baseline_db": 0.49985060143293936,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "shadow",
+      "position_m": [
+        5.5,
+        4,
+        0.83228
+      ],
+      "setting": "more_rays",
+      "rays": 40000,
+      "depth": 3,
+      "seed": 42,
+      "rssi_dbm": -55.58793412034882,
+      "path_count": 71,
+      "delta_vs_baseline_db": 4.657481309425947,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -33.06228192707821,
+      "path_count": 121,
+      "delta_vs_baseline_db": 0.5480266213888996,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "shadow",
+      "position_m": [
+        5.5,
+        4,
+        0.83228
+      ],
+      "setting": "more_depth",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 42,
+      "rssi_dbm": -56.82749204104563,
+      "path_count": 126,
+      "delta_vs_baseline_db": 3.417923388729136,
+      "shadow_below_threshold": true
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "los",
+      "position_m": [
+        -4,
+        3.5,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -33.05841412150847,
+      "path_count": 128,
+      "delta_vs_baseline_db": 0.5518944269586399,
+      "shadow_below_threshold": false
+    },
+    {
+      "scene": "courtyard-b",
+      "point": "shadow",
+      "position_m": [
+        5.5,
+        4,
+        0.83228
+      ],
+      "setting": "another_seed",
+      "rays": 40000,
+      "depth": 5,
+      "seed": 43,
+      "rssi_dbm": -79.83946074461986,
+      "path_count": 116,
+      "delta_vs_baseline_db": -19.59404531484509,
+      "shadow_below_threshold": true
+    }
+  ],
+  "maximum_absolute_delta_db": 19.59404531484509,
+  "all_shadow_centres_below_threshold": true,
+  "software": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "numpy": "2.5.4"
+  },
+  "script_sha256": "d444fd1009c0a678c256f9c5f2a23f469dd257e0bc8e4478ae870f507c2490c5",
+  "notes": [
+    "Finite probe sensitivity test; does not establish full-wave convergence or hardware accuracy.",
+    "Path-search seed is numerical sampling, not temporal radio fading.",
+    "Alternative solver budgets are distinct numerical fields and never replace the frozen campaign data."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "configured_robot_radius_m": 0.55,
+  "same_pre_loss_history": true,
+  "runs": [
+    {
+      "experiment_id": "20261025T090959Z-2acd8f35",
+      "status": "FAILED",
+      "history_from": "20261025T084444Z-84ff79b2",
+      "first_target": [
+        -1.2988910619748517,
+        3.599647560947771,
+        0.009994586337707868
+      ],
+      "first_path_minimum_obstacle_clearance_m": 0.5656857916268201,
+      "recorded_pose_minimum_obstacle_clearance_m": 0.6112038873838674,
+      "path_clearance_above_configured_radius_m": 0.015685791626820045,
+      "recovery_time_s": 150.15
+    },
+    {
+      "experiment_id": "20261025T093556Z-3134555e",
+      "status": "RECOVERED_WAIT",
+      "history_from": "20261025T084444Z-84ff79b2",
+      "first_target": [
+        -1.2988910619748517,
+        3.599647560947771,
+        0.009994586337707868
+      ],
+      "first_path_minimum_obstacle_clearance_m": 0.9714570894119451,
+      "recorded_pose_minimum_obstacle_clearance_m": 0.9684499643470604,
+      "path_clearance_above_configured_radius_m": 0.42145708941194504,
+      "recovery_time_s": 17.299999999999997
+    }
+  ]
+}

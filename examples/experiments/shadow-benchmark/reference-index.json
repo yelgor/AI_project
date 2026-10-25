@@ -1,0 +1,76 @@
+{
+  "evaluation_only": true,
+  "fields": [
+    {
+      "scene": "courtyard-b",
+      "file": "courtyard-b.zip",
+      "dataset_id": "20261025T084703Z-d33889e8",
+      "count": 1020,
+      "radio_field_sha256": "6acf1fbe39f3cf86891e5a256a4eede5ba579556504b69af782614ffc320b231"
+    },
+    {
+      "scene": "courtyard-a",
+      "file": "courtyard-a.zip",
+      "dataset_id": "20261025T084759Z-afabb127",
+      "count": 1020,
+      "radio_field_sha256": "4daa8b3ca00f88e87cd51156dfaf976dffe3b87878bc8e5fbdf64a2d9ad091ff"
+    },
+    {
+      "scene": "district-a",
+      "file": "district-a.zip",
+      "dataset_id": "20261025T084853Z-654c43ef",
+      "count": 1092,
+      "radio_field_sha256": "b07e5e63a37c3009283b87c86eadb0a3fb37a5fea7eb393379076e8ffba0c09f"
+    },
+    {
+      "scene": "district-b",
+      "file": "district-b.zip",
+      "dataset_id": "20261025T084940Z-e5eb16de",
+      "count": 1092,
+      "radio_field_sha256": "5bd21fd8b5b84518c15c453b6963bce4062c992b7a537c1967296921cfa61f15"
+    },
+    {
+      "scene": "office-a",
+      "file": "office-a.zip",
+      "dataset_id": "20261025T085021Z-cb9bf678",
+      "count": 318,
+      "radio_field_sha256": "64074941dc9b4418404fa9c973a54b1e52cb185cc94d72801027a06ddd7e373a"
+    },
+    {
+      "scene": "office-b",
+      "file": "office-b.zip",
+      "dataset_id": "20261025T085037Z-5951f7ab",
+      "count": 318,
+      "radio_field_sha256": "2891a7bfa5dabbbfc22384430741c261553d75d0736e58d2fb8585563569ff2e"
+    },
+    {
+      "scene": "shadow-a",
+      "file": "shadow-a.zip",
+      "dataset_id": "20261025T085053Z-a257e909",
+      "count": 510,
+      "radio_field_sha256": "aa45814ab94df64e6218f960d43bc8accf665d9fcfad613b637e00c3f69e94ca"
+    },
+    {
+      "scene": "shadow-b",
+      "file": "shadow-b.zip",
+      "dataset_id": "20261025T085105Z-5d1c034c",
+      "count": 510,
+      "radio_field_sha256": "15ba91dba0f4e7766f377a4dc10e6281b99ac305c023c91fc71daddec9c74e4e"
+    },
+    {
+      "scene": "warehouse-b",
+      "file": "warehouse-b.zip",
+      "dataset_id": "20261025T085200Z-7a68bae5",
+      "count": 738,
+      "radio_field_sha256": "a424c57b61ab61fe427767c8dd9461e883fc15723ac6ce3c512551e981b60fb5"
+    },
+    {
+      "scene": "warehouse-a",
+      "file": "warehouse-a.zip",
+      "dataset_id": "20261025T085233Z-35a2f7ea",
+      "count": 738,
+      "radio_field_sha256": "e4b13088fef03221ccd112ade33d2736282b0263c63ec203610dfdc5f00cc453"
+    }
+  ],
+  "total_points": 7356
+}

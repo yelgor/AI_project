@@ -1,0 +1,26 @@
+{
+  "IDW": {
+    "noise_db": 2.0,
+    "optimize_gpr": false,
+    "validation_macro_mae_db": 8.273024680659152,
+    "empirical_validation_beta95": 0.0,
+    "beta_within_supported_range": true,
+    "beta": 0.0
+  },
+  "GPR-zero": {
+    "noise_db": 8.0,
+    "optimize_gpr": true,
+    "validation_macro_mae_db": 14.545009946854472,
+    "empirical_validation_beta95": 2.2718698671045243,
+    "beta_within_supported_range": true,
+    "beta": 2.2718698671045243
+  },
+  "GPR-pathloss": {
+    "noise_db": 8.0,
+    "optimize_gpr": false,
+    "validation_macro_mae_db": 7.556326866668702,
+    "empirical_validation_beta95": 0.37252930987887106,
+    "beta_within_supported_range": true,
+    "beta": 0.37252930987887106
+  }
+}

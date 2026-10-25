@@ -1,0 +1,31 @@
+{
+  "evaluation_only": true,
+  "controller_training": false,
+  "exact_queries": 20,
+  "targets": 20,
+  "groups": {
+    "GPR-pathloss/beta=0.0": {
+      "selected_targets": 10,
+      "actually_safe": 7,
+      "false_safe_fraction": 0.3,
+      "mae_db": 2.9171702684004925
+    },
+    "GPR-pathloss/beta=1.0": {
+      "selected_targets": 10,
+      "actually_safe": 10,
+      "false_safe_fraction": 0.0,
+      "mae_db": 4.169154845260624
+    }
+  },
+  "software": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "numpy": "2.5.4"
+  },
+  "script_sha256": "4932e4f950d4e82d2943138e88a5f941096ab67903486c2aff20be69027bf576",
+  "notes": [
+    "Checks the chosen target using the same frozen field, not a nearby coarse-grid approximation.",
+    "An unsafe target can still lead to successful recovery en route or after replanning.",
+    "Isotropic vertical antennas on the flat A200 world; robot-body RF is not simulated."
+  ]
+}
