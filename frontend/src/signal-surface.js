@@ -1,7 +1,7 @@
 // RSSI is a graph height over XY; antenna Z stays a separate physical coordinate.
-export function signalHeight(dbm,amplitude=5){return .08+Math.max(0,Math.min(1,(dbm+100)/80))*amplitude;}
+export function signalHeight(dbm,amplitude=5,range=[-100,-20]){return .08+Math.max(0,Math.min(1,(dbm-range[0])/(range[1]-range[0])))*amplitude;}
 
-export function signalSurface(cells,step=1,amplitude=5,objects=[]){
+export function signalSurface(cells,step=1,amplitude=5,objects=[],range=[-100,-20]){
  const finite=cells.filter(c=>Number.isFinite(c.mean_dbm)&&c.position_m.every(Number.isFinite));
  if(!finite.length)return {positions:[],colors:[],samples:[],triangles:0};
  const z=finite[0].position_m[2],rows=finite.filter(c=>Math.abs(c.position_m[2]-z)<.01);
@@ -23,7 +23,7 @@ export function signalSurface(cells,step=1,amplitude=5,objects=[]){
  const positions=[],colors=[],samples=[];
  function add(triangle){if(triangle.some(c=>!c))return;const a=triangle.map(r=>r.cell);
   if(a.some((c,i)=>blocked(c.position_m,a[(i+1)%3].position_m)))return;
-  for(const c of a){positions.push(c.position_m[0],c.position_m[1],signalHeight(c.mean_dbm,amplitude));colors.push(Math.max(0,Math.min(1,(c.mean_dbm+100)/80)));samples.push(c);}}
+  for(const c of a){positions.push(c.position_m[0],c.position_m[1],signalHeight(c.mean_dbm,amplitude,range));colors.push(Math.max(0,Math.min(1,(c.mean_dbm-range[0])/(range[1]-range[0]))));samples.push(c);}}
  for(const {x,y} of grid.values()){
   const corners=[[x,y],[x+1,y],[x+1,y+1],[x,y+1]].map(([a,b])=>grid.get(a+','+b));
   if(corners.filter(Boolean).length===3)add(corners.filter(Boolean));

@@ -16,7 +16,7 @@ export class MissionView{
   const antenna=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.48,8),new THREE.MeshStandardMaterial({color:0x222c2a}));antenna.rotation.x=Math.PI/2;antenna.position.z=-.2;this.rx.add(antenna);
   this.tx=new THREE.Group();this.scene.add(this.tx);this.tx.add(new THREE.Mesh(new THREE.SphereGeometry(.18,16,12),new THREE.MeshStandardMaterial({color:0xe77b40})));
   this.overlay=new THREE.Group();this.scene.add(this.overlay);this.meshes=[];this.walls=[];this.key=null;
-  this.surfaceMesh=null;this.surfaceStats=null;this.surfaceAmplitude=5;
+  this.surfaceMesh=null;this.surfaceStats=null;this.surfaceAmplitude=10;this.surfaceRange=[-67,-27];
   this.tip=document.createElement('div');this.tip.className='signal-tip';this.tip.hidden=true;element.appendChild(this.tip);
   const ray=new THREE.Raycaster();this.renderer.domElement.addEventListener('pointermove',event=>{
    if(!this.surfaceMesh){this.tip.hidden=true;return;}const rect=element.getBoundingClientRect();
@@ -84,11 +84,11 @@ export class MissionView{
    this.overlay.add(new THREE.Points(geometry,new THREE.PointsMaterial({size:.12,vertexColors:true})));}
   const heat=layer.startsWith('reference')?data.reference:data.map;
   if((layer==='height'||layer==='reference-height')&&heat?.cells?.length){
-   const surface=signalSurface(heat.cells,step,this.surfaceAmplitude,this.scenario?.objects||[]);
+   const surface=signalSurface(heat.cells,step,this.surfaceAmplitude,this.scenario?.objects||[],this.surfaceRange);
    if(surface.triangles){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(surface.positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(surface.colors.flatMap(t=>new THREE.Color().setHSL(t*.34,.65,.52).toArray()),3));
     this.surfaceMesh=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.62,depthWrite:false,side:THREE.DoubleSide}));this.surfaceMesh.userData.samples=surface.samples;this.overlay.add(this.surfaceMesh);
     const wire=new THREE.WireframeGeometry(geometry);this.overlay.add(new THREE.LineSegments(wire,new THREE.LineBasicMaterial({color:0x284e3f,transparent:true,opacity:.1,depthWrite:false})));
-    this.surfaceStats={triangles:surface.triangles,minimum_height:Math.min(...surface.positions.filter((v,i)=>i%3===2)),maximum_height:Math.max(...surface.positions.filter((v,i)=>i%3===2)),antenna_z_m:surface.antenna_z_m,source:layer==='reference-height'?'reference':'prediction',observation_count:heat.observation_count};
+    this.surfaceStats={triangles:surface.triangles,minimum_height:Math.min(...surface.positions.filter((v,i)=>i%3===2)),maximum_height:Math.max(...surface.positions.filter((v,i)=>i%3===2)),antenna_z_m:surface.antenna_z_m,source:layer==='reference-height'?'reference':'prediction',observation_count:heat.observation_count,range_dbm:this.surfaceRange,amplitude:this.surfaceAmplitude};
     if(!hadSurface)this.fit();
    }
   }else if(layer!=='observations'&&heat?.cells?.length){const cells=heat.cells.filter(c=>c.mean_dbm!==null&&(layer!=='std'||c.std_db!=null));const mesh=new THREE.InstancedMesh(new THREE.PlaneGeometry(step*.95,step*.95),new THREE.MeshBasicMaterial({transparent:true,opacity:.5,depthWrite:false,side:THREE.DoubleSide}),cells.length);

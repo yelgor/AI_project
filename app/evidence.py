@@ -12,7 +12,8 @@ FILES={'summary.json','map-study.json','learning-evidence.json','profile-compari
        'navigation-comparison.json','navigation-corner-clearance.json','convergence.json',
        'inventory.csv','map-scores.csv','recommended-config.json','reference-index.json',
        'quality.png','warehouse-map.png','office-map.png','navigation-corner-clearance.png',
-       'demo.mp4','demo.webm','demo.zip','gpr-demo.zip','gpr-demo-verification.json','checksums.sha256'}
+       'demo.mp4','demo.webm','demo.zip','gpr-demo.zip','gpr-demo-verification.json',
+       'responsive-demo.zip','responsive-demo-verification.json','acceptance/responsive-office.zip','checksums.sha256'}
 for cohort in COHORTS:
     FILES.update({cohort+suffix for suffix in ('.zip','-analysis.json','-report.json','-targets.json','-trials.csv')})
 
@@ -38,7 +39,7 @@ class EvidenceLibrary:
 
     def run_bytes(self,cohort,identity):
         if not re.fullmatch(r'[0-9TZabcdef-]{16,64}',identity):raise ValueError('Invalid recorded run identity')
-        if cohort in ('demo','gpr-demo'):
+        if cohort in ('demo','gpr-demo','responsive-demo'):
             if identity!=''.join((self.root/(cohort+'-id.txt')).read_text().split()):raise FileNotFoundError('Demo run not found')
             return (self.root/(cohort+'.zip')).read_bytes()
         if cohort not in COHORTS:raise ValueError('Unknown evidence cohort')
@@ -87,6 +88,9 @@ class EvidenceLibrary:
         sources=self.sources();known.update(s['experiment_id'] for s in sources.values())
         demo=''.join((self.root/'demo-id.txt').read_text().split());known.add(demo)
         gpr_demo=''.join((self.root/'gpr-demo-id.txt').read_text().split());known.add(gpr_demo)
+        responsive_demo=''.join((self.root/'responsive-demo-id.txt').read_text().split());known.add(responsive_demo)
+        responsive_meta=read_json(self.file('responsive-demo-verification.json'))
+        known.update(r['experiment_id'] for r in responsive_meta.get('additional_checks',[]))
         failed=next(r for r in reports['baseline-100']['trials'] if r['method']=='GPR-pathloss' and not r.get('success'))
         repeat=next(r for r in reports['navigation-30']['trials'] if r['method']==failed['method'] and
                     r['label']==failed['label'] and r['beta']==failed['beta'])
@@ -99,11 +103,13 @@ class EvidenceLibrary:
             'navigation_comparison':read_json(self.file('navigation-comparison.json')),
             'corner':read_json(self.file('navigation-corner-clearance.json')),
             'gpr_demo':read_json(self.file('gpr-demo-verification.json')),
+            'responsive_demo':responsive_meta,
             'convergence':{k:v for k,v in read_json(self.file('convergence.json')).items() if k!='probes'},
             'examples':{'gpr_success':{'cohort':'baseline-100','experiment_id':good['experiment_id']},
                 'gpr_failure':{'cohort':'baseline-100','experiment_id':failed['experiment_id']},
                 'gpr_repeat':{'cohort':'navigation-30','experiment_id':repeat['experiment_id']},
                 'source':{'cohort':'baseline-100','experiment_id':sources[good['label']]['experiment_id']},
                 'gpr_demo':{'cohort':'gpr-demo','experiment_id':gpr_demo},
+                'responsive_demo':{'cohort':'responsive-demo','experiment_id':responsive_demo},
                 'demo':{'cohort':'demo','experiment_id':demo}},
             'known_recorded_ids':sorted(known)}

@@ -81,3 +81,10 @@ def mission(name='shadow',layout=0):
 def catalog():
     return [{k:v for k,v in mission(name).items() if k not in ('scene','config')}
             for name in ('shadow','office','warehouse','district','courtyard')]
+
+
+def response_defaults(profile='responsive'):
+    if profile=='benchmark':return {'loss_policy':'anchor','monitor_window_s':2,'degraded_s':1,'stable_s':1,'stale_s':8}
+    if profile!='responsive':raise ValueError('Unknown response profile')
+    return {'loss_policy':'responsive','monitor_window_s':.5,'degraded_s':.5,'stable_s':1,
+            'hysteresis_db':1,'stale_s':1.5,'require_shadow_loss':False,'max_sample_travel_m':.5}

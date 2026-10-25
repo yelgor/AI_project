@@ -43,6 +43,8 @@ test('one button prepares a physical Gazebo shadow mission and recovers',async({
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/experiments.html');
  await page.locator('#mission-select').selectOption('shadow');
+ await page.locator('#response-profile').selectOption('benchmark');
+ await page.locator('#method').selectOption('B1');
  await page.locator('#start-mission').click();
  await expect(page.locator('#start-mission')).toBeDisabled();
  await expect.poll(()=>page.evaluate(()=>window.experimentLab?.getState()?.experiment?.status),{timeout:360000}).toBe('RECOVERED_WAIT');

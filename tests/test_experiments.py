@@ -81,6 +81,7 @@ class FakeSession:
         self.calls.append((route,data))
         if route=='/nav/plan': return {'length_m':math.dist(self.current['position'][:2],data['position'][:2]),'path':[[0,0],data['position'][:2]]}
         return {'status':'running' if route=='/nav/goal' else 'idle','ready':True}
+    def check_shadow(self,config):return {'goal':config['shadow_goal'],'controller_training':False}
 
 
 class ExperimentTests(unittest.TestCase):
@@ -175,6 +176,76 @@ class ExperimentTests(unittest.TestCase):
         self.observation(10.5,1,-60)
         self.assertLess(self.exp.run['observations'][-1]['monitor_rssi_dbm'],-59)
         self.assertNotEqual(self.exp.state()['mode'],'RECOVERED_WAIT')
+
+    def responsive(self,**extra):
+        return self.exp.start({'method':'B1','loss_policy':'responsive','q_safe_dbm':-47,
+            'hysteresis_db':1,'degraded_s':.5,'stable_s':.5,'stale_s':1.5,**extra})
+
+    def responsive_sample(self,t,rssi,x=0,speed=0):
+        pose={'position':[x,0,.13],'quaternion_xyzw':[0,0,0,1],'sim_time_s':t,
+              'linear_velocity':[speed,0,0],'angular_velocity':[0,0,0]}
+        self.session.current=pose;self.exp.pose(pose,{'ready':True,'status':'running'})
+        self.exp.observe({'source':'husky','scene_revision':'test','sim_time_s':t,
+            'position_m':[x,0,.83],'rssi_dbm':rssi,'robot_pose':pose,'line_of_sight':False})
+        self.exp.step()
+
+    def test_responsive_brakes_before_confirmation_and_does_not_wait_for_far_anchor(self):
+        self.responsive(shadow_goal=[20,0]);self.responsive_sample(0,-35)
+        self.responsive_sample(.25,-49,.1,.4)
+        self.assertEqual(self.exp.state()['mode'],'LINK_SUSPECT')
+        self.assertTrue(any(route=='/nav/hold' for route,_ in self.session.calls))
+        self.responsive_sample(.5,-50,.14,.1);self.responsive_sample(.75,-51,.16,.06)
+        self.assertEqual(self.exp.state()['mode'],'LINK_DEGRADED')
+        self.assertFalse(any(route=='/nav/goal' for route,_ in self.session.calls))
+        self.responsive_sample(1,-51,.17,0);self.responsive_sample(1.25,-51,.17,0)
+        self.assertEqual(self.exp.state()['mode'],'RECOVERY')
+        self.assertAlmostEqual(self.exp.run['brake_distance_m'],.07)
+        events=self.exp.replay(self.exp.state()['experiment_id'])['timeline']
+        self.assertLess(next(e['sequence'] for e in events if e['kind']=='brake'),next(e['sequence'] for e in events if e['kind']=='target'))
+
+    def test_single_dip_waits_for_stable_recovery_then_resumes_without_return(self):
+        self.responsive();self.responsive_sample(0,-35);self.responsive_sample(.25,-49)
+        self.responsive_sample(.5,-35);self.responsive_sample(.75,-35)
+        self.assertEqual(self.exp.state()['mode'],'LINK_SUSPECT')
+        self.responsive_sample(1,-35)
+        self.assertEqual(self.exp.state()['mode'],'TELEOP')
+        self.assertFalse(any(route=='/nav/goal' for route,_ in self.session.calls))
+
+    def test_borderline_link_cannot_wait_in_suspect_state_until_global_timeout(self):
+        self.responsive();self.responsive_sample(0,-35);self.responsive_sample(.25,-49)
+        for t in (.5,.75,1,1.25,1.5,1.75,2):self.responsive_sample(t,-47.5)
+        self.assertEqual(self.exp.state()['mode'],'LINK_SUSPECT')
+        self.responsive_sample(2.25,-47.5)
+        self.assertEqual(self.exp.state()['mode'],'RECOVERY')
+        self.assertEqual(self.exp.run['loss_decision'],'verification_timeout')
+
+    def test_duplicates_do_not_confirm_loss_and_missing_speeds_do_not_allow_recovery(self):
+        self.responsive();self.responsive_sample(0,-35);self.responsive_sample(.25,-49)
+        count=len(self.exp.run['observations'])
+        self.responsive_sample(.25,-49);self.assertEqual(len(self.exp.run['observations']),count)
+        self.responsive_sample(.75,-49,speed=.1)
+        self.exp.run['pose'].pop('linear_velocity');self.exp.run['quiet_since']=None;self.exp.step()
+        self.assertEqual(self.exp.state()['mode'],'LINK_DEGRADED')
+        self.assertFalse(any(route=='/nav/goal' for route,_ in self.session.calls))
+
+    def test_excess_motion_without_new_reading_and_solver_errors_stop(self):
+        self.responsive();self.responsive_sample(0,-35)
+        pose={**self.session.current,'sim_time_s':.5,'position':[.6,0,.13]}
+        self.exp.pose(pose,{'ready':True,'status':'running'})
+        with self.assertRaisesRegex(ValueError,'distance allowed'):self.exp.step()
+        self.session.error='Native solver failed'
+        with patch('app.experiments.time.sleep',side_effect=lambda _:setattr(self.exp,'closed',True)):
+            self.exp.loop()
+        self.assertEqual(self.exp.state()['status'],'FAILED')
+        self.assertEqual(self.session.calls[-1][0],'/nav/hold')
+
+    def test_invalid_rssi_is_rejected_without_becoming_a_fake_loss(self):
+        self.responsive();self.responsive_sample(0,-35)
+        with self.assertRaisesRegex(ValueError,'Invalid RSSI'):
+            self.exp.observe({'source':'husky','scene_revision':'test','sim_time_s':.25,
+                'position_m':[0,0,.83],'rssi_dbm':float('nan')})
+        self.assertEqual(len(self.exp.run['observations']),1)
+        self.assertEqual(self.exp.state()['mode'],'TELEOP')
 
 
 if __name__=='__main__':unittest.main()

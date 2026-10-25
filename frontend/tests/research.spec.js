@@ -86,7 +86,7 @@ test('3D RSSI surface follows recorded predictions, scales and explicitly select
  const original=await page.evaluate(()=>({surface:window.experimentLab.getSurfaceStats(),data:window.experimentLab.atTime()}));
  expect(original.surface.observation_count).toBeLessThanOrEqual(original.data.observations.length);
  expect(original.surface.maximum_height).toBeGreaterThan(original.surface.minimum_height);
- await page.locator('#surface-scale').selectOption('8');
+ await page.locator('#surface-scale').selectOption('16');
  expect((await page.evaluate(()=>window.experimentLab.getSurfaceStats())).maximum_height).toBeGreaterThan(original.surface.maximum_height);
  await page.locator('#reference-select').selectOption('evidence');
  await expect(page.locator('#layer')).toHaveValue('reference-height');
@@ -106,7 +106,7 @@ test('3D RSSI surface follows recorded predictions, scales and explicitly select
 test('live Gazebo GPR mission updates its 3D signal surface as Husky moves and recovers',async({page})=>{
  test.setTimeout(420000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('/experiments.html?method=GPR-pathloss&beta=1');
- await page.locator('#surface-toggle').click();await page.locator('#start-mission').click();
+ await expect(page.locator('#layer')).toHaveValue('height');await page.locator('#start-mission').click();
  await expect.poll(()=>page.evaluate(()=>window.experimentLab?.getSurfaceStats()?.observation_count||0),{timeout:180000}).toBeGreaterThan(3);
  const first=await page.evaluate(()=>window.experimentLab.getSurfaceStats());
  await expect.poll(()=>page.evaluate(()=>window.experimentLab.getSurfaceStats()?.observation_count||0),{timeout:60000}).toBeGreaterThan(first.observation_count+4);
@@ -116,6 +116,49 @@ test('live Gazebo GPR mission updates its 3D signal surface as Husky moves and r
  await page.screenshot({path:'test-results/radio-height-live.png',fullPage:true});
  await expect.poll(()=>page.evaluate(()=>window.experimentLab.getState()?.experiment?.status),{timeout:240000}).toBe('RECOVERED_WAIT');
  const state=await page.evaluate(()=>window.experimentLab.getState());
- expect(state.experiment.metrics.loss_line_of_sight).toBe(false);expect(state.experiment.metrics.recovery_path_length_m).toBeGreaterThan(1);
+ expect(state.experiment.config.loss_policy).toBe('responsive');
+ expect(state.experiment.metrics.brake_distance_m).toBeLessThan(.5);
+ const run=await(await page.request.get('/api/experiments/'+state.experiment.experiment_id)).json();
+ const suspect=run.timeline.find(e=>e.kind==='mode'&&e.mode==='LINK_SUSPECT'),brake=run.timeline.find(e=>e.kind==='brake'),target=run.timeline.find(e=>e.kind==='target');
+ expect(suspect).toBeTruthy();expect(brake.sequence).toBeLessThan(target.sequence);
+ expect(Math.hypot(...brake.pose.linear_velocity)).toBeLessThan(.03);
+ expect(Math.hypot(...suspect.pose.position.slice(0,2).map((x,i)=>x-state.experiment.config.shadow_goal[i]))).toBeGreaterThan(state.experiment.config.shadow_radius_m);
+ await page.screenshot({path:'test-results/responsive-recovered.png',fullPage:true});
  expect(errors).toEqual([]);
+});
+
+
+test('focused height scale and fullscreen make small RSSI changes visible without changing data',async({page,request})=>{
+ const o=await(await request.get('/api/research')).json(),e=o.examples.gpr_success;
+ await page.goto(`/experiments.html?evidence=${e.cohort}&run=${e.experiment_id}&phase=decision`);
+ await expect.poll(()=>page.evaluate(()=>window.experimentLab?.getSurfaceStats()?.triangles||0)).toBeGreaterThan(0);
+ await expect(page.locator('#layer')).toHaveValue('height');
+ expect((await page.evaluate(()=>window.experimentLab.getSurfaceStats())).range_dbm).toEqual([-67,-27]);
+ const values=await page.evaluate(()=>window.experimentLab.atTime().map.cells.map(c=>c.mean_dbm));
+ await page.locator('#surface-sensitivity').selectOption('20');
+ expect((await page.evaluate(()=>window.experimentLab.getSurfaceStats())).range_dbm).toEqual([-57,-37]);
+ expect(await page.evaluate(()=>window.experimentLab.atTime().map.cells.map(c=>c.mean_dbm))).toEqual(values);
+ await expect(page.locator('#map-stop')).toBeDisabled();
+ await page.locator('#map-fullscreen').click();
+ await expect.poll(()=>page.evaluate(()=>Boolean(document.fullscreenElement))).toBe(true);
+ await expect(page.locator('#map-fullscreen')).toHaveText('Згорнути');
+ await page.screenshot({path:'test-results/radio-sensitive-fullscreen.png',fullPage:true});
+ await page.locator('#map-fullscreen').click();
+ await expect.poll(()=>page.evaluate(()=>Boolean(document.fullscreenElement))).toBe(false);
+});
+
+test('responsive demo opens from the report with its own braking protocol and no mismatched reference',async({page})=>{
+ await page.goto('/research.html');
+ await expect(page.locator('#responsive-gpr-demo')).toContainText('0.29 m');
+ await page.locator('#responsive-gpr-demo a.button').click();
+ await expect.poll(()=>page.evaluate(()=>window.experimentLab?.getReplay()?.manifest.config.loss_policy)).toBe('responsive');
+ await expect(page.locator('#layer')).toHaveValue('height');
+ await expect(page.locator('#reference-select')).toContainText('еталон ще не зібрано');
+ expect(await page.locator('#reference-select option').count()).toBe(1);
+ await expect(page.locator('#link-status')).toContainText('швидка реакція');
+ const run=await page.evaluate(()=>window.experimentLab.getReplay());
+ const brake=run.timeline.find(e=>e.kind==='brake');
+ await page.locator('#timeline').fill(String(brake.sim_time_s));
+ const data=await page.evaluate(()=>window.experimentLab.atTime());
+ expect(['LINK_DEGRADED','RECOVERY']).toContain(data.mode);
 });

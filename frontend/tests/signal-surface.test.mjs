@@ -10,6 +10,13 @@ test('RSSI graph height is monotone and bounded independently of physical antenn
  const mesh=signalSurface(square);assert.equal(mesh.triangles,2);assert.equal(mesh.antenna_z_m,.83);
  assert(mesh.positions.every(Number.isFinite));assert.equal(Math.max(...mesh.positions.filter((v,i)=>i%3===2)),5.08);
 });
+test('focused scale multiplies visual response without modifying RSSI samples',()=>{
+ const old=signalHeight(-46)-signalHeight(-47);
+ const focused=signalHeight(-46,10,[-67,-27])-signalHeight(-47,10,[-67,-27]);
+ assert(Math.abs(focused/old-4)<1e-10);
+ assert(Math.abs((signalHeight(-46,10,[-57,-37])-signalHeight(-47,10,[-57,-37]))/old-8)<1e-10);
+ const before=structuredClone(square);signalSurface(square,1,10,[],[-67,-27]);assert.deepEqual(square,before);
+});
 test('missing returns and isolated measurements never invent a complete field',()=>{
  assert.equal(signalSurface([cell(0,0,null),cell(1,0,NaN)]).triangles,0);
  assert.equal(signalSurface([square[0],square[2]]).triangles,0);

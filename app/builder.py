@@ -21,7 +21,7 @@ try:
     from .datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
     from .navigation import export_map,free
     from .experiments import Experiments,configuration
-    from .missions import mission,catalog,line_of_sight
+    from .missions import mission,catalog,line_of_sight,response_defaults
     from .campaigns import Campaigns
     from .evidence import EvidenceLibrary
 except ImportError:
@@ -31,7 +31,7 @@ except ImportError:
     from datasets import Dataset, list_datasets, archive, atomic_json, read_dataset,field_hash
     from navigation import export_map,free
     from experiments import Experiments,configuration
-    from missions import mission,catalog,line_of_sight
+    from missions import mission,catalog,line_of_sight,response_defaults
     from campaigns import Campaigns
     from evidence import EvidenceLibrary
 
@@ -158,7 +158,13 @@ class Session:
 
     def launch_mission(self,data):
         spec=mission(data.get('mission','shadow'),int(data.get('layout',0)))
-        config=configuration({**spec['config'],**data.get('config',{})})
+        profile=response_defaults(data.get('response_profile','responsive'))
+        config=configuration({**spec['config'],**profile,**data.get('config',{})})
+        if config['loss_policy']=='responsive':
+            spec['scene']['radio']['period_s']=.25
+            # Avoid the near-coincident Tx/Rx cancellation at the old spawn.
+            # Readiness and live RSSI still determine whether motion can continue.
+            spec['scene']['robot']['position'][1]=-3.
         shadow_config={**config,'shadow_goal':config['shadow_goal'] or spec['config']['shadow_goal']}
         manual=bool(data.get('manual'))
         if manual:

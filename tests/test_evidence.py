@@ -33,6 +33,17 @@ class EvidenceTests(unittest.TestCase):
         self.assertGreater(sum(e['kind']=='map' for e in r['timeline']),50)
         self.assertEqual(r['manifest']['metrics']['observation_count'],113)
 
+    def test_responsive_demo_brakes_before_target_and_before_deep_anchor(self):
+        e=self.overview['examples']['responsive_demo'];r=self.library.run(e['cohort'],e['experiment_id'])
+        self.assertEqual(r['manifest']['config']['loss_policy'],'responsive')
+        self.assertEqual(r['manifest']['status'],'RECOVERED_WAIT')
+        brake=next(e for e in r['timeline'] if e['kind']=='brake')
+        target=next(e for e in r['timeline'] if e['kind']=='target')
+        self.assertLess(brake['sequence'],target['sequence'])
+        self.assertLess(np.linalg.norm(brake['pose']['linear_velocity']),.03)
+        self.assertGreater(self.overview['responsive_demo']['distance_to_anchor_at_first_weak_m'],1)
+        self.assertTrue(self.library.file('acceptance/responsive-office.zip').is_file())
+
     def test_failed_and_repeated_gpr_runs_use_identical_seed_measurements(self):
         rows=[]
         for name in ('gpr_failure','gpr_repeat'):

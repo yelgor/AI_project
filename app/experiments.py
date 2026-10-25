@@ -35,7 +35,8 @@ def configuration(data):
     for key,default,lo,hi in [('beta',0.,0.,5.),('q_safe_dbm',-40.,-160.,0.),
         ('hysteresis_db',2.,0.,20.),('degraded_s',2.,0.,30.),('stable_s',2.,.1,30.),
         ('timeout_s',180.,5.,1800.),('stale_s',8.,1.,30.),('noise_db',2.,.1,20.),
-        ('grid_step_m',1.,.3,3.),('monitor_window_s',0.,0.,10.)]:
+        ('grid_step_m',1.,.3,3.),('monitor_window_s',0.,0.,10.),
+        ('brake_timeout_s',4.,1.,15.),('max_sample_travel_m',.5,.2,3.),('verify_timeout_s',2.,.5,30.)]:
         result[key]=finite(data.get(key,default),key,lo,hi)
     if result['beta'] and not result['method'].startswith('GPR'):
         raise ValueError('beta applies to GPR uncertainty only')
@@ -55,6 +56,8 @@ def configuration(data):
     result['pair_id']=str(data.get('pair_id',''))[:100]
     result['history_from']=str(data.get('history_from',''))
     result['save_cir']=bool(data.get('save_cir',True))
+    result['loss_policy']=data.get('loss_policy','anchor')
+    if result['loss_policy'] not in ('anchor','responsive'):raise ValueError('Invalid loss_policy')
     result['require_shadow_loss']=bool(data.get('require_shadow_loss',False))
     goal=data.get('shadow_goal')
     if goal is not None and len(goal)!=2:raise ValueError('shadow_goal must be [x,y]')
@@ -185,6 +188,9 @@ class Experiments:
                 'initial_history_count':len(history),'initial_decision_pending':bool(history),'loss_line_of_sight':None,
                 'navigation':copy.deepcopy(state.get('navigation',{})),'wall_started':time.monotonic(),
                 'last_wall_pose':time.monotonic()}
+            self.run.update(monitor_consumed=len(history),suspect_at=None,suspect_pose=None,
+                brake_started_wall=None,quiet_since=None,bad_count=0,loss_trigger_dbm=None,
+                brake_distance_m=None,brake_time_s=None,loss_decision=None)
             self.run['shadow_arrived_at']=None
             atomic_json(path/'manifest.json',meta); atomic_json(path/'scenario.json',state['scenario'])
             self.event('mode',mode='TELEOP',reason='Experiment started')
@@ -224,6 +230,11 @@ class Experiments:
             if measurement['scene_revision']!=self.run['manifest']['scene_revision']: return
             if measurement.get('sim_time_s') is None or measurement['sim_time_s']<self.run['start_time']: return
             r=self.run
+            raw=measurement.get('rssi_dbm')
+            if raw is not None and (not isinstance(raw,(int,float)) or not math.isfinite(raw)):
+                raise ValueError('Invalid RSSI result; observation rejected')
+            if r['config']['loss_policy']=='responsive' and r['observations'] and measurement['sim_time_s']<=r['observations'][-1]['sim_time_s']:
+                return  # Duplicates/out-of-order packets cannot confirm a loss or a recovery.
             r['time']=max(r['time'],measurement['sim_time_s'])
             row={**copy.deepcopy(measurement),'available_at_sim_time_s':r['time'],
                  'observation_index':len(r['observations'])}
@@ -256,6 +267,9 @@ class Experiments:
                 'operator_interventions':int(status=='CANCELLED' and reason!='Survey complete without link degradation'),
                 'loss_line_of_sight':r['loss_line_of_sight'],
                 'wall_duration_s':time.monotonic()-r['wall_started']}
+            if r['config']['loss_policy']=='responsive':
+                r['manifest']['metrics'].update(loss_trigger_rssi_dbm=r['loss_trigger_dbm'],
+                    brake_distance_m=r['brake_distance_m'],brake_time_s=r['brake_time_s'],loss_decision=r['loss_decision'])
             self.event('mode',mode=status,reason=reason,metrics=r['manifest']['metrics'])
             atomic_json(r['path']/'manifest.json',r['manifest']); self.generation+=1
             return self.state()
@@ -273,11 +287,52 @@ class Experiments:
                 'scene_revision':r['manifest']['scene_revision'],
                 'mode':r['mode'],'sim_time_s':r['time'],'config':copy.deepcopy(r['config']),
                 'observation_count':len(r['observations']),'model_version':r['model_version'],
-                'target':copy.deepcopy(r['target']),'reason':r['manifest']['reason'],
+                'target':copy.deepcopy(r['target']),'reason':r.get('latest_reason') if r['manifest']['status']=='running' else r['manifest']['reason'],
                 'metrics':copy.deepcopy(r['manifest']['metrics'])}
 
+    def responsive_monitor(self,generation):
+        """Brake at the first raw weak sample; confirm while stationary, before fitting."""
+        with self.lock:
+            if generation!=self.generation or not self.active():return
+            r=self.run;c=r['config']
+            rows=r['observations'][r['monitor_consumed']:];r['monitor_consumed']=len(r['observations'])
+            for row in rows:
+                raw=row['rssi_dbm'];t=row['available_at_sim_time_s']
+                if r['mode'] in ('TELEOP','SURVEY','LINK_SUSPECT'):
+                    bad=raw is None or raw<c['q_safe_dbm']-c['hysteresis_db']
+                    if bad:
+                        r['bad_since']=t if r['bad_since'] is None else r['bad_since'];r['bad_count']+=1;r['good_since']=None
+                        if r['mode']!='LINK_SUSPECT':
+                            self.session.runtime('/nav/hold',{})
+                            r.update(suspect_at=t,suspect_pose=copy.deepcopy(r['pose']),
+                                brake_started_wall=time.monotonic(),quiet_since=None,loss_trigger_dbm=raw)
+                            self.transition('LINK_SUSPECT','First weak raw RSSI: brake before confirming loss')
+                        if t-r['bad_since']>=c['degraded_s'] and r['bad_count']>=2:
+                            r['degraded_at']=t;r['loss_line_of_sight']=row.get('line_of_sight');r['loss_decision']='sustained_weak_rssi'
+                            self.transition('LINK_DEGRADED','Weak RSSI confirmed while braking')
+                    else:
+                        r['bad_since']=None;r['bad_count']=0
+                        if r['mode']=='LINK_SUSPECT':
+                            good=raw is not None and raw>=c['q_safe_dbm']
+                            r['good_since']=(t if r['good_since'] is None else r['good_since']) if good else None
+                            if r['good_since'] is not None and t-r['good_since']>=c['stable_s'] and self.brake_ready(r):
+                                r['route_started']=False;r['good_since']=None
+                                self.session.runtime('/nav/cancel',{})
+                                self.transition('SURVEY' if c['route'] else 'TELEOP','Short RSSI dip cleared; resume outbound motion')
+                elif r['mode']=='RECOVERY':
+                    signal=row.get('monitor_rssi_dbm',raw);good=raw is not None and signal is not None and min(raw,signal)>=c['q_safe_dbm']
+                    r['good_since']=(t if r['good_since'] is None else r['good_since']) if good else None
+                    if r['good_since'] is not None and t-r['good_since']>=c['stable_s']:
+                        self.session.runtime('/nav/hold',{});self.finish('RECOVERED_WAIT','RSSI proxy stable above q_safe');return
+
+    def brake_ready(self,r):
+        pose=r['pose'];velocity=pose.get('linear_velocity');angular=pose.get('angular_velocity')
+        quiet=velocity is not None and angular is not None and math.sqrt(sum(v*v for v in velocity))<.03 and abs(angular[2])<.05
+        r['quiet_since']=(r['time'] if r['quiet_since'] is None else r['quiet_since']) if quiet else None
+        return r['quiet_since'] is not None and r['time']-r['quiet_since']>=.1
+
     def transition(self, mode, reason):
-        self.run['mode']=mode; self.event('mode',mode=mode,reason=reason,pose=self.run['pose'])
+        self.run['mode']=mode;self.run['latest_reason']=reason; self.event('mode',mode=mode,reason=reason,pose=self.run['pose'])
 
     def snapshot(self):
         with self.lock:
@@ -354,12 +409,39 @@ class Experiments:
         if time.monotonic()-r['last_wall_pose']>5: raise ValueError('Stale Gazebo pose')
         if now-r['last_arrival']>config['stale_s']:
             raise ValueError('Stale radio measurement; recovery cannot use missing numerical results')
+        responsive=config['loss_policy']=='responsive'
+        if responsive:
+            if r['observations']:
+                latest=r['observations'][-1]
+                if now-latest['sim_time_s']>config['stale_s']:raise ValueError('Radio sample is too old for motion')
+                if r['mode'] in ('TELEOP','SURVEY','RECOVERY') and latest.get('robot_pose') and math.dist(
+                        r['pose']['position'][:2],latest['robot_pose']['position'][:2])>config['max_sample_travel_m']:
+                    raise ValueError('Motion exceeded the distance allowed without a fresh radio sample')
+            self.responsive_monitor(generation)
+            snapshot=self.snapshot()
+            if snapshot is None:return
+            generation,r=snapshot
+            if r['mode']=='LINK_SUSPECT':
+                with self.lock:
+                    if generation!=self.generation or not self.active():return
+                    stopped=self.brake_ready(self.run)
+                if not stopped and time.monotonic()-r['brake_started_wall']>config['brake_timeout_s']:
+                    raise ValueError('Husky failed to confirm braking')
+                if now-r['suspect_at']>=max(config['verify_timeout_s'],config['degraded_s'],config['stable_s']):
+                    with self.lock:
+                        if generation!=self.generation or not self.active():return
+                        live=self.run;live['degraded_at']=now;live['loss_decision']='verification_timeout'
+                        live['loss_line_of_sight']=live['observations'][-1].get('line_of_sight')
+                        self.transition('LINK_DEGRADED','Stopped verification timed out; return conservatively')
+                    snapshot=self.snapshot()
+                    if snapshot is None:return
+                    generation,r=snapshot
         if len(r['observations'])>r['consumed']:
             self.update_model(generation,r)
             with self.lock:
                 if generation!=self.generation or not self.active(): return
                 live=self.run
-                for row in r['observations'][r['consumed']:]:
+                for row in ([] if responsive else r['observations'][r['consumed']:]):
                     signal=row.get('monitor_rssi_dbm',row['rssi_dbm']); t=row['available_at_sim_time_s']
                     if live['mode'] in ('TELEOP','SURVEY'):
                         bad=signal is None or signal<config['q_safe_dbm']-config['hysteresis_db']
@@ -382,7 +464,19 @@ class Experiments:
             if snapshot is None: return
             generation,r=snapshot
         if r['mode']=='LINK_DEGRADED':
-            self.session.runtime('/nav/hold',{})
+            if responsive:
+                with self.lock:
+                    if generation!=self.generation or not self.active():return
+                    live=self.run
+                    if live['brake_started_wall'] is None:
+                        self.session.runtime('/nav/hold',{});live['brake_started_wall']=time.monotonic()
+                    if not self.brake_ready(live):
+                        if time.monotonic()-live['brake_started_wall']>config['brake_timeout_s']:raise ValueError('Husky failed to confirm braking')
+                        return
+                    live['brake_distance_m']=math.dist(live['pose']['position'][:2],(live['suspect_pose'] or live['pose'])['position'][:2])
+                    live['brake_time_s']=live['time']-(live['suspect_at'] if live['suspect_at'] is not None else live['time'])
+                    self.event('brake',distance_m=live['brake_distance_m'],duration_sim_s=live['brake_time_s'],pose=live['pose'])
+            else:self.session.runtime('/nav/hold',{})
             with self.lock:
                 if generation!=self.generation: return
                 self.transition('RECOVERY','Select reachable recovery target')
