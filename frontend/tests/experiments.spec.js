@@ -29,7 +29,7 @@ test('official Husky, mounted receiver, causal 3D replay and separate live mode'
     expect(await page.evaluate(()=>window.experimentLab.atTime().observations.length)).toBe(available);
   }
   const download=page.waitForEvent('download');
-  await page.locator(`a[href="/api/experiments/${run.experiment_id}.zip"]`).click();
+  await page.locator('#selected-record a[download]').click();
   expect((await download).suggestedFilename()).toContain(run.experiment_id);
   await page.screenshot({path:'test-results/mission-replay.png',fullPage:true});
   await page.locator('[data-tab="live"]').click();

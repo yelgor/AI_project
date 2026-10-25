@@ -15,3 +15,4 @@ fi
 docker compose build husky
 docker compose up --no-build --force-recreate -d
 printf '%s\n' 'Services started. Open http://127.0.0.1:8010/experiments.html and click ▶ Запустити місію. Logs: docker compose logs -f radio husky.'
+printf '%s\n' 'GPR learning, tests and recorded replays: http://127.0.0.1:8010/research.html (no new mission or import needed).'

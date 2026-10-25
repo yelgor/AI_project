@@ -23,6 +23,7 @@ try:
     from .experiments import Experiments,configuration
     from .missions import mission,catalog,line_of_sight
     from .campaigns import Campaigns
+    from .evidence import EvidenceLibrary
 except ImportError:
     from scenario import normalize, preset, antenna_pose, vector, finite
     from radio import export_gazebo, SOLVER_EXECUTOR
@@ -32,6 +33,7 @@ except ImportError:
     from experiments import Experiments,configuration
     from missions import mission,catalog,line_of_sight
     from campaigns import Campaigns
+    from evidence import EvidenceLibrary
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -415,6 +417,7 @@ class Session:
 
 
 def serve(session,host,port):
+    evidence=EvidenceLibrary()
     class Handler(BaseHTTPRequestHandler):
         def send(self,status,payload,content_type='application/json'):
             body=payload if isinstance(payload,bytes) else json.dumps(payload,allow_nan=False).encode()
@@ -426,6 +429,20 @@ def serve(session,host,port):
             try:
                 if path=='/health': return self.send(200,{'status':'ok','backend':'Sionna RT CPU','builder':True})
                 if path=='/api/state': return self.send(200,session.state())
+                if path=='/api/research':return self.send(200,evidence.overview())
+                if path.startswith('/api/research/files/'):
+                    file=evidence.file(path.removeprefix('/api/research/files/'))
+                    return self.send(200,file.read_bytes(),mimetypes.guess_type(file)[0] or 'application/octet-stream')
+                if path.startswith('/api/research/runs/'):
+                    parts=path.removeprefix('/api/research/runs/').split('/')
+                    if len(parts)!=2:raise ValueError('Expected recorded cohort/run')
+                    cohort,identity=parts
+                    if identity.endswith('.zip'):return self.send(200,evidence.run_bytes(cohort,identity[:-4]),'application/zip')
+                    return self.send(200,evidence.run(cohort,identity))
+                if path.startswith('/api/research/references/'):
+                    parts=path.removeprefix('/api/research/references/').split('/')
+                    if len(parts)!=2:raise ValueError('Expected recorded cohort/run')
+                    return self.send(200,evidence.reference_for_run(*parts))
                 if path=='/api/datasets': return self.send(200,list_datasets(session.data))
                 if path=='/api/experiments': return self.send(200,session.experiments.manifests())
                 if path=='/api/missions':return self.send(200,catalog())

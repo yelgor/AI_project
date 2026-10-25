@@ -33,7 +33,20 @@ CSV і знаменниках частки успіху. Не слід вваж�
 Її ID — у [demo-id.txt](demo-id.txt). Діагностичні перервані/некоректні пілоти
 винесені у [diagnostics/](diagnostics/) та не включені в benchmark.
 
+Додаткова повна **GPR**-демонстрація з живою 3D-картою RSSI:
+[gpr-demo.zip](gpr-demo.zip), [метрики](gpr-demo-verification.json),
+ID — [gpr-demo-id.txt](gpr-demo-id.txt). 113 показів, NLOS loss,
+відновлення за 17.10 sim s / 6.65 m, без operator interventions.
+Це окрема acceptance перевірка, поза 150 парними recovery та їхніми підсумками.
+
 ## Відтворити у своєму інтерфейсі
+
+Швидкий перегляд без імпорту: **http://127.0.0.1:8010/research.html** після
+запуску сервісів. Є графіки GPR за префіксами збереженої історії,
+відкладені test-метрики та прямі посилання на архівні 3D-проїзди.
+[Протокол і керування](../../../docs/MODEL_EVIDENCE.md).
+`learning-evidence.json` — додане повторне обчислення train/validation
+префіксів, не нові RF-покази чи нові епізоди. Кількості корпусу не змінені.
 
 Після `bash scripts/run_demo.sh`:
 

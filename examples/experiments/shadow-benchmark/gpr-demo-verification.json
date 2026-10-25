@@ -1,0 +1,81 @@
+{
+  "experiment_id": "20261025T121603Z-cb751897",
+  "data_origin": "recorded_simulation",
+  "hardware_validation": false,
+  "scope": "Additional full outbound and recovery GPR acceptance demo; excluded from the 150-run paired benchmark.",
+  "status": "RECOVERED_WAIT",
+  "config": {
+    "method": "GPR-pathloss",
+    "optimize_gpr": false,
+    "beta": 1.0,
+    "q_safe_dbm": -47.0,
+    "hysteresis_db": 1.0,
+    "degraded_s": 1.0,
+    "stable_s": 1.0,
+    "timeout_s": 150.0,
+    "stale_s": 8.0,
+    "noise_db": 2.0,
+    "grid_step_m": 1.5,
+    "monitor_window_s": 2.0,
+    "bounds": [
+      -7.0,
+      -6.0,
+      7.0,
+      6.0
+    ],
+    "route": [
+      [
+        -4.0,
+        3.5,
+        1.5707963267948966
+      ],
+      [
+        4.0,
+        3.5,
+        0.0
+      ],
+      [
+        4.0,
+        2.0,
+        -1.5707963267948966
+      ]
+    ],
+    "label": "shadow-a",
+    "pair_id": "",
+    "history_from": "",
+    "save_cir": false,
+    "require_shadow_loss": true,
+    "shadow_goal": [
+      4.0,
+      2.0
+    ],
+    "shadow_radius_m": 0.15,
+    "split": "pilot"
+  },
+  "metrics": {
+    "success": true,
+    "duration_sim_s": 60.25,
+    "recovery_time_s": 17.1,
+    "path_length_m": 23.101957895593603,
+    "recovery_path_length_m": 6.653807289061626,
+    "observation_count": 113,
+    "replans": 1,
+    "operator_interventions": 0,
+    "loss_line_of_sight": false,
+    "wall_duration_s": 70.68341325799702
+  },
+  "model_events": 113,
+  "implementation_sha256": "9ba909116ac145e21f09fb111abe5979a29c17444896f417aa59f8fc422deb4f",
+  "navigation_config_sha256": "02c667cc39a3506897322d0b5e733309fe4f82d252200185cb69773a3392b895",
+  "software": {
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.7.2"
+  },
+  "navigation_software": {
+    "nav2_planner": "1.3.13",
+    "nav2_controller": "1.3.13",
+    "clearpath_gz": "2.9.4"
+  }
+}
