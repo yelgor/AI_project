@@ -10,6 +10,11 @@ RSSI recovery B0/B1/IDW/GPR, live/replay і runner. Власний радіод�
 
 ## Порядок читання
 
+Для загальної картини почніть із [PRESENTATION_GUIDE](PRESENTATION_GUIDE.md):
+радіофізика, світ, команди, навчання GPR, інтеграція наступної моделі та сценарій
+показу. [FEATURE_CATALOG](FEATURE_CATALOG.md) окремо інвентаризує поточний
+функціонал і всі API; незавершені можливості явно позначені.
+
 1. [README](../README.md): інсталяція, швидкий запуск і checks.
 2. [DEMONSTRATION.md](DEMONSTRATION.md): запуск місії однією кнопкою та всі елементи керування.
 3. [QUALITY.md](QUALITY.md): deliberate shadow, 100+ епізодів, full/paired, оцінка й ітерації.

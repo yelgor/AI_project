@@ -5,6 +5,9 @@
 **NVIDIA Sionna RT 2.2.0**, рух/зіткнення — **Gazebo Harmonic / ROS 2 Jazzy**.
 Frontend — Three.js; власного розв'язувача радіохвиль немає.
 
+**[Повний гайд для презентації: як усе працює і що показати](docs/PRESENTATION_GUIDE.md)**
+та окремо **[весь наявний функціонал, API й обмеження](docs/FEATURE_CATALOG.md)**.
+
 ## Запуск
 
 Linux x86_64, Python 3.12/venv + LLVM/libatomic, Node.js 20.19+ або 22.12+,
